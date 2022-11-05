@@ -2,10 +2,12 @@ package com.fpoly.foodapp.ui.home;
 
 import android.annotation.SuppressLint;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.LayoutInflater;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.EditText;
 import android.widget.Toast;
 
 
@@ -15,7 +17,6 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.fpoly.foodapp.R;
-import com.fpoly.foodapp.TranslateAnimation;
 import com.fpoly.foodapp.adapters.HomeHorAdapter;
 import com.fpoly.foodapp.adapters.HomeVerAdapter;
 import com.fpoly.foodapp.modules.HomeHorModule;
@@ -29,6 +30,7 @@ public class HomeFragment extends Fragment {
     ArrayList<HomeVerModule> listVer;
     HomeHorAdapter homeHorAdapter;
     HomeVerAdapter homeVerAdapter;
+    private EditText edSearch;
 
 
     @SuppressLint("MissingInflatedId")
@@ -38,6 +40,27 @@ public class HomeFragment extends Fragment {
 
 
         View root = inflater.inflate(R.layout.fragment_home, container, false);
+        edSearch = root.findViewById(R.id.edSearch);
+        edSearch.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+                Toast.makeText(getContext(), "text: " + editable.toString(), Toast.LENGTH_SHORT).show();
+
+
+
+            }
+        });
+
+
 
         /*
                 Horizontal RecycleView
