@@ -6,6 +6,7 @@ import android.view.View;
 import android.widget.Toast;
 
 import com.fpoly.foodapp.R;
+import com.fpoly.foodapp.TranslateAnimation;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import androidx.annotation.NonNull;
@@ -14,6 +15,7 @@ import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.fpoly.foodapp.databinding.ActivityMainBinding;
 import com.google.android.material.navigation.NavigationBarView;
@@ -30,6 +32,7 @@ public class MainActivity extends AppCompatActivity {
         setContentView(binding.getRoot());
 
         BottomNavigationView navView = findViewById(R.id.nav_view);
+
         // Passing each menu ID as a set of Ids because each
         // menu should be considered as top level destinations.
         AppBarConfiguration appBarConfiguration = new AppBarConfiguration.Builder(
@@ -39,5 +42,7 @@ public class MainActivity extends AppCompatActivity {
         NavigationUI.setupActionBarWithNavController(this, navController, appBarConfiguration);
         NavigationUI.setupWithNavController(binding.navView, navController);
     }
+
+
 
 }

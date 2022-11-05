@@ -3,8 +3,10 @@ package com.fpoly.foodapp.ui.home;
 import android.annotation.SuppressLint;
 import android.os.Bundle;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 
 import androidx.annotation.NonNull;
@@ -13,6 +15,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.fpoly.foodapp.R;
+import com.fpoly.foodapp.TranslateAnimation;
 import com.fpoly.foodapp.adapters.HomeHorAdapter;
 import com.fpoly.foodapp.adapters.HomeVerAdapter;
 import com.fpoly.foodapp.modules.HomeHorModule;
@@ -35,6 +38,10 @@ public class HomeFragment extends Fragment {
 
 
         View root = inflater.inflate(R.layout.fragment_home, container, false);
+
+        /*
+                Horizontal RecycleView
+         */
         home_hor_rec = root.findViewById(R.id.home_hor_rec);
         listHor = new ArrayList<>();
         listHor.add(new HomeHorModule(R.drawable.pizza, "Pizza"));
@@ -55,6 +62,9 @@ public class HomeFragment extends Fragment {
         home_hor_rec.setHasFixedSize(true);
         home_hor_rec.setNestedScrollingEnabled(false);
 
+        /*
+                Vertical RecycleView
+         */
         home_ver_rec = root.findViewById(R.id.home_ver_rec);
         listVer = new ArrayList<>();
         listVer.add(new HomeVerModule(R.drawable.pizza1, "Pizza 1","10:00 - 23:00","4.9","Min - $40"));
@@ -75,7 +85,7 @@ public class HomeFragment extends Fragment {
         home_ver_rec.setHasFixedSize(true);
         home_ver_rec.setNestedScrollingEnabled(false);
 
-
+//        home_ver_rec.setOnTouchListener(new TranslateAnimation(getContext(), home_hor_rec));
 
 
         return root;
