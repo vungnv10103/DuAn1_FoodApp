@@ -6,4 +6,9 @@
     <string name="title_acc">Account</string>
     <string name="resiter">Resiter</string>
     <string name="sing_in">Sing In</string>
+    <string name="ok">Resiter</string>
+    <string name="email">Email</string>
+    <string name="my_food_app">My Food App</string>
+    <string name="welcome_explore_your_dream_food">Welcome Explore Your Dream Food</string>
+    <string name="Sing_in">Sing In</string>
 </resources>
