@@ -1,6 +1,7 @@
 package com.fpoly.foodapp.ui.home;
 
 import android.annotation.SuppressLint;
+import android.content.Intent;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -8,6 +9,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.Toast;
 
 
@@ -17,6 +19,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.fpoly.foodapp.R;
+import com.fpoly.foodapp.activities.WelcomeActivity;
 import com.fpoly.foodapp.adapters.HomeHorAdapter;
 import com.fpoly.foodapp.adapters.HomeVerAdapter;
 import com.fpoly.foodapp.modules.HomeHorModule;
@@ -31,6 +34,7 @@ public class HomeFragment extends Fragment {
     HomeHorAdapter homeHorAdapter;
     HomeVerAdapter homeVerAdapter;
     private EditText edSearch;
+    ImageView imgacount;
 
 
     @SuppressLint("MissingInflatedId")
@@ -40,6 +44,15 @@ public class HomeFragment extends Fragment {
 
 
         View root = inflater.inflate(R.layout.fragment_home, container, false);
+        imgacount =root.findViewById(R.id.imgaccount);
+        imgacount.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getActivity() , WelcomeActivity.class);
+                startActivity(intent);
+
+            }
+        });
         edSearch = root.findViewById(R.id.edSearch);
         edSearch.addTextChangedListener(new TextWatcher() {
             @Override

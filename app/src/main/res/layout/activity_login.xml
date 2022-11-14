@@ -51,6 +51,7 @@
 
 
     <EditText
+        android:textColor="@color/white"
         android:id="@+id/edtemail"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
@@ -76,6 +77,8 @@
         android:drawableLeft="@drawable/ic_baseline_vpn_key_24"
         android:drawablePadding="12dp"
         android:hint="Password"
+        android:textColor="@color/white"
+        android:inputType="textPassword"
         android:textColorHint="@color/white"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -110,7 +113,7 @@
         android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/button" />
+        app:layout_constraintTop_toBottomOf="@+id/btn_singin" />
 
     <TextView
         android:layout_width="wrap_content"
@@ -123,7 +126,7 @@
         app:layout_constraintHorizontal_bias="0.0"
         android:onClick="registernow"
         app:layout_constraintStart_toEndOf="@+id/textView5"
-        app:layout_constraintTop_toBottomOf="@+id/button"
+        app:layout_constraintTop_toBottomOf="@+id/btn_singin"
 
         />
 

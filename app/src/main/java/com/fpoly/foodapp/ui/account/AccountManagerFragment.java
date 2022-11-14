@@ -29,9 +29,6 @@ import java.util.List;
 
 
 public class AccountManagerFragment extends Fragment {
-    Button button;
-    EditText edID, edName;
-    int count = 0;
 
 
     @SuppressLint("MissingInflatedId")
@@ -40,30 +37,6 @@ public class AccountManagerFragment extends Fragment {
 
 
         View root = inflater.inflate(R.layout.fragment_acc, container, false);
-        button = root.findViewById(R.id.btnPushData);
-        edID = root.findViewById(R.id.edID);
-        edName = root.findViewById(R.id.edName);
-        FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();
-        DatabaseReference reference = firebaseDatabase.getReference("categories");
-
-
-        button.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-
-                List<CategoriesModule> list = new ArrayList<>();
-                list.add(new CategoriesModule(Integer.parseInt(edID.getText().toString().trim()), edName.getText().toString().trim()));
-                DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference().child("categories");
-                databaseReference.child(""+count).setValue(list, new DatabaseReference.CompletionListener() {
-                    @Override
-                    public void onComplete(@Nullable DatabaseError error, @NonNull DatabaseReference ref) {
-                        Toast.makeText(getContext(), "Push data success", Toast.LENGTH_SHORT).show();
-                        count++;
-                    }
-                });
-
-            }
-        });
 
 
 
