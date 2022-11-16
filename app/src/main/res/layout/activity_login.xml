@@ -39,7 +39,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="20dp"
-        android:text="Sing In"
+        android:text="Sign In"
         android:textAlignment="center"
         android:textColor="#FBFBFB"
         android:textSize="19sp"
@@ -93,14 +93,14 @@
         android:layout_height="wrap_content"
         android:background="@drawable/btn_bg"
         android:padding="14dp"
+        android:text="Sign In"
         android:textAllCaps="false"
-        android:text="@string/sing_in"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/edtpass"
-        app:layout_constraintWidth_percent=".8"
-        app:layout_constraintVertical_bias="0.6"/>
+        app:layout_constraintVertical_bias="0.6"
+        app:layout_constraintWidth_percent=".8" />
 
     <TextView
         android:id="@+id/textView5"
@@ -119,12 +119,12 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="20dp"
-        android:text="@string/resiter"
+        android:onClick="registernow"
+        android:text="Register"
         android:textColor="#ff5353"
         android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
-        android:onClick="registernow"
         app:layout_constraintStart_toEndOf="@+id/textView5"
         app:layout_constraintTop_toBottomOf="@+id/btn_singin"
 
