@@ -37,7 +37,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="20dp"
-        android:text="@string/ok"
+        android:text="Register"
         android:textAlignment="center"
         android:textColor="#FBFBFB"
         android:textSize="19sp"
@@ -114,14 +114,14 @@
         android:layout_height="wrap_content"
         android:background="@drawable/btn_bg"
         android:padding="14dp"
+        android:text="Register"
         android:textAllCaps="false"
-        android:text="@string/ok"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/resedtpass"
-        app:layout_constraintWidth_percent=".8"
-        app:layout_constraintVertical_bias="0.6"/>
+        app:layout_constraintVertical_bias="0.6"
+        app:layout_constraintWidth_percent=".8" />
 
     <TextView
         android:id="@+id/textView5"
