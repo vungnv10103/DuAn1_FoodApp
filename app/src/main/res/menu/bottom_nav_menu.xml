@@ -21,7 +21,7 @@
         android:title="@string/title_favourite" />
     <item
         android:id="@+id/navigation_account"
-        android:icon="@drawable/ic_baseline_account_circle_24"
+        android:icon="@drawable/avatar_default"
         android:title="@string/title_acc" />
 
 </menu>

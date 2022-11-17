@@ -2,6 +2,7 @@ package com.fpoly.foodapp.activities;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
@@ -12,28 +13,29 @@ import com.fpoly.foodapp.R;
 
 public class WelcomeActivity extends AppCompatActivity {
 
-    TextView txtlogin;
-    Button btnres;
+    TextView txtLogin;
+    Button btnRegister;
 
 
+    @SuppressLint("MissingInflatedId")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_welcome);
-        txtlogin = findViewById(R.id.txtlogin);
-        btnres = findViewById(R.id.btnres);
-        btnres.setOnClickListener(new View.OnClickListener() {
+        txtLogin = findViewById(R.id.txt_login);
+        btnRegister = findViewById(R.id.btn_register);
+        btnRegister.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(WelcomeActivity.this , ReginstrationActivity.class);
+                Intent intent = new Intent(WelcomeActivity.this , RegisterActivity.class);
                 startActivity(intent);
 
             }
         });
-        txtlogin.setOnClickListener(new View.OnClickListener() {
+        txtLogin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(WelcomeActivity.this , Login.class);
+                Intent intent = new Intent(WelcomeActivity.this , LoginActivity.class);
                 startActivity(intent);
             }
         });
