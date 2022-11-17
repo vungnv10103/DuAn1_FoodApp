@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".activities.ReginstrationActivity">
+    tools:context=".activities.RegisterActivity">
 
     <ImageView
         android:id="@+id/imageView"
@@ -48,11 +48,11 @@
         app:layout_constraintTop_toBottomOf="@+id/textView3" />
 
     <EditText
-        android:id="@+id/resedtemail"
+        android:id="@+id/edEmailRegister"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:backgroundTint="@color/white"
-        android:drawableLeft="@drawable/ic_baseline_account_circle_24"
+        android:drawableLeft="@drawable/avatar_default"
         android:drawablePadding="12dp"
         android:hint="@string/email"
         android:textColor="@color/white"
@@ -64,8 +64,8 @@
         app:layout_constraintWidth_percent=".8" />
 
     <EditText
+        android:id="@+id/edPassWord"
         android:inputType="textPassword"
-        android:id="@+id/resedtpass"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:textColor="@color/white"
@@ -84,8 +84,8 @@
 
 
     <EditText
+        android:id="@+id/edConfirmPass"
         android:inputType="textPassword"
-        android:id="@+id/resconfirmpass"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="84dp"
@@ -100,16 +100,30 @@
         app:layout_constraintTop_toBottomOf="@+id/textView4"
         app:layout_constraintWidth_percent=".8" />
 
-
     <ImageView
-        android:id="@+id/show_pass"
-        android:layout_width="32dp"
-        android:layout_height="32dp"
-        app:layout_constraintEnd_toEndOf="@+id/resconfirmpass"
-        app:layout_constraintTop_toBottomOf="@+id/resedtpass" />
+        android:id="@+id/img_show_hide_pwd"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@+id/edEmailRegister"
+        app:layout_constraintEnd_toEndOf="@+id/edPassWord"
+        android:layout_marginTop="8dp"
+        android:src="@drawable/ic_baseline_eye_on_24"
+        tools:layout_editor_absoluteX="346dp"
+        tools:layout_editor_absoluteY="316dp" />
+    <ImageView
+        android:id="@+id/img_show_hide_confirm_pwd"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@+id/edPassWord"
+        app:layout_constraintEnd_toEndOf="@+id/edConfirmPass"
+        android:layout_marginTop="10dp"
+        android:src="@drawable/ic_baseline_eye_on_24"
+        tools:layout_editor_absoluteX="346dp"
+        tools:layout_editor_absoluteY="316dp" />
+
 
     <Button
-        android:id="@+id/regiter"
+        android:id="@+id/register"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:background="@drawable/btn_bg"
@@ -119,7 +133,7 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/resedtpass"
+        app:layout_constraintTop_toBottomOf="@+id/edPassWord"
         app:layout_constraintVertical_bias="0.6"
         app:layout_constraintWidth_percent=".8" />
 
@@ -133,22 +147,21 @@
         android:textColor="#FBFBFB"
         android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.432"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/regiter" />
+        app:layout_constraintTop_toBottomOf="@+id/register" />
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginStart="7dp"
         android:layout_marginTop="20dp"
-        android:text="Sign In"
         android:onClick="login"
+        android:text="Sign in"
         android:textColor="#ff5353"
         android:textStyle="bold"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toEndOf="@+id/textView5"
-        app:layout_constraintTop_toBottomOf="@+id/regiter"
-        />
+        app:layout_constraintTop_toBottomOf="@+id/register" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".activities.Login">
+    tools:context=".activities.LoginActivity">
 
     <ImageView
         android:id="@+id/imageView"
@@ -20,8 +20,6 @@
         android:id="@+id/textView3"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-
-
         android:fontFamily="@font/amarante"
         android:text="My Food App"
         android:textAlignment="center"
@@ -32,7 +30,7 @@
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.229" />
+        app:layout_constraintVertical_bias="0.168" />
 
     <TextView
         android:id="@+id/textView4"
@@ -51,13 +49,13 @@
 
 
     <EditText
+        android:id="@+id/edEmail"
         android:textColor="@color/white"
-        android:id="@+id/edtemail"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="40dp"
         android:backgroundTint="@color/white"
-        android:drawableLeft="@drawable/ic_baseline_person_24"
+        android:drawableLeft="@drawable/avatar_default"
         android:drawablePadding="12dp"
         android:hint="Email"
         android:textColorHint="@color/white"
@@ -68,17 +66,19 @@
         app:layout_constraintVertical_bias="0.0"
         app:layout_constraintWidth_percent=".8" />
 
+
     <EditText
-        android:id="@+id/edtpass"
+        android:id="@+id/edPass"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="84dp"
         android:backgroundTint="@color/white"
         android:drawableLeft="@drawable/ic_baseline_vpn_key_24"
+
         android:drawablePadding="12dp"
         android:hint="Password"
-        android:textColor="@color/white"
+        android:layout_marginTop="84dp"
         android:inputType="textPassword"
+        android:textColor="@color/white"
         android:textColorHint="@color/white"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -87,18 +87,30 @@
         app:layout_constraintVertical_bias="0.036"
         app:layout_constraintWidth_percent=".8" />
 
+
+    <ImageView
+        android:id="@+id/img_show_hide_pwd"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@+id/edEmail"
+        app:layout_constraintEnd_toEndOf="@+id/edPass"
+        android:layout_marginTop="20dp"
+        android:src="@drawable/ic_baseline_eye_on_24"
+        tools:layout_editor_absoluteX="346dp"
+        tools:layout_editor_absoluteY="316dp" />
+
     <Button
-        android:id="@+id/btn_singin"
+        android:id="@+id/btnSignIn"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:background="@drawable/btn_bg"
         android:padding="14dp"
-        android:text="Sign In"
+        android:text="Sign in"
         android:textAllCaps="false"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/edtpass"
+        app:layout_constraintTop_toBottomOf="@+id/edPass"
         app:layout_constraintVertical_bias="0.6"
         app:layout_constraintWidth_percent=".8" />
 
@@ -112,23 +124,32 @@
         android:textColor="#FBFBFB"
         android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.385"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/btn_singin" />
+        app:layout_constraintTop_toBottomOf="@+id/btnSignIn" />
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="20dp"
-        android:onClick="registernow"
+        android:onClick="register"
         android:text="Register"
         android:textColor="#ff5353"
+        android:layout_marginLeft="6dp"
         android:textStyle="bold"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toEndOf="@+id/textView5"
-        app:layout_constraintTop_toBottomOf="@+id/btn_singin"
+        app:layout_constraintTop_toBottomOf="@+id/btnSignIn" />
 
-        />
+    <CheckBox
+        android:id="@+id/checkBoxRemember"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="37dp"
+        android:textColor="@color/white"
+        android:layout_marginTop="4dp"
+        android:text="Remember me"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/edPass" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

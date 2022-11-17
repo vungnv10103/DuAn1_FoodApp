@@ -1,6 +1,7 @@
 package com.fpoly.foodapp.ui.home;
 
 import android.annotation.SuppressLint;
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.Editable;
@@ -19,6 +20,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.fpoly.foodapp.R;
+import com.fpoly.foodapp.activities.LoginActivity;
 import com.fpoly.foodapp.activities.WelcomeActivity;
 import com.fpoly.foodapp.adapters.HomeHorAdapter;
 import com.fpoly.foodapp.adapters.HomeVerAdapter;
@@ -34,7 +36,7 @@ public class HomeFragment extends Fragment {
     HomeHorAdapter homeHorAdapter;
     HomeVerAdapter homeVerAdapter;
     private EditText edSearch;
-    ImageView imgacount;
+    ImageView imgAccount;
 
 
     @SuppressLint("MissingInflatedId")
@@ -44,11 +46,11 @@ public class HomeFragment extends Fragment {
 
 
         View root = inflater.inflate(R.layout.fragment_home, container, false);
-        imgacount =root.findViewById(R.id.imgaccount);
-        imgacount.setOnClickListener(new View.OnClickListener() {
+        imgAccount = root.findViewById(R.id.imgaccount);
+        imgAccount.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(getActivity() , WelcomeActivity.class);
+                Intent intent = new Intent(getActivity() , LoginActivity.class);
                 startActivity(intent);
 
             }
