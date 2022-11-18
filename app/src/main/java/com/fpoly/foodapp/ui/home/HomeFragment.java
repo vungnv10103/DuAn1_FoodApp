@@ -86,7 +86,7 @@ public class HomeFragment extends Fragment  implements UpdateVerticalRec{
         listHor.add(new HomeHorModule(R.drawable.fried_potatoes, "Fries"));
         listHor.add(new HomeHorModule(R.drawable.ice_cream, "Ice Cream"));
         listHor.add(new HomeHorModule(R.drawable.sandwich, "Sandwich"));
-        listHor.add(new HomeHorModule(R.drawable.ice_cream, "Ice Cream"));
+        listHor.add(new HomeHorModule(R.drawable.fruit_juice, "Fruit Juice"));
 
 
 //        homeHorAdapter = new HomeHorAdapter(getActivity(), listHor);
