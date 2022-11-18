@@ -11,4 +11,10 @@
     <string name="my_food_app">My Food App</string>
     <string name="welcome_explore_your_dream_food">Welcome Explore Your Dream Food</string>
     <string name="Sing_in">Sing In</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="home">Home</string>
+    <string name="profile">Profile</string>
+    <string name="cart">Cart</string>
+    <string name="setting">Setting</string>
 </resources>
