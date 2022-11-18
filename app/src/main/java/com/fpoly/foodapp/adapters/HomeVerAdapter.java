@@ -32,7 +32,7 @@ public class HomeVerAdapter extends RecyclerView.Adapter<HomeVerAdapter.ViewHold
     }
 
     @Override
-    public void onBindViewHolder(@NonNull HomeVerAdapter.ViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         holder.imageView.setImageResource(list.get(position).getImage());
         holder.tvName.setText(list.get(position).getName());
         holder.tvTime.setText(list.get(position).getTiming());
