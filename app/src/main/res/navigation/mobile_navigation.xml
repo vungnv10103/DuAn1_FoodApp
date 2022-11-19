@@ -27,4 +27,9 @@
         android:name="com.fpoly.foodapp.ui.account.AccountManagerFragment"
         android:label="@string/title_acc"
         tools:layout="@layout/fragment_account" />
+    <fragment
+        android:id="@+id/navigation_home_new"
+        android:name="com.fpoly.foodapp.ui.home.HomeFragmentNew"
+        android:label="@string/title_acc"
+        tools:layout="@layout/fragment_home_new" />
 </navigation>
