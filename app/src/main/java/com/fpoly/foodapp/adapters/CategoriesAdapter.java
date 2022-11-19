@@ -16,11 +16,11 @@ import com.fpoly.foodapp.modules.Category;
 
 import java.util.List;
 
-public class Emptyadapter extends RecyclerView.Adapter<Emptyadapter.viewHolder>{
+public class CategoriesAdapter extends RecyclerView.Adapter<CategoriesAdapter.viewHolder>{
     private List<Category> list ;
     private Context context;
 
-    public Emptyadapter(List<Category> list, Context context) {
+    public CategoriesAdapter(List<Category> list, Context context) {
         this.list = list;
         this.context = context;
     }
@@ -51,7 +51,7 @@ public class Emptyadapter extends RecyclerView.Adapter<Emptyadapter.viewHolder>{
         public viewHolder(@NonNull View itemView) {
             super(itemView);
             imageView = itemView.findViewById(R.id.img_cat1);
-            name  =itemView.findViewById(R.id.txtcat1);
+            name  =itemView.findViewById(R.id.tvNameItem);
         }
     }
 }

@@ -51,9 +51,9 @@ public class HomeHorAdapter extends RecyclerView.Adapter<HomeHorAdapter.ViewHold
         holder.tvName.setText(list.get(position).getName());
         if (check) {
             ArrayList<HomeVerModule> homeVerModules = new ArrayList<>();
-            homeVerModules.add(new HomeVerModule(R.drawable.pizza1, "Pizza 1", "10:00 - 23:00", "4.9", "Min - $40"));
+            homeVerModules.add(new HomeVerModule(R.drawable.pizza1_new, "Pizza 1", "10:00 - 23:00", "4.9", "Min - $40"));
             homeVerModules.add(new HomeVerModule(R.drawable.pizza2, "Pizza 2", "10:00 - 23:00", "4.9", "Min - $40"));
-            homeVerModules.add(new HomeVerModule(R.drawable.pizza3, "Pizza 3", "10:00 - 23:00", "4.9", "Min - $40"));
+            homeVerModules.add(new HomeVerModule(R.drawable.pizza3_new, "Pizza 3", "10:00 - 23:00", "4.9", "Min - $40"));
             homeVerModules.add(new HomeVerModule(R.drawable.pizza4, "Pizza 4", "10:00 - 23:00", "4.9", "Min - $40"));
             homeVerModules.add(new HomeVerModule(R.drawable.pizza5, "Pizza 5", "10:00 - 23:00", "4.9", "Min - $40"));
 
@@ -68,9 +68,9 @@ public class HomeHorAdapter extends RecyclerView.Adapter<HomeHorAdapter.ViewHold
 
                 if (position == 0) {
                     ArrayList<HomeVerModule> homeVerModules = new ArrayList<>();
-                    homeVerModules.add(new HomeVerModule(R.drawable.pizza1, "Pizza 1", "10:00 - 23:00", "4.9", "Min - $40"));
+                    homeVerModules.add(new HomeVerModule(R.drawable.pizza1_new, "Pizza 1", "10:00 - 23:00", "4.9", "Min - $40"));
                     homeVerModules.add(new HomeVerModule(R.drawable.pizza2, "Pizza 2", "10:00 - 23:00", "4.9", "Min - $40"));
-                    homeVerModules.add(new HomeVerModule(R.drawable.pizza3, "Pizza 3", "10:00 - 23:00", "4.9", "Min - $40"));
+                    homeVerModules.add(new HomeVerModule(R.drawable.pizza3_new, "Pizza 3", "10:00 - 23:00", "4.9", "Min - $40"));
                     homeVerModules.add(new HomeVerModule(R.drawable.pizza4, "Pizza 4", "10:00 - 23:00", "4.9", "Min - $40"));
                     homeVerModules.add(new HomeVerModule(R.drawable.pizza5, "Pizza 5", "10:00 - 23:00", "4.9", "Min - $40"));
 
