@@ -10,22 +10,35 @@
     android:background="@drawable/recommended_btg">
 
     <TextView
-        android:id="@+id/txtmoney"
+        android:id="@+id/tvPrice"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="$0.0"
         android:textColor="#373b54"
         android:textSize="18dp"
         android:textStyle="bold"
-        app:layout_constraintBottom_toBottomOf="@+id/float_add"
-        app:layout_constraintEnd_toStartOf="@+id/float_add"
+        app:layout_constraintBottom_toBottomOf="@+id/tvIcon"
+        app:layout_constraintEnd_toStartOf="@+id/tvIcon"
         app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="@+id/image_recommended"
-        app:layout_constraintTop_toTopOf="@+id/float_add" />
+        app:layout_constraintStart_toStartOf="@+id/imgRecommended"
+        app:layout_constraintTop_toTopOf="@+id/tvIcon" />
+
+    <TextView
+        android:id="@+id/tvIcon"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="8dp"
+        android:text="$"
+        android:textColor="#373b54"
+        android:textSize="18sp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toStartOf="@+id/imgAdd"
+        app:layout_constraintTop_toBottomOf="@+id/tvTitleRecommended" />
 
     <ImageView
 
-        android:id="@+id/image_recommended"
+        android:id="@+id/imgRecommended"
         android:layout_width="100dp"
         android:layout_height="100dp"
         android:layout_marginStart="16dp"
@@ -37,23 +50,23 @@
         app:srcCompat="@drawable/burger" />
 
     <TextView
-        android:id="@+id/txttitle"
+        android:id="@+id/tvTitleRecommended"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Title"
         android:layout_marginTop="8dp"
         android:textColor="#373b54"
         android:textStyle="bold"
-        app:layout_constraintEnd_toEndOf="@+id/image_recommended"
-        app:layout_constraintStart_toStartOf="@+id/image_recommended"
-        app:layout_constraintTop_toBottomOf="@+id/image_recommended" />
+        app:layout_constraintEnd_toEndOf="@+id/imgRecommended"
+        app:layout_constraintStart_toStartOf="@+id/imgRecommended"
+        app:layout_constraintTop_toBottomOf="@+id/imgRecommended" />
 
     <ImageView
-        android:id="@+id/float_add"
+        android:id="@+id/imgAdd"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="12dp"
-        app:layout_constraintEnd_toEndOf="@+id/image_recommended"
-        app:layout_constraintTop_toBottomOf="@+id/txttitle"
+        app:layout_constraintEnd_toEndOf="@+id/imgRecommended"
+        app:layout_constraintTop_toBottomOf="@+id/tvTitleRecommended"
         app:srcCompat="@drawable/plus_circle" />
 </androidx.constraintlayout.widget.ConstraintLayout>

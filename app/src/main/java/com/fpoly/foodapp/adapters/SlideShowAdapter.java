@@ -14,17 +14,17 @@ import com.fpoly.foodapp.modules.photo;
 
 import java.util.List;
 
-public class viewpager2_adapter extends RecyclerView.Adapter<viewpager2_adapter.ViewHolder>{
+public class SlideShowAdapter extends RecyclerView.Adapter<SlideShowAdapter.ViewHolder>{
     private List<photo> list ;
 
-    public viewpager2_adapter(List<photo> list) {
+    public SlideShowAdapter(List<photo> list) {
         this.list = list;
     }
 
     @NonNull
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_phito  , parent , false);
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_photo, parent , false);
 
         return new ViewHolder(view);
     }
@@ -43,7 +43,7 @@ public class viewpager2_adapter extends RecyclerView.Adapter<viewpager2_adapter.
         private ImageView view;
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
-            view = itemView.findViewById(R.id.imgaeview1);
+            view = itemView.findViewById(R.id.imgSlideShow);
         }
     }
 

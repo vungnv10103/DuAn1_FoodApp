@@ -17,4 +17,5 @@
     <string name="profile">Profile</string>
     <string name="cart">Cart</string>
     <string name="setting">Setting</string>
+    <string name="my_cart">My Cart</string>
 </resources>
