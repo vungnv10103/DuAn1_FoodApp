@@ -13,7 +13,7 @@
         android:id="@+id/tvPrice"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="$0.0"
+        android:text=" 0.0"
         android:textColor="#373b54"
         android:textSize="18dp"
         android:textStyle="bold"
@@ -36,7 +36,7 @@
         app:layout_constraintEnd_toStartOf="@+id/imgAdd"
         app:layout_constraintTop_toBottomOf="@+id/tvTitleRecommended" />
 
-    <ImageView
+    <de.hdodenhof.circleimageview.CircleImageView
 
         android:id="@+id/imgRecommended"
         android:layout_width="100dp"

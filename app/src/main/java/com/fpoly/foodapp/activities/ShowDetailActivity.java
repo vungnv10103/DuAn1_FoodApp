@@ -79,7 +79,7 @@ public class ShowDetailActivity extends AppCompatActivity {
             }
         });
 
-        tvDescription.setText("có bánh mì  , sà lách  , cà chua ,thịt gà , thịt bò , phô mai");
+        tvDescription.setText("Description...................");
 
         tvAddToCart.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -90,9 +90,8 @@ public class ShowDetailActivity extends AppCompatActivity {
                 item.name = title;
                 item.cost = cost_total;
 
-                Toast.makeText(ShowDetailActivity.this, "" + item.name +" - " + item.cost, Toast.LENGTH_SHORT).show();
                 if (demo_item_cart_dao.insert(item) > 0){
-                    Toast.makeText(getApplicationContext(), "Thêm thành công", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getApplicationContext(), "Đã thêm vào giỏ hàng.", Toast.LENGTH_SHORT).show();
                 }
                 startActivity(new Intent(ShowDetailActivity.this, MainActivity.class));
                 finishAffinity();
@@ -113,6 +112,13 @@ public class ShowDetailActivity extends AppCompatActivity {
         imgMinus = findViewById(R.id.imgMinus);
         tvAddToCart = findViewById(R.id.tvAddToCart);
         imgProduct = findViewById(R.id.imgFood);
+
+    }
+
+    @Override
+    public void onBackPressed() {
+        startActivity(new Intent(ShowDetailActivity.this, MainActivity.class));
+        super.onBackPressed();
 
     }
 }

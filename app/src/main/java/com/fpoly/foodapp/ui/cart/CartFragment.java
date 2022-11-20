@@ -63,15 +63,14 @@ public class CartFragment extends Fragment {
         tvToTalPriceFinal = view.findViewById(R.id.total_price_cart);
 
         double totalPriceItem = total();
-        tvToTal.setText(totalPriceItem + " $");
-        tvTax.setText(totalPriceItem * 0.1 + " $");
-        tvDelivery.setText(totalPriceItem * 0.05 + " $");
+        tvToTal.setText(String.format("%.2f", totalPriceItem) + " $");
+        tvTax.setText(String.format("%.2f", totalPriceItem * 0.1) + " $");
+        tvDelivery.setText(String.format("%.2f", totalPriceItem * 0.05) + " $");
         double totalFinal = totalPriceItem + totalPriceItem * 0.1 + totalPriceItem * 0.05;
 
         tvToTalPriceFinal.setText( String.format("%.2f", totalFinal) + " $");
         recyclerView = view.findViewById(R.id.rec_cart);
         listData();
-        tvToTal.setText(total() + " $");
         checkOut.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -86,6 +85,9 @@ public class CartFragment extends Fragment {
     private void listData() {
         demo_item_cart_dao = new demo_item_cart_dao(getContext());
         list = (ArrayList<demo_cart_item>) demo_item_cart_dao.getALL();
+        if (list.size() == 0){
+            Toast.makeText(getContext(), "Giỏ hàng trống. Quay lại mua hàng.", Toast.LENGTH_SHORT).show();
+        }
         demo_cart_item_adapter = new demo_cart_item_adapter(list, getContext());
         recyclerView.setAdapter(demo_cart_item_adapter);
 
