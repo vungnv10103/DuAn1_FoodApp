@@ -8,6 +8,8 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
 import android.text.method.HideReturnsTransformationMethod;
 import android.text.method.PasswordTransformationMethod;
 import android.view.View;
@@ -29,6 +31,9 @@ public class LoginActivity extends AppCompatActivity {
     ImageView imgShowHidePwd;
     private CheckBox chbRemember;
     private ProgressDialog progressDialog;
+
+    boolean doubleBackToExitPressedOnce = false;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -74,14 +79,15 @@ public class LoginActivity extends AppCompatActivity {
                                 if (task.isSuccessful()) {
                                     // Sign in success, update UI with the signed-in user's information
                                     progressDialog.dismiss();
-                                    rememberUser(email,pass,chbRemember.isChecked());
+                                    rememberUser(email ,pass, chbRemember.isChecked());
 
                                     Intent intent = new Intent(LoginActivity.this , MainActivity.class);
                                     startActivity(intent);
+                                    finishAffinity();
                                 } else {
                                     // If sign in fails, display a message to the user.
-
-                                    Toast.makeText(LoginActivity.this, "Đăng nhập thất bại.",
+                                    progressDialog.dismiss();
+                                    Toast.makeText(LoginActivity.this, "Tài khoản hoặc mật khẩu không đúng.",
                                             Toast.LENGTH_SHORT).show();
 
                                 }
@@ -125,5 +131,23 @@ public class LoginActivity extends AppCompatActivity {
         }
 
 
+    }
+    @Override
+    public void onBackPressed() {
+        if (doubleBackToExitPressedOnce ) {
+            super.onBackPressed();
+            return;
+        }
+
+        this.doubleBackToExitPressedOnce = true;
+        Toast.makeText(this, "Please click BACK again to exit.", Toast.LENGTH_SHORT).show();
+
+        new Handler(Looper.getMainLooper()).postDelayed(new Runnable() {
+
+            @Override
+            public void run() {
+                doubleBackToExitPressedOnce = false;
+            }
+        }, 3000);
     }
 }

@@ -23,6 +23,8 @@ import com.fpoly.foodapp.activities.LoginActivity;
 import com.fpoly.foodapp.adapters.HomeHorAdapter;
 import com.fpoly.foodapp.adapters.HomeVerAdapter;
 import com.fpoly.foodapp.adapters.UpdateVerticalRec;
+import com.fpoly.foodapp.modules.Category;
+import com.fpoly.foodapp.modules.Food;
 import com.fpoly.foodapp.modules.HomeHorModule;
 import com.fpoly.foodapp.modules.HomeVerModule;
 
@@ -81,7 +83,7 @@ public class HomeFragment extends Fragment  implements UpdateVerticalRec{
          */
         home_hor_rec = root.findViewById(R.id.home_hor_rec);
         listHor = new ArrayList<>();
-        listHor.add(new HomeHorModule(R.drawable.pizza, "Pizza"));
+        listHor.add(new HomeHorModule(R.drawable.pizza_default, "Pizza"));
         listHor.add(new HomeHorModule(R.drawable.hamburger, "Hamburger"));
         listHor.add(new HomeHorModule(R.drawable.fried_potatoes, "Fries"));
         listHor.add(new HomeHorModule(R.drawable.ice_cream, "Ice Cream"));
@@ -119,5 +121,10 @@ public class HomeFragment extends Fragment  implements UpdateVerticalRec{
         homeVerAdapter = new HomeVerAdapter(getContext() , list);
         homeVerAdapter.notifyDataSetChanged();
         home_ver_rec.setAdapter(homeVerAdapter);
+    }
+
+    @Override
+    public void callBackNew(int pos, ArrayList<Food> list) {
+
     }
 }

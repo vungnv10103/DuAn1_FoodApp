@@ -11,9 +11,9 @@
         android:icon="@drawable/ic_dashboard_black_24dp"
         android:title="@string/title_daily_meal" />
     <item
-        android:id="@+id/navigation_home_new"
-        android:title="home_new"
-        android:icon="@drawable/ic_dashboard_black_24dp"
+        android:id="@+id/navigation_my_cart"
+        android:title="@string/my_cart"
+        android:icon="@drawable/cart_white"
          />
 
     <item

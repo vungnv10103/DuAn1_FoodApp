@@ -1,24 +1,24 @@
 package com.fpoly.foodapp.modules;
 
 public class Food {
-    private int imge ;
+    private int img;
     private String title ;
     private double money;
     private int resource_image;
 
-    public Food(int imge, String title, double money, int resource_image) {
-        this.imge = imge;
+    public Food(int img, String title, double money, int resource_image) {
+        this.img = img;
         this.title = title;
         this.money = money;
         this.resource_image = resource_image;
     }
 
-    public int getImge() {
-        return imge;
+    public int getImg() {
+        return img;
     }
 
-    public void setImge(int imge) {
-        this.imge = imge;
+    public void setImg(int img) {
+        this.img = img;
     }
 
     public String getTitle() {

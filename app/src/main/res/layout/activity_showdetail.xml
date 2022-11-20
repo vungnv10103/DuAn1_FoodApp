@@ -3,10 +3,11 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
+
     android:layout_height="match_parent"
     android:background="#ecebe6"
 
-    tools:context=".activities.ShowdetailActivity">
+    tools:context=".activities.ShowDetailActivity">
 
     <ScrollView
         android:layout_width="match_parent"
@@ -24,9 +25,9 @@
             android:orientation="vertical" >
 
             <ImageView
-                android:id="@+id/foodpic"
+                android:id="@+id/imgFood"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="270dp"
                 app:srcCompat="@drawable/burger_large"
                 android:layout_margin="24dp"/>
 
@@ -37,7 +38,7 @@
                 android:orientation="vertical">
 
                 <TextView
-                    android:id="@+id/titletxt"
+                    android:id="@+id/tvTitle"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="16dp"
@@ -56,7 +57,7 @@
 
                     <androidx.constraintlayout.widget.ConstraintLayout
                         android:id="@+id/constraintLayout3"
-                        android:layout_width="140dp"
+                        android:layout_width="135dp"
                         android:layout_height="40dp"
                         android:background="@drawable/yellow_bar"
                         app:layout_constraintBottom_toBottomOf="parent"
@@ -66,10 +67,11 @@
                         app:layout_constraintTop_toTopOf="parent">
 
                         <ImageView
-                            android:id="@+id/giam"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
+                            android:id="@+id/imgMinus"
+                            android:layout_width="35dp"
+                            android:layout_height="35dp"
                             android:layout_marginStart="8dp"
+                            android:layout_marginTop="3dp"
                             android:layout_marginEnd="8dp"
                             app:layout_constraintEnd_toStartOf="@+id/constraintLayout2"
                             app:layout_constraintStart_toStartOf="parent"
@@ -77,9 +79,9 @@
                             app:srcCompat="@drawable/minus" />
 
                         <ImageView
-                            android:id="@+id/them"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
+                            android:id="@+id/imgPlus"
+                            android:layout_width="35dp"
+                            android:layout_height="35dp"
                             android:layout_marginStart="8dp"
                             android:layout_marginEnd="8dp"
                             app:layout_constraintBottom_toBottomOf="parent"
@@ -129,7 +131,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="16dp"
-                        android:text="$0"
+                        android:text="$ 0"
                         android:textColor="#000000"
                         android:textSize="15dp"
                         app:layout_constraintBottom_toBottomOf="parent"
@@ -155,14 +157,14 @@
                         android:orientation="horizontal">
 
                         <ImageView
-                            android:id="@+id/imgdanhgia"
+                            android:id="@+id/imgRate"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
 
                             app:srcCompat="@drawable/star" />
 
                         <TextView
-                            android:id="@+id/txtdanhgia"
+                            android:id="@+id/tvRate"
                             android:layout_width="wrap_content"
                             android:layout_height="match_parent"
                             android:layout_weight="1"
@@ -182,14 +184,14 @@
                         android:orientation="horizontal">
 
                         <ImageView
-                            android:id="@+id/imgtime"
+                            android:id="@+id/imgTime"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
 
                             app:srcCompat="@drawable/chronometer" />
 
                         <TextView
-                            android:id="@+id/txttime"
+                            android:id="@+id/tvTime"
                             android:layout_width="wrap_content"
                             android:layout_height="match_parent"
                             android:layout_weight="1"
@@ -209,14 +211,14 @@
                         android:orientation="horizontal">
 
                         <ImageView
-                            android:id="@+id/imagecalo"
+                            android:id="@+id/imgCalo"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
 
                             app:srcCompat="@drawable/flame" />
 
                         <TextView
-                            android:id="@+id/txtcalo"
+                            android:id="@+id/tvCalo"
                             android:layout_width="wrap_content"
                             android:layout_height="match_parent"
                             android:layout_weight="1"
@@ -231,7 +233,7 @@
                 </LinearLayout>
 
                 <TextView
-                    android:id="@+id/txtdescription"
+                    android:id="@+id/tvDescription"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="Description"
@@ -266,11 +268,11 @@
                             app:layout_constraintTop_toTopOf="parent" />
 
                         <TextView
-                            android:id="@+id/txttotalprice"
+                            android:id="@+id/tvTotalPrice"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginStart="16dp"
-                            android:text="$19.50"
+                            android:text="$ 0"
                             android:textColor="#000000"
                             android:textSize="23sp"
                             android:textStyle="bold"
@@ -280,12 +282,12 @@
                     </androidx.constraintlayout.widget.ConstraintLayout>
 
                     <TextView
-                        android:id="@+id/addcart"
+                        android:id="@+id/tvAddToCart"
                         android:layout_width="0dp"
                         android:layout_height="65dp"
                         android:layout_margin="8dp"
                         android:layout_weight="0.5"
-                        android:background="@drawable/yellow_btn_back_dround"
+                        android:background="@drawable/yellow_btn_back_ground"
                         android:drawableStart="@drawable/cart_white"
                         android:drawablePadding="6dp"
                         android:elevation="3dp"
