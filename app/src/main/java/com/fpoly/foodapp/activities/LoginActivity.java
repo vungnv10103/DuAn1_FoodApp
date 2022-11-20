@@ -8,6 +8,8 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
 import android.text.method.HideReturnsTransformationMethod;
 import android.text.method.PasswordTransformationMethod;
 import android.view.View;
@@ -29,6 +31,9 @@ public class LoginActivity extends AppCompatActivity {
     ImageView imgShowHidePwd;
     private CheckBox chbRemember;
     private ProgressDialog progressDialog;
+
+    boolean doubleBackToExitPressedOnce = false;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -78,6 +83,7 @@ public class LoginActivity extends AppCompatActivity {
 
                                     Intent intent = new Intent(LoginActivity.this , MainActivity.class);
                                     startActivity(intent);
+                                    finishAffinity();
                                 } else {
                                     // If sign in fails, display a message to the user.
                                     progressDialog.dismiss();
@@ -125,5 +131,23 @@ public class LoginActivity extends AppCompatActivity {
         }
 
 
+    }
+    @Override
+    public void onBackPressed() {
+        if (doubleBackToExitPressedOnce ) {
+            super.onBackPressed();
+            return;
+        }
+
+        this.doubleBackToExitPressedOnce = true;
+        Toast.makeText(this, "Please click BACK again to exit.", Toast.LENGTH_SHORT).show();
+
+        new Handler(Looper.getMainLooper()).postDelayed(new Runnable() {
+
+            @Override
+            public void run() {
+                doubleBackToExitPressedOnce = false;
+            }
+        }, 3000);
     }
 }
