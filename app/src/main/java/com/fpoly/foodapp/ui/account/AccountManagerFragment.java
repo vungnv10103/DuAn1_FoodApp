@@ -1,5 +1,6 @@
 package com.fpoly.foodapp.ui.account;
 
+
 import static android.app.Activity.RESULT_OK;
 
 import android.Manifest;
@@ -27,9 +28,9 @@ import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 
 import com.fpoly.foodapp.R;
-import com.fpoly.foodapp.account_load_image.APIUtils;
-import com.fpoly.foodapp.account_load_image.DataClient;
 import com.fpoly.foodapp.activities.LoginActivity;
+import com.fpoly.foodapp.retrofit.APIUtils;
+import com.fpoly.foodapp.retrofit.DataClient;
 
 import java.io.File;
 import java.io.IOException;
@@ -42,11 +43,13 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 
+
+
 public class AccountManagerFragment extends Fragment {
+    public static final int REQUEST_CODE_IMG = 100;
     LinearLayout linearLayout;
     ImageView imgProfile;
     String realPath = "";
-    public static final int REQUEST_CODE_IMG = 100;
 
     private ActivityResultLauncher<Intent> intentActivityResultLauncher = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), new ActivityResultCallback<ActivityResult>() {
         @Override
@@ -71,10 +74,10 @@ public class AccountManagerFragment extends Fragment {
                     MultipartBody.Part part = MultipartBody.Part.createFormData("upload_files", file_path, requestBody);
 
                     DataClient dataClient = APIUtils.dataClient();
-                    retrofit2.Call<String> callBack = dataClient.upload_photo(part);
+                    Call<String> callBack = dataClient.upload_photo(part);
                     callBack.enqueue(new Callback<String>() {
                         @Override
-                        public void onResponse(retrofit2.Call<String> call, Response<String> response) {
+                        public void onResponse(Call<String> call, Response<String> response) {
                             if (response != null){
                                 String message = response.body();
 //                                Toast.makeText(getActivity(), message, Toast.LENGTH_LONG).show();
@@ -84,9 +87,12 @@ public class AccountManagerFragment extends Fragment {
 
                         @Override
                         public void onFailure(Call<String> call, Throwable t) {
-//                            Toast.makeText(getActivity(), t.getMessage(), Toast.LENGTH_LONG).show();
+                            Toast.makeText(getActivity(), t.getMessage(), Toast.LENGTH_LONG).show();
                         }
                     });
+
+
+
 
                 } catch (IOException e) {
                     e.printStackTrace();
@@ -95,9 +101,12 @@ public class AccountManagerFragment extends Fragment {
         }
     });
 
+
     @SuppressLint("MissingInflatedId")
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
+
+
         View root = inflater.inflate(R.layout.fragment_account, container, false);
 
         linearLayout = root.findViewById(R.id.Logout);
@@ -117,24 +126,13 @@ public class AccountManagerFragment extends Fragment {
             }
         });
 
+
         return root;
     }
 
-    //getRealPathFromURI
-    public String getRealPathFromURI(Uri contentUri) {
-        String path = null;
-        String[] proj = {MediaStore.MediaColumns.DATA};
-        Cursor cursor = getActivity().getContentResolver().query(contentUri, proj, null, null, null);
-        if (cursor.moveToFirst()) {
-            int column_index = cursor.getColumnIndexOrThrow(MediaStore.MediaColumns.DATA);
-            path = cursor.getString(column_index);
-        }
-        cursor.close();
-        return path;
-    }
 
-    //onClickRequestPermission
     private void onClickRequestPermission() {
+
         if (Build.VERSION.SDK_INT < Build.VERSION_CODES.M) {
             openGallery();
             return;
@@ -147,17 +145,42 @@ public class AccountManagerFragment extends Fragment {
         }
     }
 
-    //openGallery
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        if (requestCode == REQUEST_CODE_IMG) {
+            if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                openGallery();
+            }
+        }
+    }
+
     public void openGallery() {
         Intent getIntent = new Intent(Intent.ACTION_GET_CONTENT);
         getIntent.setType("image/*");
 
-        Intent pickIntent = new Intent(Intent.ACTION_PICK, android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+        Intent pickIntent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
         pickIntent.setType("image/*");
 
         Intent chooserIntent = Intent.createChooser(getIntent, "Select Image");
         chooserIntent.putExtra(Intent.EXTRA_INITIAL_INTENTS, new Intent[]{pickIntent});
 
         intentActivityResultLauncher.launch(pickIntent);
+
+
     }
+
+    public String getRealPathFromURI(Uri contentUri) {
+        String path = null;
+        String[] proj = {MediaStore.MediaColumns.DATA};
+        Cursor cursor = getActivity().getContentResolver().query(contentUri, proj, null, null, null);
+        if (cursor.moveToFirst()) {
+            int column_index = cursor.getColumnIndexOrThrow(MediaStore.MediaColumns.DATA);
+            path = cursor.getString(column_index);
+        }
+        cursor.close();
+        return path;
+    }
+
+
 }

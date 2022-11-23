@@ -25,6 +25,7 @@ public class demo_item_cart_dao {
         ContentValues values = new ContentValues();
         values.put("name", obj.name);
         values.put("cost", obj.cost);
+        values.put("quantities", obj.quantities);
 
         return db.insert("ItemCart",null,values);
     }
@@ -43,6 +44,7 @@ public class demo_item_cart_dao {
             demo_cart_item obj = new demo_cart_item();
             obj.name = cursor.getString(cursor.getColumnIndex("name"));
             obj.cost = Double.valueOf(cursor.getString(cursor.getColumnIndex("cost")));
+            obj.quantities = Integer.parseInt(cursor.getString(cursor.getColumnIndex("quantities")));
 
             list.add(obj);
 

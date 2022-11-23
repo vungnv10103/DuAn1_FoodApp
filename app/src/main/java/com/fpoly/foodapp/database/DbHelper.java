@@ -19,7 +19,8 @@ public class DbHelper extends SQLiteOpenHelper {
     public void onCreate(SQLiteDatabase db) {
         String createTableItemCart = "create table ItemCart(" +
                 "name TEXT not null," +
-                "cost REAL not null)";
+                "cost REAL not null," +
+                "quantities INTEGER not null)";
         db.execSQL(createTableItemCart);
 
     }
