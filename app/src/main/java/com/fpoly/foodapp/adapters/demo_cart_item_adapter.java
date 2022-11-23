@@ -40,6 +40,7 @@ public class demo_cart_item_adapter extends RecyclerView.Adapter<demo_cart_item_
     public void onBindViewHolder(@NonNull demo_cart_item_adapter.ViewHolder holder, int position) {
         holder.tvName.setText(list.get(position).name);
         holder.tvCost.setText("" + list.get(position).cost);
+        holder.tvQuantity.setText(""+ list.get(position).quantities);
 
     }
 
@@ -50,10 +51,13 @@ public class demo_cart_item_adapter extends RecyclerView.Adapter<demo_cart_item_
 
     public class ViewHolder extends RecyclerView.ViewHolder {
         TextView tvName, tvCost;
+        TextView tvQuantity;
+
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
             tvCost = itemView.findViewById(R.id.tvCost);
             tvName = itemView.findViewById(R.id.tvName);
+            tvQuantity = itemView.findViewById(R.id.tvQuantity);
         }
     }
 }

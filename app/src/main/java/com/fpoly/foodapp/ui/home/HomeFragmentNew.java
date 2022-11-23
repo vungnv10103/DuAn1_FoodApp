@@ -133,9 +133,9 @@ public class HomeFragmentNew extends Fragment implements UpdateVerticalRec {
         recyclerViewMainPopular.setNestedScrollingEnabled(false);
 
     }
+
     public void listUpdate(){
         foodList = new ArrayList<>();
-
         adapter = new RecommendAdapter(getActivity(), foodList);
         recyclerViewMainPopular.setAdapter(adapter);
         recyclerViewMainPopular.setLayoutManager(new LinearLayoutManager(getActivity(), RecyclerView.HORIZONTAL,false));

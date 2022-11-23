@@ -53,6 +53,7 @@ public class CategoriesAdapter extends RecyclerView.Adapter<CategoriesAdapter.vi
     public void onBindViewHolder(@NonNull viewHolder holder, @SuppressLint("RecyclerView") int position) {
         holder.imageView.setImageResource(list.get(position).getImage());
         holder.name.setText(list.get(position).getName());
+
         if (check) {
             ArrayList<Food> foodList = new ArrayList<>();
             foodList.add(new Food(R.drawable.pizza1 , "Pepperoni Pizza" , 13.0 , R.drawable.plus_circle));

@@ -44,7 +44,6 @@ public class ShowDetailActivity extends AppCompatActivity {
         Intent intent = getIntent();
         Bundle bundle = intent.getBundleExtra("data");
 
-
         imgProduct.setImageResource( bundle.getInt("image"));
         String title = bundle.getString("title");
         tvTitle.setText(title);
@@ -85,13 +84,18 @@ public class ShowDetailActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 item = new demo_cart_item();
-                Double quanti = Double.parseDouble(tvQuantity.getText().toString());
-                double cost_total = price * quanti;
+                int  quanti = Integer.parseInt(tvQuantity.getText().toString());
+                double cost_total = price * quanti; // 3 * 13 = 39
                 item.name = title;
                 item.cost = cost_total;
+                item.quantities =  quanti;
+
 
                 if (demo_item_cart_dao.insert(item) > 0){
                     Toast.makeText(getApplicationContext(), "Đã thêm vào giỏ hàng.", Toast.LENGTH_SHORT).show();
+                }
+                else {
+                    Toast.makeText(getApplicationContext(), "Failed.", Toast.LENGTH_SHORT).show();
                 }
                 startActivity(new Intent(ShowDetailActivity.this, MainActivity.class));
                 finishAffinity();
@@ -115,10 +119,4 @@ public class ShowDetailActivity extends AppCompatActivity {
 
     }
 
-    @Override
-    public void onBackPressed() {
-        startActivity(new Intent(ShowDetailActivity.this, MainActivity.class));
-        super.onBackPressed();
-
-    }
 }

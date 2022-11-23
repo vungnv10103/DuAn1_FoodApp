@@ -3,7 +3,7 @@
     android:layout_width="match_parent"
     android:orientation="horizontal"
     android:padding="5dp"
-    android:weightSum="9"
+    android:weightSum="8"
     android:layout_marginLeft="15dp"
     android:layout_marginRight="15dp"
     android:layout_marginTop="5dp"
@@ -18,6 +18,14 @@
         android:textColor="@color/black"
         android:text="Tên Sản Phẩm"
         android:textSize="16sp"/>
+    <TextView
+        android:id="@+id/tvQuantity"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="1"
+        android:textStyle="bold"
+        android:textSize="16sp"
+        android:layout_weight="1"/>
 
     <TextView
         android:id="@+id/tvCost"
