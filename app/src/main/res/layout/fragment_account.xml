@@ -62,6 +62,7 @@
                     android:layout_height="64dp"
                     android:background="@drawable/btn_account_frame"
                     android:gravity="center_vertical"
+                    android:id="@+id/btn_Account_Deals"
                     android:orientation="horizontal">
 
                     <ImageView
