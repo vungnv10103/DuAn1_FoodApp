@@ -55,10 +55,7 @@ public class RecommendAdapter extends RecyclerView.Adapter<RecommendAdapter.view
                 bundle.putDouble("price", list.get(position).getMoney());
                 bundle.putString("title", list.get(position).getTitle());
                 intent1.putExtra("data", bundle);
-
                 context.startActivity(intent1);
-
-
             }
         });
 
