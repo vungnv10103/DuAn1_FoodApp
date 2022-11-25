@@ -31,6 +31,7 @@ import com.fpoly.foodapp.account_load_image.APIUtils;
 import com.fpoly.foodapp.account_load_image.DataClient;
 import com.fpoly.foodapp.activities.DealsActivity;
 import com.fpoly.foodapp.activities.LoginActivity;
+import com.fpoly.foodapp.activities.SettingActivity;
 
 import java.io.File;
 import java.io.IOException;
@@ -44,7 +45,7 @@ import retrofit2.Response;
 
 
 public class AccountManagerFragment extends Fragment {
-    LinearLayout linearLayout, btnDeals;
+    LinearLayout linearLayout, btnDeals, btnSetting;
     ImageView imgProfile;
     String realPath = "";
     public static final int REQUEST_CODE_IMG = 100;
@@ -103,6 +104,7 @@ public class AccountManagerFragment extends Fragment {
 
         linearLayout = root.findViewById(R.id.Logout);
         btnDeals = root.findViewById(R.id.btn_Account_Deals);
+        btnSetting = root.findViewById(R.id.btn_Account_setting);
 
         // Log out
         linearLayout.setOnClickListener(new View.OnClickListener() {
@@ -129,6 +131,13 @@ public class AccountManagerFragment extends Fragment {
             }
         });
 
+        // Setting
+        btnSetting.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(getActivity(), SettingActivity.class));
+            }
+        });
         return root;
     }
 
