@@ -46,7 +46,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="8dp"
-                    android:text="Thông Tin Tài Khoản"
+                    android:text="account@gmail.com"
                     android:textColor="@color/white" />
             </LinearLayout>
 
@@ -150,6 +150,7 @@
                 </LinearLayout>
 
                 <LinearLayout
+                    android:id="@+id/btn_Account_setting"
                     android:layout_width="299dp"
                     android:layout_height="64dp"
                     android:layout_marginTop="30dp"
