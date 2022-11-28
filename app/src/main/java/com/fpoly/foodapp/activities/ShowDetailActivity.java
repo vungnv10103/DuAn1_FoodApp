@@ -72,9 +72,9 @@ public class ShowDetailActivity extends AppCompatActivity {
                     double total_prices  = quantity * price;
                     tvTotalPrices.setText("$ "+ String.format("%.2f", total_prices));
                 }
-//                else {
-//                    Toast.makeText(ShowDetailActivity.this, "số lượng phải lớn hơn 0", Toast.LENGTH_SHORT).show();
-//                }
+                else {
+                    Toast.makeText(ShowDetailActivity.this, "số lượng phải lớn hơn 0", Toast.LENGTH_SHORT).show();
+                }
             }
         });
 
@@ -85,12 +85,10 @@ public class ShowDetailActivity extends AppCompatActivity {
             public void onClick(View v) {
                 item = new demo_cart_item();
                 int  quanti = Integer.parseInt(tvQuantity.getText().toString());
-                double cost_total = price * quanti; // 3 * 13 = 39
+                double cost_total = price * quanti;
                 item.name = title;
                 item.cost = cost_total;
                 item.quantities =  quanti;
-
-
                 if (demo_item_cart_dao.insert(item) > 0){
                     Toast.makeText(getApplicationContext(), "Đã thêm vào giỏ hàng.", Toast.LENGTH_SHORT).show();
                 }

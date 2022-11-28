@@ -6,6 +6,8 @@ import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Filter;
+import android.widget.Filterable;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -22,9 +24,10 @@ import com.fpoly.foodapp.modules.HomeVerModule;
 import java.util.ArrayList;
 import java.util.List;
 
-public class CategoriesAdapter extends RecyclerView.Adapter<CategoriesAdapter.viewHolder>{
+public class CategoriesAdapter extends RecyclerView.Adapter<CategoriesAdapter.viewHolder> {
     UpdateVerticalRec updateVerticalRec;
     ArrayList<Category> list ;
+    ArrayList<Category> listold ;
     Context context;
     boolean check = true;
     boolean selected = true;
@@ -34,6 +37,7 @@ public class CategoriesAdapter extends RecyclerView.Adapter<CategoriesAdapter.vi
     public CategoriesAdapter(ArrayList<Category> list, Context context) {
         this.list = list;
         this.context = context;
+        this.listold = list;
     }
 
     public CategoriesAdapter(UpdateVerticalRec updateVerticalRec, Activity activity, ArrayList<Category> list) {
@@ -150,6 +154,7 @@ public class CategoriesAdapter extends RecyclerView.Adapter<CategoriesAdapter.vi
         return list.size();
     }
 
+
     public class viewHolder extends RecyclerView.ViewHolder {
         ImageView imageView ;
         TextView name;
@@ -162,6 +167,7 @@ public class CategoriesAdapter extends RecyclerView.Adapter<CategoriesAdapter.vi
             cardView = itemView.findViewById(R.id.card_view);
         }
     }
+
 }
 
 

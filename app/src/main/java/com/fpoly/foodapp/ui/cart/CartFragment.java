@@ -1,6 +1,9 @@
 package com.fpoly.foodapp.ui.cart;
 
 import android.annotation.SuppressLint;
+import android.content.Context;
+import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -15,6 +18,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.fpoly.foodapp.Admin.AdminActivity;
 import com.fpoly.foodapp.DAO.demo_item_cart_dao;
 import com.fpoly.foodapp.R;
 import com.fpoly.foodapp.adapters.demo_cart_item_adapter;
@@ -31,6 +35,10 @@ public class CartFragment extends Fragment {
 
     TextView tvToTal, tvDelivery, tvTax;
     TextView tvToTalPriceFinal;
+    SharedPreferences sharedPreferences ;
+    SharedPreferences.Editor editor ;
+    public static  final  String TOTAL_KEY = "doanhthu";
+    public static  final String TOTAL_FINAL_KEY = "tongdoanhthu";
 
 
 
@@ -74,8 +82,10 @@ public class CartFragment extends Fragment {
         checkOut.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(getContext(), "Updating...", Toast.LENGTH_SHORT).show();
-
+                sharedPreferences  = getContext().getSharedPreferences(TOTAL_KEY , Context.MODE_PRIVATE);
+                editor = sharedPreferences.edit();
+                editor.putFloat(TOTAL_FINAL_KEY , (float) totalFinal);
+                editor.commit();
 
 
             }
@@ -91,11 +101,9 @@ public class CartFragment extends Fragment {
         demo_cart_item_adapter = new demo_cart_item_adapter(list, getContext());
         recyclerView.setAdapter(demo_cart_item_adapter);
 
-
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext() , RecyclerView.VERTICAL , false));
         recyclerView.setHasFixedSize(true);
         recyclerView.setNestedScrollingEnabled(false);
-
     }
     public Double total(){
         double price = 0;
