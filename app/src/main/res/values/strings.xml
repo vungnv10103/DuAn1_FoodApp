@@ -4,6 +4,9 @@
     <string name="title_daily_meal">Daily Meal</string>
     <string name="title_favourite">Favourite</string>
     <string name="title_acc">Account</string>
+
+
+    <string name="title_cart">Cart</string>
     <string name="resiter">Resiter</string>
     <string name="sing_in">Sing In</string>
     <string name="ok">Resiter</string>
