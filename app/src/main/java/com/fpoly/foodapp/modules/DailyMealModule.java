@@ -4,22 +4,16 @@ public class DailyMealModule {
     int image;
     String name;
     String discount;
-    String type;
     String description;
+    String type;
 
-    public DailyMealModule(int image, String name, String discount, String description) {
+
+    public DailyMealModule(int image, String name, String discount, String description, String type) {
         this.image = image;
         this.name = name;
         this.discount = discount;
         this.description = description;
-    }
-
-    public DailyMealModule(int image, String name, String discount, String type, String description) {
-        this.image = image;
-        this.name = name;
-        this.discount = discount;
         this.type = type;
-        this.description = description;
     }
 
     public int getImage() {

@@ -1,6 +1,7 @@
 package com.fpoly.foodapp.adapters;
 
 import android.content.Context;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,6 +12,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.fpoly.foodapp.R;
+import com.fpoly.foodapp.activities.DetailedDailyMealActivity;
 import com.fpoly.foodapp.modules.DailyMealModule;
 
 import java.util.List;
@@ -18,6 +20,7 @@ import java.util.List;
 public class DailyMealAdapter extends RecyclerView.Adapter<DailyMealAdapter.ViewHolder> {
     Context context;
     List<DailyMealModule> list;
+
 
     public DailyMealAdapter(Context context, List<DailyMealModule> list) {
         this.context = context;
@@ -38,6 +41,14 @@ public class DailyMealAdapter extends RecyclerView.Adapter<DailyMealAdapter.View
         holder.discount.setText(list.get(position).getDiscount());
         holder.description.setText(list.get(position).getDescription());
 
+        holder.imageView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent =new Intent(context, DetailedDailyMealActivity.class);
+                intent.putExtra("type",list.get(position).getType());
+                context.startActivity(intent);
+            }
+        });
     }
 
     @Override
