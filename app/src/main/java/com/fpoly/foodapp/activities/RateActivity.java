@@ -2,6 +2,7 @@ package com.fpoly.foodapp.activities;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -62,7 +63,7 @@ public class RateActivity extends AppCompatActivity {
                 break;
 
             case 2:
-                reply = "Xin lỗi bạn vì chúng tôi đã để cho bạn có một sự trải nghiệm không tốt với app này, " +
+                reply = "Xin lỗi bạn vì chúng tôi đã để cho bạn có một sự trải nghiệm không tốt với app này , " +
                         "chúng tôi sẽ cố gắng khắc phục ứng dụng này để có thể cho bạn một sự trải nghiệm tốt nhất có thể";
                 break;
 
@@ -73,5 +74,6 @@ public class RateActivity extends AppCompatActivity {
         }
 
         Toast.makeText(this, reply, Toast.LENGTH_SHORT).show();
+        startActivity(new Intent(this, MainActivity.class));
     }
 }

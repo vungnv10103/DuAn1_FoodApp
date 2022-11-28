@@ -5,7 +5,10 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.CheckBox;
+import android.widget.RadioButton;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -41,6 +44,18 @@ public class demo_cart_item_adapter extends RecyclerView.Adapter<demo_cart_item_
         holder.tvName.setText(list.get(position).name);
         holder.tvCost.setText("" + list.get(position).cost);
         holder.tvQuantity.setText(""+ list.get(position).quantities);
+        holder.cbCheck.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                boolean check = holder.cbCheck.isChecked();
+                if (check){     // true
+
+                }
+                else {
+
+                }
+            }
+        });
 
     }
 
@@ -52,12 +67,15 @@ public class demo_cart_item_adapter extends RecyclerView.Adapter<demo_cart_item_
     public class ViewHolder extends RecyclerView.ViewHolder {
         TextView tvName, tvCost;
         TextView tvQuantity;
+        CheckBox cbCheck;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
             tvCost = itemView.findViewById(R.id.tvCost);
             tvName = itemView.findViewById(R.id.tvName);
             tvQuantity = itemView.findViewById(R.id.tvQuantity);
+            cbCheck = itemView.findViewById(R.id.rdCheck);
         }
     }
+
 }

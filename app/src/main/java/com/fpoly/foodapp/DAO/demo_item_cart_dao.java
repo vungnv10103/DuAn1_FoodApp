@@ -29,6 +29,12 @@ public class demo_item_cart_dao {
 
         return db.insert("ItemCart",null,values);
     }
+    public int delete(int id){
+        return db.delete("ItemCart","id=?", new String[]{String.valueOf(id)});
+    }
+//    public int quant(){
+//
+//    }
 
 
     public List<demo_cart_item> getALL(){
@@ -36,12 +42,14 @@ public class demo_item_cart_dao {
         return getData(sql);
     }
 
+
     @SuppressLint("Range")
     private List<demo_cart_item> getData(String sql, String...selectionArgs){
         List<demo_cart_item> list = new ArrayList<>();
         Cursor cursor = db.rawQuery(sql, selectionArgs);
         while (cursor.moveToNext()){
             demo_cart_item obj = new demo_cart_item();
+            obj.id = Integer.parseInt(cursor.getString(cursor.getColumnIndex("id")));
             obj.name = cursor.getString(cursor.getColumnIndex("name"));
             obj.cost = Double.valueOf(cursor.getString(cursor.getColumnIndex("cost")));
             obj.quantities = Integer.parseInt(cursor.getString(cursor.getColumnIndex("quantities")));

@@ -18,6 +18,7 @@ public class DbHelper extends SQLiteOpenHelper {
     @Override
     public void onCreate(SQLiteDatabase db) {
         String createTableItemCart = "create table ItemCart(" +
+                "id INTEGER PRIMARY KEY AUTOINCREMENT," +
                 "name TEXT not null," +
                 "cost REAL not null," +
                 "quantities INTEGER not null)";
