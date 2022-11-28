@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:gravity="center"
+    android:background="@color/mediumGray"
+    tools:context=".activities.RateActivity">
+
+    <RatingBar
+        android:id="@+id/ratingFoodApp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:numStars="5"
+        android:stepSize="1"
+        android:progressBackgroundTint="@color/white"
+        android:progressTint="#D8DD34"
+        android:layout_marginBottom="30dp"/>
+
+    <TextView
+        android:layout_width="292dp"
+        android:layout_height="wrap_content"
+        android:text="Bạn có thể đóng góp cho mình một chút ý kiến được khum?"
+        android:gravity="center"
+        android:textColor="@color/white"
+        android:textSize="18dp"
+        android:layout_marginBottom="15dp"/>
+
+    <EditText
+        android:id="@+id/rate_Recommend"
+        android:layout_width="294dp"
+        android:layout_height="179dp"
+        android:textColor="@color/white"
+        android:background="@drawable/rcm_rate_frame"
+        android:gravity="top|left"/>
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Okay"
+        android:id="@+id/btn_Rating_send"
+        android:layout_marginTop="50dp"/>
+</LinearLayout>
