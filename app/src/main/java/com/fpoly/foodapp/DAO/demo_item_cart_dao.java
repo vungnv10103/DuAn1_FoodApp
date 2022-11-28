@@ -45,7 +45,6 @@ public class demo_item_cart_dao {
             obj.name = cursor.getString(cursor.getColumnIndex("name"));
             obj.cost = Double.valueOf(cursor.getString(cursor.getColumnIndex("cost")));
             obj.quantities = Integer.parseInt(cursor.getString(cursor.getColumnIndex("quantities")));
-
             list.add(obj);
 
         }

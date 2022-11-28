@@ -4,6 +4,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.constraintlayout.widget.ConstraintLayout;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageView;
@@ -28,13 +29,31 @@ public class AdminActivity extends AppCompatActivity {
     ImageView imgdangxuat;
     PieChart pieChart1 ;
     List<PieEntry> list = new ArrayList<>();
+    Intent intent;
+    Bundle bundle ;
+    SharedPreferences sharedPreferences  , sharedPreferences1;
+    int x = 0;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_admin);
         pieChart1 = findViewById(R.id.piechartok);
-        setvalue();
+
         anhxa();
+        sharedPreferences  = getSharedPreferences("dem" , MODE_PRIVATE);
+        x = sharedPreferences.getInt("count" , 0);
+        intent = getIntent();
+//        bundle = intent.getBundleExtra("sotk");
+        txtsoluongtruycaptrang.setText(String.valueOf(x));
+//        x= bundle.getInt("soluong");
+        setvalue();
+//       bundle = intent.getBundleExtra("tongdoanhthu");
+//       txtdoanhthucuahang.setText(String.valueOf(bundle.getDouble("doanhthu")));
+       sharedPreferences1 = getSharedPreferences("doanhthu" , MODE_PRIVATE);
+       txtdoanhthucuahang.setText(String.valueOf(sharedPreferences1.getFloat("tongdoanhthu" , 0)));
+
+
 
         setupchart();
         imgdangxuat.setOnClickListener(new View.OnClickListener() {
@@ -83,14 +102,9 @@ public class AdminActivity extends AppCompatActivity {
         pieChart1.animateY(5000 , Easing.EaseInOutQuad);
         pieChart1.setData(pieData);
         pieChart1.invalidate();
-
-
-
-
     }
-
     private void setvalue() {
-        list.add(new PieEntry(16 , "số lượt truy cập"));
+        list.add(new PieEntry(x , "số lượt truy cập"));
 //        list.add(new PieEntry(160000, "doanh thu"));
         list.add(new PieEntry(50, "đơn hàng đã bán"));
 

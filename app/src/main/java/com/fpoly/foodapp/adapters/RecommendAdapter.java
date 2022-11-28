@@ -8,6 +8,8 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Filter;
+import android.widget.Filterable;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -19,16 +21,19 @@ import com.fpoly.foodapp.R;
 import com.fpoly.foodapp.activities.ShowDetailActivity;
 import com.fpoly.foodapp.modules.Food;
 
+import java.util.ArrayList;
 import java.util.List;
 
-public class RecommendAdapter extends RecyclerView.Adapter<RecommendAdapter.viewHolder> {
+public class RecommendAdapter extends RecyclerView.Adapter<RecommendAdapter.viewHolder> implements Filterable {
     private Context context;
     private List<Food> list;
+    private List<Food> listold;
 
 
     public RecommendAdapter(Context context, List<Food> list) {
         this.context = context;
         this.list = list;
+        this.listold = list;
     }
 
     @NonNull
@@ -66,6 +71,8 @@ public class RecommendAdapter extends RecyclerView.Adapter<RecommendAdapter.view
         return list.size();
     }
 
+
+
     public class viewHolder extends RecyclerView.ViewHolder {
 
         TextView tvTitle, tvPrice;
@@ -80,6 +87,39 @@ public class RecommendAdapter extends RecyclerView.Adapter<RecommendAdapter.view
 
 
         }
+    }
+
+    @Override
+    public Filter getFilter() {
+        return new Filter() {
+            @Override
+            protected FilterResults performFiltering(CharSequence constraint) {
+                String str = constraint.toString();
+                if(str.isEmpty()){
+                    list = listold;
+
+                }
+                else {
+                    List<Food> mlist = new ArrayList<>();
+                    for( Food food :listold){
+                        if(food.getTitle().toLowerCase().contains(str.toLowerCase())){
+                            mlist.add(food);
+                        }
+                    }
+                    list = mlist;
+                }
+
+                FilterResults  filterResults = new FilterResults();
+                filterResults.values = list;
+                return filterResults;
+            }
+
+            @Override
+            protected void publishResults(CharSequence constraint, FilterResults results) {
+                list = (List<Food>) results.values;
+                notifyDataSetChanged();
+            }
+        };
     }
 }
 

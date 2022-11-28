@@ -26,6 +26,9 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.auth.UserInfo;
+
+import java.util.List;
 
 public class LoginActivity extends AppCompatActivity {
     EditText edEmail, edPass;
@@ -47,6 +50,7 @@ public class LoginActivity extends AppCompatActivity {
         imgShowHidePwd = findViewById(R.id.img_show_hide_pwd);
         progressDialog = new ProgressDialog(this);
 
+
         SharedPreferences pref = getSharedPreferences("USER_FILE", MODE_PRIVATE);
         edEmail.setText(pref.getString("EMAIL", ""));
         edPass.setText(pref.getString("PASSWORD", ""));
@@ -67,18 +71,24 @@ public class LoginActivity extends AppCompatActivity {
         });
 
 
+
         btnLogin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 String email = edEmail.getText().toString().trim();
                 String pass = edPass.getText().toString().trim();
                 FirebaseAuth auth = FirebaseAuth.getInstance();
+
+
                 progressDialog.show();
                 auth.signInWithEmailAndPassword(email , pass)
                         .addOnCompleteListener(LoginActivity.this, new OnCompleteListener<AuthResult>() {
                             @Override
                             public void onComplete(@NonNull Task<AuthResult> task) {
+
+
                                 if (task.isSuccessful()) {
+
                                     // Sign in success, update UI with the signed-in user's information
                                     if(email.equals("admin@gmail.com".trim())){
                                         Intent intent = new Intent(LoginActivity.this , AdminActivity.class);
@@ -144,7 +154,6 @@ public class LoginActivity extends AppCompatActivity {
             super.onBackPressed();
             return;
         }
-
         this.doubleBackToExitPressedOnce = true;
         Toast.makeText(this, "Please click BACK again to exit.", Toast.LENGTH_SHORT).show();
 

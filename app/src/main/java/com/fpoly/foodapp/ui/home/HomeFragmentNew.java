@@ -8,9 +8,14 @@ import androidx.recyclerview.widget.RecyclerView;
 import androidx.viewpager2.widget.ViewPager2;
 
 import android.os.Handler;
+import android.text.Editable;
+import android.text.TextWatcher;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.EditText;
+import android.widget.SearchView;
 import android.widget.Toast;
 
 import com.fpoly.foodapp.R;
@@ -39,6 +44,8 @@ public class HomeFragmentNew extends Fragment implements UpdateVerticalRec {
     RecommendAdapter adapter ;
     ArrayList<Food> foodList;
     CategoriesAdapter categoriesAdapter;
+    SearchView searchView;
+    EditText edtsearch;
 
     BottomNavigationView viewBottom;
     private ViewPager2 viewPager2 ;
@@ -65,9 +72,9 @@ public class HomeFragmentNew extends Fragment implements UpdateVerticalRec {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_home_new, container, false);
-
         recyclerViewMainPopular = view.findViewById(R.id.Main_popular);
         recyclerViewMain = view.findViewById(R.id.MainView);
+        edtsearch = view.findViewById(R.id.edtsearch);
         list = new ArrayList<>();
         list.add(new Category(R.drawable.cat_1, "Pizza"));
         list.add(new Category(R.drawable.cat_2, "Burger"));
@@ -102,7 +109,26 @@ public class HomeFragmentNew extends Fragment implements UpdateVerticalRec {
                 handler.postDelayed(runnable, 5000);
             }
         });
+
         // viewPager2.setPageTransformer(new ZoomOutPageTransformer());
+
+        edtsearch.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+
+               adapter.getFilter().filter(s.toString());
+            }
+        });
         return view;
     }
 
@@ -141,11 +167,11 @@ public class HomeFragmentNew extends Fragment implements UpdateVerticalRec {
         recyclerViewMainPopular.setLayoutManager(new LinearLayoutManager(getActivity(), RecyclerView.HORIZONTAL,false));
     }
 
+
     @Override
     public void callBack(int pos, ArrayList<HomeVerModule> list) {
 
     }
-
     @Override
     public void callBackNew(int pos, ArrayList<Food> list) {
         adapter = new RecommendAdapter(getContext() , list);
