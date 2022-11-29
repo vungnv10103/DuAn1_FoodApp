@@ -26,7 +26,7 @@ import java.util.List;
 public class AdminActivity extends AppCompatActivity {
     TextView txtsoluongtruycaptrang , txtsoluongdonhangdaban , txtdoanhthucuahang;
     ConstraintLayout constraintLayout , constraintLayout1 ,constraintLayout2 , constraintLayout3;
-    ImageView imgdangxuat;
+    ImageView imgLogout;
     PieChart pieChart1 ;
     List<PieEntry> list = new ArrayList<>();
     Intent intent;
@@ -40,14 +40,15 @@ public class AdminActivity extends AppCompatActivity {
         setContentView(R.layout.activity_admin);
         pieChart1 = findViewById(R.id.piechartok);
 
-        anhxa();
+        init();
+
         sharedPreferences  = getSharedPreferences("dem" , MODE_PRIVATE);
         x = sharedPreferences.getInt("count" , 0);
         intent = getIntent();
 //        bundle = intent.getBundleExtra("sotk");
         txtsoluongtruycaptrang.setText(String.valueOf(x));
 //        x= bundle.getInt("soluong");
-        setvalue();
+        setValue();
 //       bundle = intent.getBundleExtra("tongdoanhthu");
 //       txtdoanhthucuahang.setText(String.valueOf(bundle.getDouble("doanhthu")));
        sharedPreferences1 = getSharedPreferences("doanhthu" , MODE_PRIVATE);
@@ -55,8 +56,8 @@ public class AdminActivity extends AppCompatActivity {
 
 
 
-        setupchart();
-        imgdangxuat.setOnClickListener(new View.OnClickListener() {
+        setupChart();
+        imgLogout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(AdminActivity.this , LoginActivity.class);
@@ -90,7 +91,7 @@ public class AdminActivity extends AppCompatActivity {
         });
     }
 
-    private void setupchart() {
+    private void setupChart() {
         PieDataSet pieDataSet = new PieDataSet(list , "Pie Chart");
         PieData pieData = new PieData(pieDataSet);
         pieDataSet.setColors(ColorTemplate.COLORFUL_COLORS);
@@ -103,21 +104,21 @@ public class AdminActivity extends AppCompatActivity {
         pieChart1.setData(pieData);
         pieChart1.invalidate();
     }
-    private void setvalue() {
+    private void setValue() {
         list.add(new PieEntry(x , "số lượt truy cập"));
 //        list.add(new PieEntry(160000, "doanh thu"));
         list.add(new PieEntry(50, "đơn hàng đã bán"));
 
     }
-    public void anhxa(){
+    public void init(){
         txtsoluongtruycaptrang = findViewById(R.id.txtsoluongtruycap);
-        txtsoluongdonhangdaban = findViewById(R.id.txtsoluongban);
-        txtdoanhthucuahang = findViewById(R.id.txtdoanhthu);
+        txtsoluongdonhangdaban = findViewById(R.id.tvSoLuongBan);
+        txtdoanhthucuahang = findViewById(R.id.txtDoanhThu);
         constraintLayout = findViewById(R.id.constraintLayout7);
         constraintLayout1 = findViewById(R.id.constraintLayout8);
         constraintLayout2 = findViewById(R.id.constraintLayout9);
         constraintLayout3 = findViewById(R.id.constraintLayout10);
-        imgdangxuat = findViewById(R.id.imgdangxuat);
+        imgLogout = findViewById(R.id.imgLogout);
 
     }
 }

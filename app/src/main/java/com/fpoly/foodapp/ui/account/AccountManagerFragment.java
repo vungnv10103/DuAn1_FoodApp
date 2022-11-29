@@ -1,10 +1,12 @@
 package com.fpoly.foodapp.ui.account;
 
 import static android.app.Activity.RESULT_OK;
+import static android.content.Context.MODE_PRIVATE;
 
 import android.Manifest;
 import android.annotation.SuppressLint;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.graphics.Bitmap;
@@ -17,6 +19,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.activity.result.ActivityResult;
@@ -26,34 +29,32 @@ import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 
+import com.fpoly.foodapp.DAO.UsersDAO;
 import com.fpoly.foodapp.R;
-import com.fpoly.foodapp.account_load_image.APIUtils;
-import com.fpoly.foodapp.account_load_image.DataClient;
 import com.fpoly.foodapp.activities.DealsActivity;
 import com.fpoly.foodapp.activities.LoginActivity;
 import com.fpoly.foodapp.activities.RateActivity;
 import com.fpoly.foodapp.activities.SettingActivity;
+import com.fpoly.foodapp.modules.UsersModule;
 
-import java.io.File;
 import java.io.IOException;
-
-import okhttp3.MediaType;
-import okhttp3.MultipartBody;
-import okhttp3.RequestBody;
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
+import java.util.ArrayList;
 
 
 public class AccountManagerFragment extends Fragment {
     LinearLayout linearLayout, btnDeals, btnSetting, btnRating;
+    TextView tvNameUser, tvEmail;
     ImageView imgProfile;
     String realPath = "";
     public static final int REQUEST_CODE_IMG = 100;
+    static UsersDAO usersDAO;
+    UsersModule item;
+    ArrayList<UsersModule> list;
 
     private ActivityResultLauncher<Intent> intentActivityResultLauncher = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), new ActivityResultCallback<ActivityResult>() {
         @Override
         public void onActivityResult(ActivityResult result) {
+
             if (result.getResultCode() == RESULT_OK) {
                 Intent intent = result.getData();
                 if (intent == null) {
@@ -64,32 +65,40 @@ public class AccountManagerFragment extends Fragment {
                 try {
                     Bitmap bitmap = MediaStore.Images.Media.getBitmap(getActivity().getContentResolver(), uri);
                     imgProfile.setImageBitmap(bitmap);
-                    File file = new File(realPath);
-                    String file_path = file.getAbsolutePath();
+//                    item.bitmap = "" + uri;
+//                    if (usersDAO.updateImg(item)> 0){
+//                        Toast.makeText(getActivity(), "success", Toast.LENGTH_SHORT).show();
+//                    }
 
-                    String [] nameFile = file_path.split("\\.");
-                    file_path = nameFile[0] + System.currentTimeMillis() + "." + nameFile[1];
+//                    rememberImg(uri);
+                    Toast.makeText(getActivity(), "" + realPath, Toast.LENGTH_SHORT).show();
 
-                    RequestBody requestBody = RequestBody.create(MediaType.parse("multipart/from-data"), file);
-                    MultipartBody.Part part = MultipartBody.Part.createFormData("upload_files", file_path, requestBody);
+//                    File file = new File(realPath);
+//                    String file_path = file.getAbsolutePath();
+//
+//                    String [] nameFile = file_path.split("\\.");
+//                    file_path = nameFile[0] + System.currentTimeMillis() + "." + nameFile[1];
+//
+//                    RequestBody requestBody = RequestBody.create(MediaType.parse("multipart/from-data"), file);
+//                    MultipartBody.Part part = MultipartBody.Part.createFormData("upload_files", file_path, requestBody);
 
-                    DataClient dataClient = APIUtils.dataClient();
-                    retrofit2.Call<String> callBack = dataClient.upload_photo(part);
-                    callBack.enqueue(new Callback<String>() {
-                        @Override
-                        public void onResponse(retrofit2.Call<String> call, Response<String> response) {
-                            if (response != null){
-                                String message = response.body();
-//                                Toast.makeText(getActivity(), message, Toast.LENGTH_LONG).show();
-
-                            }
-                        }
-
-                        @Override
-                        public void onFailure(Call<String> call, Throwable t) {
-//                            Toast.makeText(getActivity(), t.getMessage(), Toast.LENGTH_LONG).show();
-                        }
-                    });
+//                    DataClient dataClient = APIUtils.dataClient();
+//                    retrofit2.Call<String> callBack = dataClient.upload_photo(part);
+//                    callBack.enqueue(new Callback<String>() {
+//                        @Override
+//                        public void onResponse(retrofit2.Call<String> call, Response<String> response) {
+//                            if (response != null){
+//                                String message = response.body();
+////                                Toast.makeText(getActivity(), message, Toast.LENGTH_LONG).show();
+//
+//                            }
+//                        }
+//
+//                        @Override
+//                        public void onFailure(Call<String> call, Throwable t) {
+////                            Toast.makeText(getActivity(), t.getMessage(), Toast.LENGTH_LONG).show();
+//                        }
+//                    });
 
                 } catch (IOException e) {
                     e.printStackTrace();
@@ -103,6 +112,14 @@ public class AccountManagerFragment extends Fragment {
                              ViewGroup container, Bundle savedInstanceState) {
         View root = inflater.inflate(R.layout.fragment_account, container, false);
 
+        usersDAO = new UsersDAO(getActivity());
+        item = new UsersModule();
+        tvNameUser = root.findViewById(R.id.tvNameUser);
+        tvEmail = root.findViewById(R.id.tvEmail);
+        SharedPreferences pref = getActivity().getSharedPreferences("USER_FILE", MODE_PRIVATE);
+        String email = pref.getString("EMAIL", "");
+        tvEmail.setText(email);
+        getSetOtherData(email);
         linearLayout = root.findViewById(R.id.Logout);
         btnDeals = root.findViewById(R.id.btn_Account_Deals);
         btnSetting = root.findViewById(R.id.btn_Account_setting);
@@ -117,9 +134,14 @@ public class AccountManagerFragment extends Fragment {
             }
         });
         imgProfile = root.findViewById(R.id.profile_image);
+//        SharedPreferences pref1 = getSharedPreferences("USER_FILE", MODE_PRIVATE);
+//        String file_path = pref1.getString("IMG", "");
+//        imgProfile.setImageBitmap(file_path.);
         imgProfile.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
+                Toast.makeText(getContext(), "" + item.id, Toast.LENGTH_SHORT).show();
                 onClickRequestPermission();
 
             }
@@ -191,4 +213,26 @@ public class AccountManagerFragment extends Fragment {
 
         intentActivityResultLauncher.launch(pickIntent);
     }
+
+    public void getSetOtherData(String email) {
+
+        usersDAO = new UsersDAO(getContext());
+        list = (ArrayList<UsersModule>) usersDAO.getALL();
+        if (list.size() == 0) {
+            return;
+        }
+        tvNameUser.setText(usersDAO.getNameUser(email));
+
+
+    }
+//    public void rememberImg(Uri uri) {
+//        SharedPreferences pref = getSharedPreferences("USER_FILE", MODE_PRIVATE);
+//        SharedPreferences.Editor editor = pref.edit();
+//
+//            // lưu dữ liệu
+//            editor.putString("IMG", uri.toString());
+//
+//        // lưu lại
+//        editor.commit();
+//    }
 }
