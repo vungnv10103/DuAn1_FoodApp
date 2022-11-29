@@ -31,7 +31,7 @@ public class DailyMealAdapter extends RecyclerView.Adapter<DailyMealAdapter.View
     @NonNull
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        return new ViewHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.daily_meal_item,parent,false));
+        return new ViewHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.daily_meal_item, parent, false));
     }
 
     @Override
@@ -45,8 +45,8 @@ public class DailyMealAdapter extends RecyclerView.Adapter<DailyMealAdapter.View
         holder.imageView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent =new Intent(context, DetailedDailyMealActivity.class);
-                intent.putExtra("type",list.get(position).getType());
+                Intent intent = new Intent(context, DetailedDailyMealActivity.class);
+                intent.putExtra("type", list.get(position).getType());
                 context.startActivity(intent);
             }
         });
@@ -59,14 +59,14 @@ public class DailyMealAdapter extends RecyclerView.Adapter<DailyMealAdapter.View
 
     public class ViewHolder extends RecyclerView.ViewHolder {
         ImageView imageView;
-        TextView name,description,discount;
+        TextView name, description, discount;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
-            imageView =itemView.findViewById(R.id.imag_meal);
-            name =itemView.findViewById(R.id.name_meal);
-            description =itemView.findViewById(R.id.textView9);
-            discount =itemView.findViewById(R.id.discount);
+            imageView = itemView.findViewById(R.id.img_meal);
+            name = itemView.findViewById(R.id.name_meal);
+            description = itemView.findViewById(R.id.tvUserNameHome);
+            discount = itemView.findViewById(R.id.discount);
         }
     }
 }
