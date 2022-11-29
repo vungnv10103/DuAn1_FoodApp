@@ -62,16 +62,23 @@ public class AccountManagerFragment extends Fragment {
                 }
                 Uri uri = intent.getData();
                 realPath = getRealPathFromURI(uri);
+                SharedPreferences pref = getActivity().getSharedPreferences("USER_FILE", MODE_PRIVATE);
+
                 try {
                     Bitmap bitmap = MediaStore.Images.Media.getBitmap(getActivity().getContentResolver(), uri);
                     imgProfile.setImageBitmap(bitmap);
-//                    item.bitmap = "" + uri;
-//                    if (usersDAO.updateImg(item)> 0){
-//                        Toast.makeText(getActivity(), "success", Toast.LENGTH_SHORT).show();
-//                    }
+                    item.bitmap = "" + uri;
+                    item.name = "null";
+                    item.email = pref.getString("EMAIL", "");
+                    item.pass = pref.getString("PASSWORD", "");
+                    item.phoneNumber = "null";
+                    item.address = "null";
 
-//                    rememberImg(uri);
-                    Toast.makeText(getActivity(), "" + realPath, Toast.LENGTH_SHORT).show();
+                    if (usersDAO.updateImg(item)> 0){
+                        Toast.makeText(getActivity(), "Lưu ảnh thành công !", Toast.LENGTH_SHORT).show();
+                    }
+                    rememberImg(uri);
+//                    Toast.makeText(getActivity(), "" + realPath, Toast.LENGTH_SHORT).show();
 
 //                    File file = new File(realPath);
 //                    String file_path = file.getAbsolutePath();
@@ -133,17 +140,21 @@ public class AccountManagerFragment extends Fragment {
                 startActivity(intent);
             }
         });
+        SharedPreferences pref1 = getActivity().getSharedPreferences("USER_FILE", MODE_PRIVATE);
+        String path = pref1.getString("IMG", "");
+
         imgProfile = root.findViewById(R.id.profile_image);
-//        SharedPreferences pref1 = getSharedPreferences("USER_FILE", MODE_PRIVATE);
-//        String file_path = pref1.getString("IMG", "");
-//        imgProfile.setImageBitmap(file_path.);
+        Bitmap bitmap = null;
+        try {
+            bitmap = MediaStore.Images.Media.getBitmap(getActivity().getContentResolver(), Uri.parse(path));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        imgProfile.setImageBitmap(bitmap);
         imgProfile.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
-                Toast.makeText(getContext(), "" + item.id, Toast.LENGTH_SHORT).show();
                 onClickRequestPermission();
-
             }
         });
 
@@ -222,17 +233,20 @@ public class AccountManagerFragment extends Fragment {
             return;
         }
         tvNameUser.setText(usersDAO.getNameUser(email));
+        SharedPreferences pref = getActivity().getSharedPreferences("USER_FILE", MODE_PRIVATE);
+        SharedPreferences.Editor editor = pref.edit();
+        editor.putString("name", usersDAO.getNameUser(email));
+        // lưu lại
+        editor.commit();
 
 
     }
-//    public void rememberImg(Uri uri) {
-//        SharedPreferences pref = getSharedPreferences("USER_FILE", MODE_PRIVATE);
-//        SharedPreferences.Editor editor = pref.edit();
-//
-//            // lưu dữ liệu
-//            editor.putString("IMG", uri.toString());
-//
-//        // lưu lại
-//        editor.commit();
-//    }
+    public void rememberImg(Uri uri) {
+        SharedPreferences pref = getActivity().getSharedPreferences("USER_FILE", MODE_PRIVATE);
+        SharedPreferences.Editor editor = pref.edit();
+        // lưu dữ liệu
+        editor.putString("IMG", uri.toString());
+        // lưu lại
+        editor.commit();
+    }
 }

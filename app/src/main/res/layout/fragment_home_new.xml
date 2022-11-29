@@ -13,8 +13,6 @@
         android:background="@drawable/background_intro">
 
 
-
-
         <FrameLayout
             android:id="@+id/frame_layout"
             android:layout_width="match_parent"
@@ -50,15 +48,15 @@
                             android:textColor="#000000"
                             android:textSize="18dp"
                             android:textStyle="bold"
-                            app:layout_constraintStart_toStartOf="@+id/edtsearch"
+                            app:layout_constraintStart_toStartOf="@+id/edSearchHome"
                             app:layout_constraintTop_toBottomOf="@+id/MainView" />
 
                         <TextView
-                            android:id="@+id/textView9"
+                            android:id="@+id/tvUserNameHome"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginStart="104dp"
-                            android:layout_marginTop="28dp"
+                            android:layout_marginTop="20dp"
                             android:text="Hello Username"
                             android:textColor="#ff3d00"
                             android:textSize="20sp"
@@ -74,10 +72,10 @@
                             android:text="Search and order."
                             android:textColor="#000000"
                             android:textSize="20sp"
-                            app:layout_constraintStart_toStartOf="@+id/textView9"
-                            app:layout_constraintTop_toBottomOf="@+id/textView9" />
+                            app:layout_constraintStart_toStartOf="@+id/tvUserNameHome"
+                            app:layout_constraintTop_toBottomOf="@+id/tvUserNameHome" />
 
-                        <ImageView
+                        <de.hdodenhof.circleimageview.CircleImageView
                             android:id="@+id/imgAvatar"
                             android:layout_width="80dp"
                             android:layout_height="80dp"
@@ -114,7 +112,7 @@
                                     android:layout_width="match_parent"
                                     android:layout_height="200dp"
                                     android:layout_alignParentTop="true"
-                                    android:layout_marginTop="0dp"
+                                    android:layout_marginTop="5dp"
                                     android:scaleType="fitXY" />
 
                                 <me.relex.circleindicator.CircleIndicator3
@@ -131,9 +129,8 @@
                         </androidx.constraintlayout.widget.ConstraintLayout>
 
 
-
                         <EditText
-                            android:id="@+id/edtsearch"
+                            android:id="@+id/edSearchHome"
                             android:layout_width="0dp"
                             android:layout_height="50dp"
                             android:layout_marginTop="6dp"
@@ -149,8 +146,16 @@
                             app:layout_constraintTop_toBottomOf="@+id/constraintLayout" />
 
 
-
-
+                        <ImageView
+                            android:id="@+id/imgDeleteSearch"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="20dp"
+                            android:layout_marginEnd="16dp"
+                            android:visibility="invisible"
+                            android:src="@drawable/ic_baseline_close_24"
+                            app:layout_constraintEnd_toEndOf="@+id/edSearchHome"
+                            app:layout_constraintTop_toBottomOf="@+id/constraintLayout" />
 
                         <TextView
                             android:id="@+id/textView14"
@@ -175,8 +180,8 @@
                             android:textColor="#000000"
                             android:textSize="18dp"
                             android:textStyle="bold"
-                            app:layout_constraintStart_toStartOf="@+id/edtsearch"
-                            app:layout_constraintTop_toBottomOf="@+id/edtsearch" />
+                            app:layout_constraintStart_toStartOf="@+id/edSearchHome"
+                            app:layout_constraintTop_toBottomOf="@+id/edSearchHome" />
 
                         <androidx.recyclerview.widget.RecyclerView
                             android:id="@+id/Main_popular"

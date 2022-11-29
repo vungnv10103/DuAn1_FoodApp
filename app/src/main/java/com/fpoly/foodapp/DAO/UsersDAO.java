@@ -22,7 +22,8 @@ public class UsersDAO {
         DbHelper dbHelper = new DbHelper(context);
         db = dbHelper.getWritableDatabase();
     }
-    public long insert(UsersModule obj){
+
+    public long insert(UsersModule obj) {
         ContentValues values = new ContentValues();
         values.put("img", obj.bitmap);
         values.put("name", obj.name);
@@ -31,49 +32,54 @@ public class UsersDAO {
         values.put("phoneNumber", obj.phoneNumber);
         values.put("address", obj.address);
 
-        return db.insert("User",null,values);
+        return db.insert("User", null, values);
     }
-    public int update(UsersModule obj){
+
+    public int update(UsersModule obj) {
         ContentValues values = new ContentValues();
         values.put("name", obj.name);
         values.put("phoneNumber", obj.phoneNumber);
         values.put("address", obj.address);
 
-        return db.update("User", values, "id=?", new String[]{String.valueOf(obj.id)} );
+        return db.update("User", values, "id=?", new String[]{String.valueOf(obj.id)});
     }
-    public int updateImg(UsersModule obj){
+
+    public int updateImg(UsersModule obj) {
         ContentValues values = new ContentValues();
         values.put("img", obj.bitmap);
 
-        return db.update("User", values, "id=?", new String[]{String.valueOf(obj.id)} );
+        return db.update("User", values, "email=?", new String[]{obj.email});
     }
-    public String getNameUser(String email){
+
+    public String getNameUser(String email) {
         String sql = "SELECT * FROM User WHERE email=?";
         List<UsersModule> list = getData(sql, email);
         return list.get(0).name;
     }
-    public String getEmail(String email){
+
+    public String getEmail(String email) {
         String sql = "SELECT * FROM User WHERE email=?";
         List<UsersModule> list = getData(sql, email);
         return list.get(0).email;
 
     }
-    public int delete(int id){
-        return db.delete("User","id=?", new String[]{String.valueOf(id)});
+
+    public int delete(int id) {
+        return db.delete("User", "id=?", new String[]{String.valueOf(id)});
     }
 
 
-    public List<UsersModule> getALL(){
+    public List<UsersModule> getALL() {
         String sql = "SELECT * FROM User";
         return getData(sql);
     }
 
 
     @SuppressLint("Range")
-    private List<UsersModule> getData(String sql, String...selectionArgs){
+    private List<UsersModule> getData(String sql, String... selectionArgs) {
         List<UsersModule> list = new ArrayList<>();
         Cursor cursor = db.rawQuery(sql, selectionArgs);
-        while (cursor.moveToNext()){
+        while (cursor.moveToNext()) {
             UsersModule obj = new UsersModule();
             obj.id = Integer.parseInt(cursor.getString(cursor.getColumnIndex("id")));
             obj.bitmap = cursor.getString(cursor.getColumnIndex("img"));

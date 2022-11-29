@@ -31,13 +31,15 @@ public class DetailedDailyMealActivity extends AppCompatActivity {
         imageView = findViewById(R.id.detailer_img);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         detailerDailyModuleList = new ArrayList<>();
-        dailyAdapter = new DetailerDailyAdapter(this,detailerDailyModuleList);
+        dailyAdapter = new DetailerDailyAdapter(this, detailerDailyModuleList);
         recyclerView.setAdapter(dailyAdapter);
 
         if (type != null && type.equalsIgnoreCase("breakfast")) {
             detailerDailyModuleList.add(new DetailerDailyModule(R.drawable.fav1, "Breakfast 1", "description", "4.6", "20", "6:00 to 9:00"));
             detailerDailyModuleList.add(new DetailerDailyModule(R.drawable.fav2, "Breakfast 2", "description", "4.4", "40", "6:00 to 9:00"));
             detailerDailyModuleList.add(new DetailerDailyModule(R.drawable.fav3, "Breakfast 3", "description", "4.9", "30", "6:00 to 9:00"));
+            detailerDailyModuleList.add(new DetailerDailyModule(R.drawable.fav3, "Breakfast 4", "description", "4.9", "30", "6:00 to 9:00"));
+            detailerDailyModuleList.add(new DetailerDailyModule(R.drawable.fav3, "Breakfast 5", "description", "4.9", "30", "6:00 to 9:00"));
             dailyAdapter.notifyDataSetChanged();
         }
 
@@ -46,6 +48,8 @@ public class DetailedDailyMealActivity extends AppCompatActivity {
             detailerDailyModuleList.add(new DetailerDailyModule(R.drawable.l1, "Lunch 1", "description", "4.4", "40", "11:00 to 14:00"));
             detailerDailyModuleList.add(new DetailerDailyModule(R.drawable.l2, "Lunch 2", "description", "4.9", "35", "11:00 to 14:00"));
             detailerDailyModuleList.add(new DetailerDailyModule(R.drawable.l3, "Lunch 3", "description", "4.7", "45", "11:00 to 14:00"));
+            detailerDailyModuleList.add(new DetailerDailyModule(R.drawable.l3, "Lunch 4", "description", "4.7", "45", "11:00 to 14:00"));
+            detailerDailyModuleList.add(new DetailerDailyModule(R.drawable.l3, "Lunch 5", "description", "4.7", "45", "11:00 to 14:00"));
             dailyAdapter.notifyDataSetChanged();
         }
 
@@ -54,6 +58,8 @@ public class DetailedDailyMealActivity extends AppCompatActivity {
             detailerDailyModuleList.add(new DetailerDailyModule(R.drawable.d1, "Dinner 1", "description", "4.5", "45", "18:00 to 21:00"));
             detailerDailyModuleList.add(new DetailerDailyModule(R.drawable.d2, "Dinner 2", "description", "4.4", "40", "18:00 to 21:00"));
             detailerDailyModuleList.add(new DetailerDailyModule(R.drawable.d3, "Dinner 3", "description", "4.8", "50", "18:00 to 21:00"));
+            detailerDailyModuleList.add(new DetailerDailyModule(R.drawable.d3, "Dinner 4", "description", "4.8", "50", "18:00 to 21:00"));
+            detailerDailyModuleList.add(new DetailerDailyModule(R.drawable.d3, "Dinner 5", "description", "4.8", "50", "18:00 to 21:00"));
             dailyAdapter.notifyDataSetChanged();
         }
         if (type != null && type.equalsIgnoreCase("sweets")) {
@@ -62,6 +68,7 @@ public class DetailedDailyMealActivity extends AppCompatActivity {
             detailerDailyModuleList.add(new DetailerDailyModule(R.drawable.s2, "Sweets 2", "description", "4.3", "30", "11:00 to 23:00"));
             detailerDailyModuleList.add(new DetailerDailyModule(R.drawable.s3, "Sweets 3", "description", "4.9", "35", "11:00 to 23:00"));
             detailerDailyModuleList.add(new DetailerDailyModule(R.drawable.s4, "Sweets 4", "description", "4.6", "50", "11:00 to 23:00"));
+            detailerDailyModuleList.add(new DetailerDailyModule(R.drawable.s4, "Sweets 5", "description", "4.6", "50", "11:00 to 23:00"));
             dailyAdapter.notifyDataSetChanged();
         }
 
@@ -70,6 +77,8 @@ public class DetailedDailyMealActivity extends AppCompatActivity {
             detailerDailyModuleList.add(new DetailerDailyModule(R.drawable.cf1, "Coffee 1", "description", "4.9", "35", "6:00 to 21:00"));
             detailerDailyModuleList.add(new DetailerDailyModule(R.drawable.cf2, "Coffee 2", "description", "4.4", "40", "6:00 to 21:00"));
             detailerDailyModuleList.add(new DetailerDailyModule(R.drawable.cf3, "Coffee 3", "description", "4.7", "30", "6:00 to 21:00"));
+            detailerDailyModuleList.add(new DetailerDailyModule(R.drawable.cf3, "Coffee 4", "description", "4.7", "30", "6:00 to 21:00"));
+            detailerDailyModuleList.add(new DetailerDailyModule(R.drawable.cf3, "Coffee 5", "description", "4.7", "30", "6:00 to 21:00"));
             dailyAdapter.notifyDataSetChanged();
         }
     }
