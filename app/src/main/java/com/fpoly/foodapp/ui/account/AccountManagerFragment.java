@@ -39,7 +39,12 @@ import com.fpoly.foodapp.activities.DealsActivity;
 import com.fpoly.foodapp.activities.LoginActivity;
 import com.fpoly.foodapp.activities.RateActivity;
 import com.fpoly.foodapp.activities.SettingActivity;
+
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+=======
 import com.fpoly.foodapp.modules.UsersModule;
+
 
 import java.io.IOException;
 import java.util.ArrayList;
