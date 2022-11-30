@@ -42,7 +42,6 @@ import com.fpoly.foodapp.activities.SettingActivity;
 
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-=======
 import com.fpoly.foodapp.modules.UsersModule;
 
 
