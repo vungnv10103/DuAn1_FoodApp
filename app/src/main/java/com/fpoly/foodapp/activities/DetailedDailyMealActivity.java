@@ -66,7 +66,7 @@ ImageView imageView;
         }
 
         if(type !=null && type.equalsIgnoreCase("coffee")){
-            imageView.setImageResource(R.drawable.coffe);
+            imageView.setImageResource(R.drawable.coffee);
             detailerDailyModuleList.add(new DetailerDailyModule(R.drawable.cf1,"Coffee","description","4.4","40","10 to 9"));
             detailerDailyModuleList.add(new DetailerDailyModule(R.drawable.cf2,"Coffee","description","4.4","40","10 to 9"));
             detailerDailyModuleList.add(new DetailerDailyModule(R.drawable.cf3,"Coffee","description","4.4","40","10 to 9"));

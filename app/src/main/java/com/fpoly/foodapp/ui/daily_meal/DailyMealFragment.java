@@ -37,7 +37,7 @@ public class DailyMealFragment extends Fragment {
         dailyMealModules.add(new DailyMealModule(R.drawable.lunch,"Lunch","20% OFF","Description Description","lunch"));
         dailyMealModules.add(new DailyMealModule(R.drawable.dinner,"Dinner","50% OFF","Description Description","dinner"));
         dailyMealModules.add(new DailyMealModule(R.drawable.sweets,"Sweets","25% OFF","Description Description","sweets"));
-        dailyMealModules.add(new DailyMealModule(R.drawable.coffe,"Coffee","10% OFF","Description Description","coffee"));
+        dailyMealModules.add(new DailyMealModule(R.drawable.coffee,"Coffee","10% OFF","Description Description","coffee"));
 
         dailyMealAdapter =new DailyMealAdapter(getContext(),dailyMealModules);
         recyclerView.setAdapter(dailyMealAdapter);
