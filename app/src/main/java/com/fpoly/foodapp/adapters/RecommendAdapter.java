@@ -2,12 +2,16 @@ package com.fpoly.foodapp.adapters;
 
 
 import android.annotation.SuppressLint;
+import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.Filter;
 import android.widget.Filterable;
 import android.widget.ImageView;
@@ -25,6 +29,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class RecommendAdapter extends RecyclerView.Adapter<RecommendAdapter.viewHolder> implements Filterable {
+    ImageView imgZoomIn;
     private Context context;
     private List<Food> list;
     private List<Food> listold;
@@ -46,6 +51,26 @@ public class RecommendAdapter extends RecyclerView.Adapter<RecommendAdapter.view
     @Override
     public void onBindViewHolder(@NonNull viewHolder holder, @SuppressLint("RecyclerView") int position) {
         holder.img.setImageResource(list.get(position).getImg());
+        holder.img.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+//                Animation aniSlide = AnimationUtils.loadAnimation(v.getContext(), R.anim.zoom_in);
+//                v.startAnimation(aniSlide);
+                Dialog dialog = new Dialog(v.getContext());
+                dialog.setContentView(R.layout.dialog_image_zoom);
+
+                imgZoomIn = dialog.findViewById(R.id.imgZoomIn);
+                imgZoomIn.setImageResource(list.get(position).getImg());
+
+                WindowManager.LayoutParams lp = new WindowManager.LayoutParams();
+                lp.copyFrom(dialog.getWindow().getAttributes());
+                lp.width = WindowManager.LayoutParams.WRAP_CONTENT;
+                lp.height = WindowManager.LayoutParams.WRAP_CONTENT;
+
+                dialog.getWindow().setAttributes(lp);
+                dialog.show();
+            }
+        });
         holder.imgAdd.setImageResource(list.get(position).getResource_image());
         holder.tvTitle.setText(list.get(position).getTitle());
         holder.tvPrice.setText(String.valueOf(list.get(position).getMoney()));
@@ -72,7 +97,6 @@ public class RecommendAdapter extends RecyclerView.Adapter<RecommendAdapter.view
     }
 
 
-
     public class viewHolder extends RecyclerView.ViewHolder {
 
         TextView tvTitle, tvPrice;
@@ -95,21 +119,19 @@ public class RecommendAdapter extends RecyclerView.Adapter<RecommendAdapter.view
             @Override
             protected FilterResults performFiltering(CharSequence constraint) {
                 String str = constraint.toString();
-                if(str.isEmpty()){
+                if (str.isEmpty()) {
                     list = listold;
-
-                }
-                else {
+                } else {
                     List<Food> mlist = new ArrayList<>();
-                    for( Food food :listold){
-                        if(food.getTitle().toLowerCase().contains(str.toLowerCase())){
+                    for (Food food : listold) {
+                        if (food.getTitle().toLowerCase().contains(str.toLowerCase())) {
                             mlist.add(food);
                         }
                     }
                     list = mlist;
                 }
 
-                FilterResults  filterResults = new FilterResults();
+                FilterResults filterResults = new FilterResults();
                 filterResults.values = list;
                 return filterResults;
             }

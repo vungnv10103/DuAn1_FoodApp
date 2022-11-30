@@ -83,4 +83,7 @@ public class MainActivity extends AppCompatActivity {
             }
         }, 3000);
     }
+    public void demo(){
+        navView = findViewById(R.id.nav_view);
+    }
 }

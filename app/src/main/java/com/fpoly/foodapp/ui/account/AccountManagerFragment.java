@@ -1,10 +1,13 @@
 package com.fpoly.foodapp.ui.account;
 
 import static android.app.Activity.RESULT_OK;
+import static android.content.Context.MODE_PRIVATE;
 
 import android.Manifest;
 import android.annotation.SuppressLint;
+import android.app.Dialog;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.graphics.Bitmap;
@@ -15,8 +18,12 @@ import android.provider.MediaStore;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
+import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.activity.result.ActivityResult;
@@ -26,36 +33,37 @@ import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 
+import com.fpoly.foodapp.DAO.UsersDAO;
 import com.fpoly.foodapp.R;
-import com.fpoly.foodapp.account_load_image.APIUtils;
-import com.fpoly.foodapp.account_load_image.DataClient;
 import com.fpoly.foodapp.activities.DealsActivity;
 import com.fpoly.foodapp.activities.LoginActivity;
 import com.fpoly.foodapp.activities.RateActivity;
 import com.fpoly.foodapp.activities.SettingActivity;
+
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+=======
+import com.fpoly.foodapp.modules.UsersModule;
 
-import java.io.File;
+
 import java.io.IOException;
-
-import okhttp3.MediaType;
-import okhttp3.MultipartBody;
-import okhttp3.RequestBody;
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
+import java.util.ArrayList;
 
 
 public class AccountManagerFragment extends Fragment {
     LinearLayout linearLayout, btnDeals, btnSetting, btnRating;
+    TextView tvNameUser, tvEmail;
     ImageView imgProfile;
     String realPath = "";
     public static final int REQUEST_CODE_IMG = 100;
+    static UsersDAO usersDAO;
+    UsersModule item;
+    ArrayList<UsersModule> list;
 
     private ActivityResultLauncher<Intent> intentActivityResultLauncher = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), new ActivityResultCallback<ActivityResult>() {
         @Override
         public void onActivityResult(ActivityResult result) {
+
             if (result.getResultCode() == RESULT_OK) {
                 Intent intent = result.getData();
                 if (intent == null) {
@@ -63,35 +71,50 @@ public class AccountManagerFragment extends Fragment {
                 }
                 Uri uri = intent.getData();
                 realPath = getRealPathFromURI(uri);
+                SharedPreferences pref = getActivity().getSharedPreferences("USER_FILE", MODE_PRIVATE);
+
                 try {
                     Bitmap bitmap = MediaStore.Images.Media.getBitmap(getActivity().getContentResolver(), uri);
                     imgProfile.setImageBitmap(bitmap);
-                    File file = new File(realPath);
-                    String file_path = file.getAbsolutePath();
+                    item.bitmap = "" + uri;
+                    item.name = "null";
+                    item.email = pref.getString("EMAIL", "");
+                    item.pass = pref.getString("PASSWORD", "");
+                    item.phoneNumber = "null";
+                    item.address = "null";
 
-                    String [] nameFile = file_path.split("\\.");
-                    file_path = nameFile[0] + System.currentTimeMillis() + "." + nameFile[1];
+                    if (usersDAO.updateImg(item) > 0) {
+                        Toast.makeText(getActivity(), "Lưu ảnh thành công !", Toast.LENGTH_SHORT).show();
+                    }
+//                    rememberImg(uri);
+//                    Toast.makeText(getActivity(), "" + realPath, Toast.LENGTH_SHORT).show();
 
-                    RequestBody requestBody = RequestBody.create(MediaType.parse("multipart/from-data"), file);
-                    MultipartBody.Part part = MultipartBody.Part.createFormData("upload_files", file_path, requestBody);
+//                    File file = new File(realPath);
+//                    String file_path = file.getAbsolutePath();
+//
+//                    String [] nameFile = file_path.split("\\.");
+//                    file_path = nameFile[0] + System.currentTimeMillis() + "." + nameFile[1];
+//
+//                    RequestBody requestBody = RequestBody.create(MediaType.parse("multipart/from-data"), file);
+//                    MultipartBody.Part part = MultipartBody.Part.createFormData("upload_files", file_path, requestBody);
 
-                    DataClient dataClient = APIUtils.dataClient();
-                    retrofit2.Call<String> callBack = dataClient.upload_photo(part);
-                    callBack.enqueue(new Callback<String>() {
-                        @Override
-                        public void onResponse(retrofit2.Call<String> call, Response<String> response) {
-                            if (response != null){
-                                String message = response.body();
-//                                Toast.makeText(getActivity(), message, Toast.LENGTH_LONG).show();
-
-                            }
-                        }
-
-                        @Override
-                        public void onFailure(Call<String> call, Throwable t) {
-//                            Toast.makeText(getActivity(), t.getMessage(), Toast.LENGTH_LONG).show();
-                        }
-                    });
+//                    DataClient dataClient = APIUtils.dataClient();
+//                    retrofit2.Call<String> callBack = dataClient.upload_photo(part);
+//                    callBack.enqueue(new Callback<String>() {
+//                        @Override
+//                        public void onResponse(retrofit2.Call<String> call, Response<String> response) {
+//                            if (response != null){
+//                                String message = response.body();
+////                                Toast.makeText(getActivity(), message, Toast.LENGTH_LONG).show();
+//
+//                            }
+//                        }
+//
+//                        @Override
+//                        public void onFailure(Call<String> call, Throwable t) {
+////                            Toast.makeText(getActivity(), t.getMessage(), Toast.LENGTH_LONG).show();
+//                        }
+//                    });
 
                 } catch (IOException e) {
                     e.printStackTrace();
@@ -105,6 +128,79 @@ public class AccountManagerFragment extends Fragment {
                              ViewGroup container, Bundle savedInstanceState) {
         View root = inflater.inflate(R.layout.fragment_account, container, false);
 
+        usersDAO = new UsersDAO(getActivity());
+        item = new UsersModule();
+        imgProfile = root.findViewById(R.id.profile_image);
+        tvNameUser = root.findViewById(R.id.tvNameUser);
+        tvEmail = root.findViewById(R.id.tvEmail);
+        SharedPreferences pref = getActivity().getSharedPreferences("USER_FILE", MODE_PRIVATE);
+        String email = pref.getString("EMAIL", "");
+        tvEmail.setText(email);
+        tvEmail.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                ImageView imgPhoto;
+                EditText edFullName, edPhoneNumber, edAddress;
+                Button btnSave;
+
+                Dialog dialog = new Dialog(v.getContext());
+                dialog.setContentView(R.layout.profile_detail);
+
+                imgPhoto = dialog.findViewById(R.id.imgProfileEdit);
+                edFullName = dialog.findViewById(R.id.edEditName);
+                edPhoneNumber = dialog.findViewById(R.id.edEditPhoneNumber);
+                edAddress = dialog.findViewById(R.id.edEditAddress);
+
+                try {
+                    String path = usersDAO.getUriImg(email);
+                    Bitmap bitmap = MediaStore.Images.Media.getBitmap(getActivity().getContentResolver(), Uri.parse(path));
+                    imgPhoto.setImageBitmap(bitmap);
+
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+                edFullName.setText(usersDAO.getNameUser(email));
+                edPhoneNumber.setText(usersDAO.getPhone(email));
+                edAddress.setText(usersDAO.getAddress(email));
+                btnSave = dialog.findViewById(R.id.btnSave);
+
+
+                btnSave.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        String fullName = edFullName.getText().toString().trim();
+                        String phoneNumber = edPhoneNumber.getText().toString().trim();
+                        String address = edAddress.getText().toString().trim();
+                        item.email = tvEmail.getText().toString();
+                        item.name = fullName;
+                        item.phoneNumber = phoneNumber;
+                        item.address = address;
+
+                        if (fullName.isEmpty() || phoneNumber.isEmpty() || address.isEmpty()){
+                            Toast.makeText(getContext(), "Vui lòng điền đủ thông tin !", Toast.LENGTH_SHORT).show();
+                            return;
+                        }
+                        if (usersDAO.updateProfile(item) > 0) {
+                            Toast.makeText(getContext(), "Update Success !", Toast.LENGTH_SHORT).show();
+
+                        }
+                        getSetOtherData(email);
+                        dialog.dismiss();
+                    }
+                });
+
+
+
+                WindowManager.LayoutParams lp = new WindowManager.LayoutParams();
+                lp.copyFrom(dialog.getWindow().getAttributes());
+                lp.width = WindowManager.LayoutParams.MATCH_PARENT;
+                lp.height = WindowManager.LayoutParams.MATCH_PARENT;
+
+                dialog.getWindow().setAttributes(lp);
+                dialog.show();
+            }
+        });
+        getSetOtherData(email);
         linearLayout = root.findViewById(R.id.Logout);
         btnDeals = root.findViewById(R.id.btn_Account_Deals);
         btnSetting = root.findViewById(R.id.btn_Account_setting);
@@ -123,7 +219,6 @@ public class AccountManagerFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 onClickRequestPermission();
-
             }
         });
 
@@ -193,4 +288,39 @@ public class AccountManagerFragment extends Fragment {
 
         intentActivityResultLauncher.launch(pickIntent);
     }
+
+    public void getSetOtherData(String email) {
+
+        usersDAO = new UsersDAO(getContext());
+        list = (ArrayList<UsersModule>) usersDAO.getALL();
+        if (list.size() == 0) {
+            return;
+        }
+        tvNameUser.setText(usersDAO.getNameUser(email));
+
+        try {
+            String path = usersDAO.getUriImg(email);
+            Bitmap bitmap = MediaStore.Images.Media.getBitmap(getActivity().getContentResolver(), Uri.parse(path));
+            imgProfile.setImageBitmap(bitmap);
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        SharedPreferences pref = getActivity().getSharedPreferences("USER_FILE", MODE_PRIVATE);
+        SharedPreferences.Editor editor = pref.edit();
+        editor.putString("name", usersDAO.getNameUser(email));
+        // lưu lại
+        editor.commit();
+
+
+    }
+//    public void rememberImg(Uri uri) {
+//        SharedPreferences pref = getActivity().getSharedPreferences("USER_FILE", MODE_PRIVATE);
+//        SharedPreferences.Editor editor = pref.edit();
+//        // lưu dữ liệu
+//        editor.putString("IMG", uri.toString());
+//        // lưu lại
+//        editor.commit();
+//    }
 }

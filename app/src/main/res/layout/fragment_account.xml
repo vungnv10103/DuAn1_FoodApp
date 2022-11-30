@@ -10,8 +10,8 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical"
-        android:gravity="center_horizontal">
+        android:gravity="center_horizontal"
+        android:orientation="vertical">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -20,30 +20,34 @@
             android:orientation="vertical">
 
             <LinearLayout
-                android:layout_width="178dp"
+                android:layout_width="wrap_content"
                 android:layout_height="239dp"
                 android:layout_marginTop="25dp"
                 android:gravity="center_horizontal"
                 android:orientation="vertical">
 
-                <de.hdodenhof.circleimageview.CircleImageView xmlns:app="http://schemas.android.com/apk/res-auto"
+                <de.hdodenhof.circleimageview.CircleImageView
                     android:id="@+id/profile_image"
                     android:layout_width="122dp"
                     android:layout_height="122dp"
-                    android:src="@drawable/burger1" />
+                    android:src="@drawable/avatar_default" />
 
                 <TextView
-                    android:id="@+id/textView"
-                    android:layout_width="101dp"
+                    android:id="@+id/tvNameUser"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="15dp"
                     android:text="Account"
                     android:textColor="@color/white"
-                    android:textSize="25sp"
+                    android:textSize="15sp"
                     android:textStyle="bold" />
 
                 <TextView
+
                     android:id="@+id/account_Email"
+
+                    android:id="@+id/tvEmail"
+
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="8dp"
@@ -55,15 +59,15 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal"
-                android:orientation="vertical"
-                android:layout_marginBottom="50dp">
+                android:layout_marginBottom="50dp"
+                android:orientation="vertical">
 
                 <LinearLayout
+                    android:id="@+id/btn_Account_Deals"
                     android:layout_width="299dp"
                     android:layout_height="64dp"
                     android:background="@drawable/btn_account_frame"
                     android:gravity="center_vertical"
-                    android:id="@+id/btn_Account_Deals"
                     android:orientation="horizontal">
 
                     <ImageView

@@ -20,7 +20,11 @@ import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.fpoly.foodapp.Admin.AdminActivity;
+import com.fpoly.foodapp.DAO.UsersDAO;
+import com.fpoly.foodapp.DAO.demo_item_cart_dao;
 import com.fpoly.foodapp.R;
+import com.fpoly.foodapp.modules.UsersModule;
+import com.fpoly.foodapp.modules.demo_cart_item;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
@@ -28,7 +32,9 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.UserInfo;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 
 public class LoginActivity extends AppCompatActivity {
     EditText edEmail, edPass;
@@ -36,6 +42,9 @@ public class LoginActivity extends AppCompatActivity {
     ImageView imgShowHidePwd;
     private CheckBox chbRemember;
     private ProgressDialog progressDialog;
+    static UsersDAO usersDAO;
+    UsersModule item;
+    ArrayList<UsersModule> list;
 
     boolean doubleBackToExitPressedOnce = false;
 
@@ -43,12 +52,9 @@ public class LoginActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
-        chbRemember = findViewById(R.id.checkBoxRemember);
-        edEmail = findViewById(R.id.edEmail);
-        edPass =findViewById(R.id.edPass);
-        btnLogin = findViewById(R.id.btnSignIn);
-        imgShowHidePwd = findViewById(R.id.img_show_hide_pwd);
-        progressDialog = new ProgressDialog(this);
+
+        init();
+        usersDAO = new UsersDAO(getApplicationContext());
 
 
         SharedPreferences pref = getSharedPreferences("USER_FILE", MODE_PRIVATE);
@@ -58,11 +64,10 @@ public class LoginActivity extends AppCompatActivity {
         imgShowHidePwd.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (edPass.getTransformationMethod().equals(HideReturnsTransformationMethod.getInstance())){
+                if (edPass.getTransformationMethod().equals(HideReturnsTransformationMethod.getInstance())) {
                     edPass.setTransformationMethod(PasswordTransformationMethod.getInstance());
                     imgShowHidePwd.setImageResource(R.drawable.ic_baseline_eye_off_24);
-                }
-                else {
+                } else {
                     edPass.setTransformationMethod(HideReturnsTransformationMethod.getInstance());
                     imgShowHidePwd.setImageResource(R.drawable.ic_baseline_eye_on_24);
                 }
@@ -71,60 +76,105 @@ public class LoginActivity extends AppCompatActivity {
         });
 
 
-
         btnLogin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
+                list = (ArrayList<UsersModule>) usersDAO.getALL();
                 String email = edEmail.getText().toString().trim();
                 String pass = edPass.getText().toString().trim();
-                FirebaseAuth auth = FirebaseAuth.getInstance();
+                if (email.equals("foodapp@admin.com") && pass.equals("vung123")) {
+                    Intent intent = new Intent(LoginActivity.this, AdminActivity.class);
+                    startActivity(intent);
+                } else {
+                    FirebaseAuth auth = FirebaseAuth.getInstance();
+
+                    progressDialog.show();
+                    auth.signInWithEmailAndPassword(email, pass)
+                            .addOnCompleteListener(LoginActivity.this, new OnCompleteListener<AuthResult>() {
+                                @Override
+                                public void onComplete(@NonNull Task<AuthResult> task) {
+                                    int temp = 0;
 
 
-                progressDialog.show();
-                auth.signInWithEmailAndPassword(email , pass)
-                        .addOnCompleteListener(LoginActivity.this, new OnCompleteListener<AuthResult>() {
-                            @Override
-                            public void onComplete(@NonNull Task<AuthResult> task) {
+                                    if (task.isSuccessful()) {
+
+                                        // Sign in success, update UI with the signed-in user's information
+                                        if (email.equals("admin@gmail.com")) {
+                                            Intent intent = new Intent(LoginActivity.this, AdminActivity.class);
+                                            startActivity(intent);
+                                        } else {
+                                            progressDialog.dismiss();
+                                            rememberUser(email, pass, chbRemember.isChecked());
+                                            item = new UsersModule();
+                                            item.bitmap = "null";
+                                            item.name = "null";
+                                            item.email = email;
+                                            item.pass = pass;
+                                            item.address = "null";
+                                            item.phoneNumber = "null";
+                                            for (UsersModule item : list) {
+                                                if (email.toLowerCase(Locale.ROOT).equals(item.email.toLowerCase(Locale.ROOT))) {
+                                                    temp++;
+                                                }
+                                            }
+                                            // check duplicate data
+                                            if (temp > 0) {
+                                                Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+                                                startActivity(intent);
+                                                finishAffinity();
+                                            } else {
+                                                if (usersDAO.insert(item) > 0) {
+                                                    // thêm lần đầu
+//                                                    Toast.makeText(getApplicationContext(), "Success.", Toast.LENGTH_SHORT).show();
+                                                    Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+                                                    startActivity(intent);
+                                                    finishAffinity();
+                                                } else {
+                                                    Toast.makeText(getApplicationContext(), "Thêm thất bại.", Toast.LENGTH_SHORT).show();
+                                                }
+                                            }
 
 
-                                if (task.isSuccessful()) {
-
-                                    // Sign in success, update UI with the signed-in user's information
-                                    if(email.equals("admin@gmail.com".trim())){
-                                        Intent intent = new Intent(LoginActivity.this , AdminActivity.class);
-                                        startActivity(intent);
-                                    }else {
+                                        }
+                                    } else {
+                                        // If sign in fails, display a message to the user.
                                         progressDialog.dismiss();
-                                        rememberUser(email, pass, chbRemember.isChecked());
-                                        Intent intent = new Intent(LoginActivity.this, MainActivity.class);
-                                        startActivity(intent);
-                                        finishAffinity();
-                                    }
-                                } else {
-                                    // If sign in fails, display a message to the user.
-                                    progressDialog.dismiss();
-                                    Toast.makeText(LoginActivity.this, "Tài khoản hoặc mật khẩu không đúng.",
-                                            Toast.LENGTH_SHORT).show();
+                                        Toast.makeText(LoginActivity.this, "Tài khoản hoặc mật khẩu không đúng.",
+                                                Toast.LENGTH_SHORT).show();
 
+                                    }
                                 }
-                            }
-                        });
+                            });
+                }
+
+
             }
         });
 
     }
 
+    public void init() {
+        chbRemember = findViewById(R.id.checkBoxRemember);
+        edEmail = findViewById(R.id.edEmail);
+        edPass = findViewById(R.id.edPass);
+        btnLogin = findViewById(R.id.btnSignIn);
+        imgShowHidePwd = findViewById(R.id.img_show_hide_pwd);
+        progressDialog = new ProgressDialog(this);
+    }
+
     public void register(View view) {
-        Intent intent = new Intent(LoginActivity.this , RegisterActivity.class);
+        Intent intent = new Intent(LoginActivity.this, RegisterActivity.class);
         startActivity(intent);
         finishAffinity();
     }
-    public void rememberUser(String u , String p, boolean status){
+
+    public void rememberUser(String u, String p, boolean status) {
         SharedPreferences pref = getSharedPreferences("USER_FILE", MODE_PRIVATE);
         SharedPreferences.Editor editor = pref.edit();
-        if(!status){
+        if (!status) {
             editor.clear();
-        }else {
+        } else {
             // lưu dữ liệu
             editor.putString("EMAIL", u);
             editor.putString("PASSWORD", p);
@@ -133,36 +183,37 @@ public class LoginActivity extends AppCompatActivity {
         // lưu lại
         editor.commit();
     }
-    public void showInformation(){
+
+    public void showInformation() {
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
-        if (user == null){
+        if (user == null) {
             return;
         }
         String name = user.getDisplayName();
         String email = user.getEmail();
         Uri photoUrl = user.getPhotoUrl();
 
-        if (name == null){
+        if (name == null) {
 
         }
 
 
     }
-    @Override
-    public void onBackPressed() {
-        if (doubleBackToExitPressedOnce ) {
-            super.onBackPressed();
-            return;
-        }
-        this.doubleBackToExitPressedOnce = true;
-        Toast.makeText(this, "Please click BACK again to exit.", Toast.LENGTH_SHORT).show();
-
-        new Handler(Looper.getMainLooper()).postDelayed(new Runnable() {
-
-            @Override
-            public void run() {
-                doubleBackToExitPressedOnce = false;
-            }
-        }, 3000);
-    }
+//    @Override
+//    public void onBackPressed() {
+//        if (doubleBackToExitPressedOnce ) {
+//            super.onBackPressed();
+//            return;
+//        }
+//        this.doubleBackToExitPressedOnce = true;
+//        Toast.makeText(this, "Please click BACK again to exit.", Toast.LENGTH_SHORT).show();
+//
+//        new Handler(Looper.getMainLooper()).postDelayed(new Runnable() {
+//
+//            @Override
+//            public void run() {
+//                doubleBackToExitPressedOnce = false;
+//            }
+//        }, 3000);
+//    }
 }

@@ -1,47 +1,28 @@
 package com.fpoly.foodapp.modules;
 
+import android.graphics.Bitmap;
+
 public class UsersModule {
-    private int id;
-    private String name;
-    private int phoneNumber;
-    private String address;
 
-    public UsersModule(int id, String name, int phoneNumber, String address) {
+    public int id;
+    public String bitmap;
+    public String name;
+    public String email;
+    public String pass;
+    public String phoneNumber;
+    public String address;
+
+    public UsersModule(int id, String bitmap, String name, String email, String pass, String phoneNumber, String address) {
         this.id = id;
+        this.bitmap = bitmap;
         this.name = name;
+        this.email = email;
+        this.pass = pass;
         this.phoneNumber = phoneNumber;
         this.address = address;
     }
-
-    public int getId() {
-        return id;
+    public UsersModule() {
     }
 
-    public void setId(int id) {
-        this.id = id;
-    }
 
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public int getPhoneNumber() {
-        return phoneNumber;
-    }
-
-    public void setPhoneNumber(int phoneNumber) {
-        this.phoneNumber = phoneNumber;
-    }
-
-    public String getAddress() {
-        return address;
-    }
-
-    public void setAddress(String address) {
-        this.address = address;
-    }
 }
