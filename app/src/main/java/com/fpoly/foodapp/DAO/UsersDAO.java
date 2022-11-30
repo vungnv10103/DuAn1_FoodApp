@@ -35,13 +35,13 @@ public class UsersDAO {
         return db.insert("User", null, values);
     }
 
-    public int update(UsersModule obj) {
+    public int updateProfile( UsersModule obj) {
         ContentValues values = new ContentValues();
         values.put("name", obj.name);
         values.put("phoneNumber", obj.phoneNumber);
         values.put("address", obj.address);
 
-        return db.update("User", values, "id=?", new String[]{String.valueOf(obj.id)});
+        return db.update("User", values, "email=?", new String[]{obj.email});
     }
 
     public int updateImg(UsersModule obj) {
@@ -56,12 +56,21 @@ public class UsersDAO {
         List<UsersModule> list = getData(sql, email);
         return list.get(0).name;
     }
-
-    public String getEmail(String email) {
+    public String getPhone(String email) {
         String sql = "SELECT * FROM User WHERE email=?";
         List<UsersModule> list = getData(sql, email);
-        return list.get(0).email;
+        return list.get(0).phoneNumber;
+    }
+    public String getAddress(String email) {
+        String sql = "SELECT * FROM User WHERE email=?";
+        List<UsersModule> list = getData(sql, email);
+        return list.get(0).address;
+    }
 
+    public String getUriImg(String email) {
+        String sql = "SELECT * FROM User WHERE email=?";
+        List<UsersModule> list = getData(sql, email);
+        return list.get(0).bitmap;
     }
 
     public int delete(int id) {

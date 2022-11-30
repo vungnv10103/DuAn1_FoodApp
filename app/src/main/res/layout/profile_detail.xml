@@ -29,67 +29,68 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical"
-        android:gravity="center_horizontal">
+        android:gravity="center_horizontal"
+        android:orientation="vertical">
 
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:orientation="vertical"
+            android:layout_marginTop="25dp"
             android:gravity="center_vertical"
-            android:layout_marginTop="25dp">
+            android:orientation="vertical">
 
             <TextView
                 android:layout_width="93dp"
                 android:layout_height="38dp"
-                android:text="Họ Và Tên:" />
+                android:text="Họ Và Tên: " />
 
             <EditText
+                android:id="@+id/edEditName"
                 android:layout_width="356dp"
-                android:layout_height="wrap_content"
-                android:id="@+id/account_Fix_Name"/>
+                android:layout_height="wrap_content" />
         </LinearLayout>
 
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:orientation="vertical"
+            android:layout_marginTop="25dp"
             android:gravity="center_vertical"
-            android:layout_marginTop="25dp">
+            android:orientation="vertical">
 
             <TextView
                 android:layout_width="93dp"
                 android:layout_height="38dp"
-                android:text="Số Điện Thoại:" />
+                android:text="Số Điện Thoại: " />
 
             <EditText
+                android:id="@+id/edEditPhoneNumber"
                 android:layout_width="356dp"
-                android:layout_height="wrap_content"
-                android:id="@+id/account_Fix_PhoneNumber"/>
+                android:layout_height="wrap_content" />
         </LinearLayout>
 
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:orientation="vertical"
+            android:layout_marginTop="25dp"
             android:gravity="center_vertical"
-            android:layout_marginTop="25dp">
+            android:orientation="vertical">
 
             <TextView
                 android:layout_width="93dp"
                 android:layout_height="38dp"
-                android:text="Email:" />
+                android:text="Address: " />
 
             <EditText
+                android:id="@+id/edEditAddress"
                 android:layout_width="356dp"
-                android:layout_height="wrap_content"
-                android:id="@+id/account_Fix_Email"/>
+                android:layout_height="wrap_content" />
         </LinearLayout>
 
         <Button
-            android:layout_height="wrap_content"
+            android:id="@+id/btnSave"
             android:layout_width="wrap_content"
-            android:text="Thay Đổi"
-            android:layout_marginTop="25dp"/>
+            android:layout_height="wrap_content"
+            android:layout_marginTop="25dp"
+            android:text="Lưu" />
     </LinearLayout>
 </LinearLayout>

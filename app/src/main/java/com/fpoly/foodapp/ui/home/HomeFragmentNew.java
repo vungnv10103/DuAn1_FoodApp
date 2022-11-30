@@ -26,6 +26,7 @@ import android.widget.SearchView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.fpoly.foodapp.DAO.UsersDAO;
 import com.fpoly.foodapp.R;
 import com.fpoly.foodapp.adapters.CategoriesAdapter;
 import com.fpoly.foodapp.adapters.RecommendAdapter;
@@ -56,6 +57,7 @@ public class HomeFragmentNew extends Fragment implements UpdateVerticalRec {
     EditText edSearch;
     TextView tvUserName;
     ImageView imgAvatar, imgDeleteSearch;
+    static UsersDAO usersDAO;
 
     BottomNavigationView viewBottom;
     private ViewPager2 viewPager2;
@@ -84,18 +86,23 @@ public class HomeFragmentNew extends Fragment implements UpdateVerticalRec {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_home_new, container, false);
+        usersDAO = new UsersDAO(getActivity());
+        imgAvatar = view.findViewById(R.id.imgAvatar);
         SharedPreferences pref = getActivity().getSharedPreferences("USER_FILE", MODE_PRIVATE);
         tvUserName = view.findViewById(R.id.tvUserNameHome);
         tvUserName.setText(pref.getString("name", ""));
-        imgAvatar = view.findViewById(R.id.imgAvatar);
-        String path = pref.getString("IMG", "");
-        Bitmap bitmap = null;
+        String email = pref.getString("EMAIL", "");
+
         try {
+            String path = usersDAO.getUriImg(email);
+            Bitmap bitmap = null;
             bitmap = MediaStore.Images.Media.getBitmap(getActivity().getContentResolver(), Uri.parse(path));
+            imgAvatar.setImageBitmap(bitmap);
         } catch (IOException e) {
             e.printStackTrace();
         }
-        imgAvatar.setImageBitmap(bitmap);
+
+
         recyclerViewMainPopular = view.findViewById(R.id.Main_popular);
         recyclerViewMain = view.findViewById(R.id.MainView);
         edSearch = view.findViewById(R.id.edSearchHome);
