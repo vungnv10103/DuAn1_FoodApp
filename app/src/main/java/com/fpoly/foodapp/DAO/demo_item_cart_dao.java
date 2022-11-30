@@ -9,6 +9,7 @@ import android.database.sqlite.SQLiteDatabase;
 import androidx.annotation.NonNull;
 
 import com.fpoly.foodapp.database.DbHelper;
+import com.fpoly.foodapp.modules.UsersModule;
 import com.fpoly.foodapp.modules.demo_cart_item;
 
 import java.util.ArrayList;
@@ -23,6 +24,7 @@ public class demo_item_cart_dao {
     }
     public long insert(demo_cart_item obj){
         ContentValues values = new ContentValues();
+        values.put("mCheck", obj.check );
         values.put("name", obj.name);
         values.put("cost", obj.cost);
         values.put("quantities", obj.quantities);
@@ -31,6 +33,11 @@ public class demo_item_cart_dao {
     }
     public int delete(int id){
         return db.delete("ItemCart","id=?", new String[]{String.valueOf(id)});
+    }
+    public int getCheck(int id) {
+        String sql = "SELECT * FROM ItemCart WHERE id=?";
+        List<demo_cart_item> list = getData(sql, String.valueOf(id));
+        return list.get(0).check;
     }
 //    public int quant(){
 //
@@ -50,6 +57,7 @@ public class demo_item_cart_dao {
         while (cursor.moveToNext()){
             demo_cart_item obj = new demo_cart_item();
             obj.id = Integer.parseInt(cursor.getString(cursor.getColumnIndex("id")));
+            obj.check = Integer.parseInt(cursor.getString(cursor.getColumnIndex("mCheck")));
             obj.name = cursor.getString(cursor.getColumnIndex("name"));
             obj.cost = Double.valueOf(cursor.getString(cursor.getColumnIndex("cost")));
             obj.quantities = Integer.parseInt(cursor.getString(cursor.getColumnIndex("quantities")));

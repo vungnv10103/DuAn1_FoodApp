@@ -18,23 +18,23 @@ import com.fpoly.foodapp.ui.favourite.fragment.FragmentAdapter;
 import com.google.android.material.tabs.TabLayout;
 
 public class FavouriteFragment extends Fragment {
-TabLayout tabLayout;
-ViewPager2 viewPager2;
-FragmentAdapter fragmentAdapter;
+    TabLayout tabLayout;
+    ViewPager2 viewPager2;
+    FragmentAdapter fragmentAdapter;
 
-  private FragmentActivity myContext;
+    private FragmentActivity myContext;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
 
 
-       View root = inflater.inflate(R.layout.fragment_favourite,container,false);
+        View root = inflater.inflate(R.layout.fragment_favourite, container, false);
         tabLayout = root.findViewById(R.id.tab_layout);
         viewPager2 = root.findViewById(R.id.view_page2);
 
         FragmentManager fm = getActivity().getSupportFragmentManager();
-        fragmentAdapter= new FragmentAdapter(fm,getLifecycle());
-         viewPager2.setAdapter(fragmentAdapter);
+        fragmentAdapter = new FragmentAdapter(fm, getLifecycle());
+        viewPager2.setAdapter(fragmentAdapter);
 
         tabLayout.addTab(tabLayout.newTab().setText("Featured"));
         tabLayout.addTab(tabLayout.newTab().setText("Popular"));
@@ -55,11 +55,12 @@ FragmentAdapter fragmentAdapter;
 
             }
         });
-    viewPager2.registerOnPageChangeCallback(new ViewPager2.OnPageChangeCallback() {
-        @Override
-        public void onPageSelected(int position) {
-            tabLayout.selectTab(tabLayout.getTabAt(position));        }
-    });
+        viewPager2.registerOnPageChangeCallback(new ViewPager2.OnPageChangeCallback() {
+            @Override
+            public void onPageSelected(int position) {
+                tabLayout.selectTab(tabLayout.getTabAt(position));
+            }
+        });
 
         return root;
     }

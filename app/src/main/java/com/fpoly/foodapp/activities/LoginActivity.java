@@ -2,14 +2,23 @@ package com.fpoly.foodapp.activities;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
 
+import android.Manifest;
 import android.app.ProgressDialog;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.net.Uri;
+import android.net.wifi.WifiManager;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
+import android.text.format.Formatter;
 import android.text.method.HideReturnsTransformationMethod;
 import android.text.method.PasswordTransformationMethod;
 import android.view.View;
@@ -23,6 +32,7 @@ import com.fpoly.foodapp.Admin.AdminActivity;
 import com.fpoly.foodapp.DAO.UsersDAO;
 import com.fpoly.foodapp.DAO.demo_item_cart_dao;
 import com.fpoly.foodapp.R;
+import com.fpoly.foodapp.Utility.NetworkChangeListener;
 import com.fpoly.foodapp.modules.UsersModule;
 import com.fpoly.foodapp.modules.demo_cart_item;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -46,6 +56,7 @@ public class LoginActivity extends AppCompatActivity {
     UsersModule item;
     ArrayList<UsersModule> list;
 
+    NetworkChangeListener networkChangeListener = new NetworkChangeListener();
     boolean doubleBackToExitPressedOnce = false;
 
     @Override
@@ -137,7 +148,8 @@ public class LoginActivity extends AppCompatActivity {
 
 
                                         }
-                                    } else {
+                                    }
+                                    else {
                                         // If sign in fails, display a message to the user.
                                         progressDialog.dismiss();
                                         Toast.makeText(LoginActivity.this, "Tài khoản hoặc mật khẩu không đúng.",
@@ -183,22 +195,42 @@ public class LoginActivity extends AppCompatActivity {
         // lưu lại
         editor.commit();
     }
-
-    public void showInformation() {
-        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
-        if (user == null) {
-            return;
+    // phân quyền
+    public boolean phanQuyen() {
+        if (Build.VERSION.SDK_INT >= 23) {
+            // 1. Nếu các quyền đã đc gán thì return true
+            if (checkSelfPermission(Manifest.permission.ACCESS_NETWORK_STATE) == PackageManager.PERMISSION_GRANTED
+                    && checkSelfPermission(Manifest.permission.ACCESS_WIFI_STATE) == PackageManager.PERMISSION_GRANTED) {
+                return true;
+            }
+            // 2. Nếu các quyền chưa đc gán thì cần xin cấp quyền
+            else {
+                ActivityCompat.requestPermissions(LoginActivity.this,
+                        new String[]{Manifest.permission.ACCESS_NETWORK_STATE,
+                                Manifest.permission.ACCESS_WIFI_STATE,
+                        }, 1);
+                return false;
+            }
+        } else {
+            return true;
         }
-        String name = user.getDisplayName();
-        String email = user.getEmail();
-        Uri photoUrl = user.getPhotoUrl();
-
-        if (name == null) {
-
-        }
-
-
     }
+    @Override
+    protected void onStart() {
+        IntentFilter intentFilter = new IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION);
+        registerReceiver(networkChangeListener, intentFilter);
+        super.onStart();
+    }
+
+    @Override
+    protected void onStop() {
+        unregisterReceiver(networkChangeListener);
+        super.onStop();
+    }
+
+
+
+
 //    @Override
 //    public void onBackPressed() {
 //        if (doubleBackToExitPressedOnce ) {

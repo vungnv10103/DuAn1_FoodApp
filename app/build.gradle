@@ -35,10 +35,10 @@ android {
 
 dependencies {
 
+    // Swipe refresh layout
+    implementation "androidx.swiperefreshlayout:swiperefreshlayout:1.1.0"
 
     implementation 'androidx.coordinatorlayout:coordinatorlayout:1.1.0'
-
-
     implementation 'com.makeramen:roundedimageview:2.3.0'
 
     implementation 'com.squareup.retrofit2:retrofit:2.1.0'

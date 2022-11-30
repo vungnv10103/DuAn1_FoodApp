@@ -32,14 +32,15 @@ import com.google.android.material.snackbar.Snackbar;
 import java.util.ArrayList;
 
 public class CartFragment extends Fragment {
+
     private ConstraintLayout checkOut, titleCart;
     RecyclerView recyclerView;
     private ArrayList<demo_cart_item> list;
     demo_cart_item_adapter demo_cart_item_adapter;
-    static com.fpoly.foodapp.DAO.demo_item_cart_dao demo_item_cart_dao;
+    static demo_item_cart_dao demo_item_cart_dao;
     BottomNavigationView navView;
-
     int temp = 0;
+
 
     TextView tvToTal, tvDelivery, tvTax;
     TextView tvToTalPriceFinal;
@@ -71,6 +72,7 @@ public class CartFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_cart, container, false);
+        demo_item_cart_dao = new demo_item_cart_dao(getContext());
         titleCart = view.findViewById(R.id.title_cart);
         checkOut = view.findViewById(R.id.checkOut);
         tvToTal = view.findViewById(R.id.total_price_item);
@@ -80,32 +82,17 @@ public class CartFragment extends Fragment {
         recyclerView = view.findViewById(R.id.rec_cart);
 
         navView = getActivity().findViewById(R.id.nav_view);
-        double totalPriceItem = total();
-        tvToTal.setText(String.format("%.2f", totalPriceItem) + " $");
-        tvTax.setText(String.format("%.2f", totalPriceItem * 0.1) + " $");
-        tvDelivery.setText(String.format("%.2f", totalPriceItem * 0.05) + " $");
-        double totalFinal = totalPriceItem + totalPriceItem * 0.1 + totalPriceItem * 0.05;
+        checkItemSelected(1);
 
-        tvToTalPriceFinal.setText(String.format("%.2f", totalFinal) + " $");
+
         listData();
 
 
-        checkOut.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                sharedPreferences = getContext().getSharedPreferences(TOTAL_KEY, Context.MODE_PRIVATE);
-                editor = sharedPreferences.edit();
-                editor.putFloat(TOTAL_FINAL_KEY, (float) totalFinal);
-                editor.commit();
 
-
-            }
-        });
         return view;
     }
 
     private void listData() {
-        demo_item_cart_dao = new demo_item_cart_dao(getContext());
         list = (ArrayList<demo_cart_item>) demo_item_cart_dao.getALL();
         if (list.size() == 0) {
             titleCart.setVisibility(View.INVISIBLE);
@@ -122,9 +109,9 @@ public class CartFragment extends Fragment {
 
     }
 
+
     public Double total() {
         double price = 0;
-        demo_item_cart_dao = new demo_item_cart_dao(getContext());
         list = (ArrayList<demo_cart_item>) demo_item_cart_dao.getALL();
         for (int i = 0; i < list.size(); i++) {
             price += list.get(i).cost;
@@ -172,4 +159,30 @@ public class CartFragment extends Fragment {
         }).attachToRecyclerView(recyclerView);
 
     }
+    public void checkItemSelected(int mCheck){
+
+        if (mCheck != 0){
+            demo_item_cart_dao = new demo_item_cart_dao(getContext());
+            double totalPriceItem = total();
+            tvToTal.setText(String.format("%.2f", totalPriceItem) + " $");
+            tvTax.setText(String.format("%.2f", totalPriceItem * 0.1) + " $");
+            tvDelivery.setText(String.format("%.2f", totalPriceItem * 0.05) + " $");
+            double totalFinal = totalPriceItem + totalPriceItem * 0.1 + totalPriceItem * 0.05;
+            tvToTalPriceFinal.setText(String.format("%.2f", totalFinal) + " $");
+            checkOut.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    sharedPreferences = getContext().getSharedPreferences(TOTAL_KEY, Context.MODE_PRIVATE);
+                    editor = sharedPreferences.edit();
+                    editor.putFloat(TOTAL_FINAL_KEY, (float) totalFinal);
+                    editor.commit();
+
+
+                }
+            });
+        }
+    }
+
+
+
 }

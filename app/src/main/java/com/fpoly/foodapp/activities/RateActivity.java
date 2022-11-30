@@ -11,6 +11,7 @@ import android.widget.RatingBar;
 import android.widget.Toast;
 
 import com.fpoly.foodapp.R;
+import com.fpoly.foodapp.ui.account.AccountManagerFragment;
 
 public class RateActivity extends AppCompatActivity {
     RatingBar ratingBar;
@@ -75,5 +76,6 @@ public class RateActivity extends AppCompatActivity {
 
         Toast.makeText(this, reply, Toast.LENGTH_SHORT).show();
         startActivity(new Intent(this, MainActivity.class));
+
     }
 }
