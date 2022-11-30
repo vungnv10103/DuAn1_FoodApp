@@ -159,9 +159,15 @@ public class AccountManagerFragment extends Fragment {
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
-                edFullName.setText(usersDAO.getNameUser(email));
-                edPhoneNumber.setText(usersDAO.getPhone(email));
-                edAddress.setText(usersDAO.getAddress(email));
+                String fullName = usersDAO.getNameUser(email);
+                String phoneNumber = usersDAO.getPhone(email);
+                String address = usersDAO.getAddress(email);
+                if (!(fullName.equals("null") && phoneNumber.equals("null") && address.equals("null"))){
+                    edFullName.setText(fullName);
+                    edPhoneNumber.setText(phoneNumber);
+                    edAddress.setText(address);
+                }
+
                 btnSave = dialog.findViewById(R.id.btnSave);
 
 
@@ -296,8 +302,10 @@ public class AccountManagerFragment extends Fragment {
         if (list.size() == 0) {
             return;
         }
-        tvNameUser.setText(usersDAO.getNameUser(email));
-
+        String name = usersDAO.getNameUser(email);
+        if (!name.equals("null") || name.isEmpty()){
+            tvNameUser.setText(usersDAO.getNameUser(email));
+        }
         try {
             String path = usersDAO.getUriImg(email);
             Bitmap bitmap = MediaStore.Images.Media.getBitmap(getActivity().getContentResolver(), Uri.parse(path));

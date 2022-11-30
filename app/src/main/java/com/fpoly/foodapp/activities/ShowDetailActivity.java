@@ -46,7 +46,7 @@ public class ShowDetailActivity extends AppCompatActivity {
         String title = bundle.getString("title");
         tvTitle.setText(title);
         double price = bundle.getDouble("price");
-        tvPrice.setText("$ " + price);
+        tvPrice.setText(String.format("$ %s", price));
 
 
         tvTotalPrices.setText("$ " + String.format("%.2f", price));
@@ -83,6 +83,7 @@ public class ShowDetailActivity extends AppCompatActivity {
                 item = new demo_cart_item();
                 int quanti = Integer.parseInt(tvQuantity.getText().toString());
                 double cost_total = price * quanti;
+                item.check = 0;
                 item.name = title;
                 item.cost = cost_total;
                 item.quantities = quanti;

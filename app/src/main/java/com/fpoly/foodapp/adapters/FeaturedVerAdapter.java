@@ -1,5 +1,6 @@
 package com.fpoly.foodapp.adapters;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
@@ -41,7 +42,7 @@ public class FeaturedVerAdapter extends RecyclerView.Adapter<FeaturedVerAdapter.
     }
 
     @Override
-    public void onBindViewHolder(@NonNull FeaturedVerAdapter.ViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull FeaturedVerAdapter.ViewHolder holder, @SuppressLint("RecyclerView") int position) {
         holder.img.setImageResource(list.get(position).getImg());
         holder.imgAdd.setImageResource(list.get(position).getResource_image());
         holder.tvTitle.setText(list.get(position).getTitle());
