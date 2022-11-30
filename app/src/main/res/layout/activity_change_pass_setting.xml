@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:gravity="center_horizontal"
+    android:orientation="vertical"
+    android:background="@color/mediumGray"
+    tools:context=".activities.ChangePass_Setting_Activity">
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="85dp"
+        android:gravity="center"
+        android:background="#FF5353"
+        android:text="Đổi Mật Khẩu"
+        android:textStyle="bold"
+        android:textColor="@color/white"
+        android:textSize="25dp"/>
+
+    <EditText
+        android:id="@+id/changePass_currentPass"
+        android:layout_width="349dp"
+        android:layout_height="66dp"
+        android:hint="Mật Khẩu Hiện Tại"
+        android:layout_marginTop="30dp"
+        android:textColor="@color/white"
+        android:textColorHint="#A9FFFFFF"
+        android:layout_marginBottom="30dp"/>
+
+    <EditText
+        android:layout_width="349dp"
+        android:layout_height="66dp"
+        android:id="@+id/changePass_newPass"
+        android:hint="Mật Khẩu Mới"
+        android:textColor="@color/white"
+        android:textColorHint="#A9FFFFFF"
+        android:layout_marginBottom="30dp"/>
+
+    <EditText
+        android:layout_width="349dp"
+        android:layout_height="66dp"
+        android:textColor="@color/white"
+        android:textColorHint="#A9FFFFFF"
+        android:id="@+id/changePass_checkPass"
+        android:hint="Xác Nhận Mật Khẩu Mới"
+        android:layout_marginBottom="50dp"/>
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="XÁC NHẬN ĐỔI"
+        android:id="@+id/btn_ChangePass_setting"/>
+</LinearLayout>
