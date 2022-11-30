@@ -5,6 +5,7 @@ import static android.content.Context.MODE_PRIVATE;
 
 import android.Manifest;
 import android.annotation.SuppressLint;
+import android.app.Dialog;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
@@ -17,6 +18,9 @@ import android.provider.MediaStore;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
+import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -74,10 +78,10 @@ public class AccountManagerFragment extends Fragment {
                     item.phoneNumber = "null";
                     item.address = "null";
 
-                    if (usersDAO.updateImg(item)> 0){
+                    if (usersDAO.updateImg(item) > 0) {
                         Toast.makeText(getActivity(), "Lưu ảnh thành công !", Toast.LENGTH_SHORT).show();
                     }
-                    rememberImg(uri);
+//                    rememberImg(uri);
 //                    Toast.makeText(getActivity(), "" + realPath, Toast.LENGTH_SHORT).show();
 
 //                    File file = new File(realPath);
@@ -121,11 +125,76 @@ public class AccountManagerFragment extends Fragment {
 
         usersDAO = new UsersDAO(getActivity());
         item = new UsersModule();
+        imgProfile = root.findViewById(R.id.profile_image);
         tvNameUser = root.findViewById(R.id.tvNameUser);
         tvEmail = root.findViewById(R.id.tvEmail);
         SharedPreferences pref = getActivity().getSharedPreferences("USER_FILE", MODE_PRIVATE);
         String email = pref.getString("EMAIL", "");
         tvEmail.setText(email);
+        tvEmail.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                ImageView imgPhoto;
+                EditText edFullName, edPhoneNumber, edAddress;
+                Button btnSave;
+
+                Dialog dialog = new Dialog(v.getContext());
+                dialog.setContentView(R.layout.profile_detail);
+
+                imgPhoto = dialog.findViewById(R.id.imgProfileEdit);
+                edFullName = dialog.findViewById(R.id.edEditName);
+                edPhoneNumber = dialog.findViewById(R.id.edEditPhoneNumber);
+                edAddress = dialog.findViewById(R.id.edEditAddress);
+
+                try {
+                    String path = usersDAO.getUriImg(email);
+                    Bitmap bitmap = MediaStore.Images.Media.getBitmap(getActivity().getContentResolver(), Uri.parse(path));
+                    imgPhoto.setImageBitmap(bitmap);
+
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+                edFullName.setText(usersDAO.getNameUser(email));
+                edPhoneNumber.setText(usersDAO.getPhone(email));
+                edAddress.setText(usersDAO.getAddress(email));
+                btnSave = dialog.findViewById(R.id.btnSave);
+
+
+                btnSave.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        String fullName = edFullName.getText().toString().trim();
+                        String phoneNumber = edPhoneNumber.getText().toString().trim();
+                        String address = edAddress.getText().toString().trim();
+                        item.email = tvEmail.getText().toString();
+                        item.name = fullName;
+                        item.phoneNumber = phoneNumber;
+                        item.address = address;
+
+                        if (fullName.isEmpty() || phoneNumber.isEmpty() || address.isEmpty()){
+                            Toast.makeText(getContext(), "Vui lòng điền đủ thông tin !", Toast.LENGTH_SHORT).show();
+                            return;
+                        }
+                        if (usersDAO.updateProfile(item) > 0) {
+                            Toast.makeText(getContext(), "Update Success !", Toast.LENGTH_SHORT).show();
+
+                        }
+                        getSetOtherData(email);
+                        dialog.dismiss();
+                    }
+                });
+
+
+
+                WindowManager.LayoutParams lp = new WindowManager.LayoutParams();
+                lp.copyFrom(dialog.getWindow().getAttributes());
+                lp.width = WindowManager.LayoutParams.MATCH_PARENT;
+                lp.height = WindowManager.LayoutParams.MATCH_PARENT;
+
+                dialog.getWindow().setAttributes(lp);
+                dialog.show();
+            }
+        });
         getSetOtherData(email);
         linearLayout = root.findViewById(R.id.Logout);
         btnDeals = root.findViewById(R.id.btn_Account_Deals);
@@ -140,17 +209,7 @@ public class AccountManagerFragment extends Fragment {
                 startActivity(intent);
             }
         });
-        SharedPreferences pref1 = getActivity().getSharedPreferences("USER_FILE", MODE_PRIVATE);
-        String path = pref1.getString("IMG", "");
-
         imgProfile = root.findViewById(R.id.profile_image);
-        Bitmap bitmap = null;
-        try {
-            bitmap = MediaStore.Images.Media.getBitmap(getActivity().getContentResolver(), Uri.parse(path));
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        imgProfile.setImageBitmap(bitmap);
         imgProfile.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -233,6 +292,16 @@ public class AccountManagerFragment extends Fragment {
             return;
         }
         tvNameUser.setText(usersDAO.getNameUser(email));
+
+        try {
+            String path = usersDAO.getUriImg(email);
+            Bitmap bitmap = MediaStore.Images.Media.getBitmap(getActivity().getContentResolver(), Uri.parse(path));
+            imgProfile.setImageBitmap(bitmap);
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
         SharedPreferences pref = getActivity().getSharedPreferences("USER_FILE", MODE_PRIVATE);
         SharedPreferences.Editor editor = pref.edit();
         editor.putString("name", usersDAO.getNameUser(email));
@@ -241,12 +310,12 @@ public class AccountManagerFragment extends Fragment {
 
 
     }
-    public void rememberImg(Uri uri) {
-        SharedPreferences pref = getActivity().getSharedPreferences("USER_FILE", MODE_PRIVATE);
-        SharedPreferences.Editor editor = pref.edit();
-        // lưu dữ liệu
-        editor.putString("IMG", uri.toString());
-        // lưu lại
-        editor.commit();
-    }
+//    public void rememberImg(Uri uri) {
+//        SharedPreferences pref = getActivity().getSharedPreferences("USER_FILE", MODE_PRIVATE);
+//        SharedPreferences.Editor editor = pref.edit();
+//        // lưu dữ liệu
+//        editor.putString("IMG", uri.toString());
+//        // lưu lại
+//        editor.commit();
+//    }
 }
