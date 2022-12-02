@@ -1,12 +1,12 @@
 package com.fpoly.foodapp.modules;
 
-public class Food {
+public class RecommendedModule {
     private int img;
     private String title ;
     private double money;
     private int resource_image;
 
-    public Food(int img, String title, double money, int resource_image) {
+    public RecommendedModule(int img, String title, double money, int resource_image) {
         this.img = img;
         this.title = title;
         this.money = money;
@@ -45,7 +45,7 @@ public class Food {
         this.resource_image = resource_image;
     }
 
-    public Food() {
+    public RecommendedModule() {
     }
 }
 

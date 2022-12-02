@@ -2,16 +2,16 @@ package com.fpoly.foodapp.modules;
 
 
 
-public class Category {
+public class CategoryModule {
     private int image;
     private String name;
 
-    public Category(int image, String name) {
+    public CategoryModule(int image, String name) {
         this.image = image;
         this.name = name;
     }
 
-    public Category() {
+    public CategoryModule() {
     }
 
     public int getImage() {

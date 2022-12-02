@@ -4,52 +4,52 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/mediumGray"
     android:gravity="center_horizontal"
     android:orientation="vertical"
-    android:background="@color/mediumGray"
     tools:context=".activities.ChangePass_Setting_Activity">
 
     <TextView
         android:layout_width="match_parent"
         android:layout_height="85dp"
-        android:gravity="center"
         android:background="#FF5353"
+        android:gravity="center"
         android:text="Đổi Mật Khẩu"
-        android:textStyle="bold"
         android:textColor="@color/white"
-        android:textSize="25dp"/>
+        android:textSize="25dp"
+        android:textStyle="bold" />
 
     <EditText
         android:id="@+id/changePass_currentPass"
         android:layout_width="349dp"
         android:layout_height="66dp"
-        android:hint="Mật Khẩu Hiện Tại"
         android:layout_marginTop="30dp"
+        android:layout_marginBottom="30dp"
+        android:hint="Mật Khẩu Hiện Tại"
         android:textColor="@color/white"
-        android:textColorHint="#A9FFFFFF"
-        android:layout_marginBottom="30dp"/>
+        android:textColorHint="#A9FFFFFF" />
 
     <EditText
+        android:id="@+id/changePass_newPass"
         android:layout_width="349dp"
         android:layout_height="66dp"
-        android:id="@+id/changePass_newPass"
+        android:layout_marginBottom="30dp"
         android:hint="Mật Khẩu Mới"
         android:textColor="@color/white"
-        android:textColorHint="#A9FFFFFF"
-        android:layout_marginBottom="30dp"/>
+        android:textColorHint="#A9FFFFFF" />
 
     <EditText
+        android:id="@+id/changePass_checkPass"
         android:layout_width="349dp"
         android:layout_height="66dp"
-        android:textColor="@color/white"
-        android:textColorHint="#A9FFFFFF"
-        android:id="@+id/changePass_checkPass"
+        android:layout_marginBottom="50dp"
         android:hint="Xác Nhận Mật Khẩu Mới"
-        android:layout_marginBottom="50dp"/>
+        android:textColor="@color/white"
+        android:textColorHint="#A9FFFFFF" />
 
     <Button
+        android:id="@+id/btn_ChangePass_setting"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="XÁC NHẬN ĐỔI"
-        android:id="@+id/btn_ChangePass_setting"/>
+        android:text="XÁC NHẬN ĐỔI" />
 </LinearLayout>

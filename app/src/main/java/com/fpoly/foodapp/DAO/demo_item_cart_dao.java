@@ -24,6 +24,7 @@ public class demo_item_cart_dao {
     }
     public long insert(demo_cart_item obj){
         ContentValues values = new ContentValues();
+        values.put("idUser", obj.idUser);
         values.put("mCheck", obj.check );
         values.put("name", obj.name);
         values.put("cost", obj.cost);
@@ -34,6 +35,7 @@ public class demo_item_cart_dao {
     public int delete(int id){
         return db.delete("ItemCart","id=?", new String[]{String.valueOf(id)});
     }
+
     public int getCheck(int id) {
         String sql = "SELECT * FROM ItemCart WHERE id=?";
         List<demo_cart_item> list = getData(sql, String.valueOf(id));
@@ -44,9 +46,9 @@ public class demo_item_cart_dao {
 //    }
 
 
-    public List<demo_cart_item> getALL(){
-        String sql = "SELECT * FROM ItemCart";
-        return getData(sql);
+    public List<demo_cart_item> getALL(int idUser){
+        String sql = "SELECT * FROM ItemCart WHERE idUser=?";
+        return getData(sql, String.valueOf(idUser));
     }
 
 
@@ -57,6 +59,7 @@ public class demo_item_cart_dao {
         while (cursor.moveToNext()){
             demo_cart_item obj = new demo_cart_item();
             obj.id = Integer.parseInt(cursor.getString(cursor.getColumnIndex("id")));
+            obj.idUser = Integer.parseInt(cursor.getString(cursor.getColumnIndex("idUser")));
             obj.check = Integer.parseInt(cursor.getString(cursor.getColumnIndex("mCheck")));
             obj.name = cursor.getString(cursor.getColumnIndex("name"));
             obj.cost = Double.valueOf(cursor.getString(cursor.getColumnIndex("cost")));

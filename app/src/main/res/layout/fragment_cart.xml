@@ -79,7 +79,7 @@
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/rec_cart"
                 android:layout_width="match_parent"
-                android:layout_height="250dp" />
+                android:layout_height="200dp" />
 
 
             <LinearLayout
@@ -163,7 +163,7 @@
                     android:orientation="horizontal">
 
                     <TextView
-                        android:id="@+id/Tax"
+                        android:id="@+id/tvTax"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="4"
@@ -178,6 +178,36 @@
                         android:layout_height="wrap_content"
                         android:layout_weight="2"
                         android:text="$ 0"
+                        android:textColor="#373b54"
+                        android:textSize="18dp"
+                        android:textStyle="bold" />
+                </LinearLayout>
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginTop="4dp"
+                    android:layout_marginEnd="16dp"
+                    android:layout_marginBottom="4dp"
+                    android:layout_weight="6"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:id="@+id/tvCoupon"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="4"
+                        android:text="Voucher: "
+                        android:textColor="#373b54"
+                        android:textSize="18dp"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:id="@+id/tvCouponCost"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="2"
+                        android:text="Chọn voucher"
                         android:textColor="#373b54"
                         android:textSize="18dp"
                         android:textStyle="bold" />

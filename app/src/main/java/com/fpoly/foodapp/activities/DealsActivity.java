@@ -29,6 +29,7 @@ public class DealsActivity extends AppCompatActivity {
 
         viewPageAdapter.addFragment(new Fragment_NewDeals());
         viewPageAdapter.addFragment(new Fragment_YourDeals());
+
         viewPager2.setAdapter(viewPageAdapter);
 
         new TabLayoutMediator(tabLayout, viewPager2, new TabLayoutMediator.TabConfigurationStrategy() {

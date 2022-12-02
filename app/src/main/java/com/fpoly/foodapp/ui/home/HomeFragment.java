@@ -23,8 +23,8 @@ import com.fpoly.foodapp.activities.LoginActivity;
 import com.fpoly.foodapp.adapters.HomeHorAdapter;
 import com.fpoly.foodapp.adapters.HomeVerAdapter;
 import com.fpoly.foodapp.adapters.UpdateVerticalRec;
-import com.fpoly.foodapp.modules.Category;
-import com.fpoly.foodapp.modules.Food;
+import com.fpoly.foodapp.modules.AddRecommendModule;
+import com.fpoly.foodapp.modules.RecommendedModule;
 import com.fpoly.foodapp.modules.HomeHorModule;
 import com.fpoly.foodapp.modules.HomeVerModule;
 
@@ -124,7 +124,7 @@ public class HomeFragment extends Fragment  implements UpdateVerticalRec{
     }
 
     @Override
-    public void callBackNew(int pos, ArrayList<Food> list) {
+    public void callBackNew(int pos, ArrayList<RecommendedModule> list, ArrayList<AddRecommendModule> listNew) {
 
     }
 }

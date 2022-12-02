@@ -10,8 +10,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
-import android.view.animation.Animation;
-import android.view.animation.AnimationUtils;
 import android.widget.Filter;
 import android.widget.Filterable;
 import android.widget.ImageView;
@@ -23,7 +21,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.fpoly.foodapp.R;
 import com.fpoly.foodapp.activities.ShowDetailActivity;
-import com.fpoly.foodapp.modules.Food;
+import com.fpoly.foodapp.modules.RecommendedModule;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -31,11 +29,11 @@ import java.util.List;
 public class RecommendAdapter extends RecyclerView.Adapter<RecommendAdapter.viewHolder> implements Filterable {
     ImageView imgZoomIn;
     private Context context;
-    private List<Food> list;
-    private List<Food> listold;
+    private List<RecommendedModule> list;
+    private List<RecommendedModule> listold;
 
 
-    public RecommendAdapter(Context context, List<Food> list) {
+    public RecommendAdapter(Context context, List<RecommendedModule> list) {
         this.context = context;
         this.list = list;
         this.listold = list;
@@ -44,7 +42,7 @@ public class RecommendAdapter extends RecyclerView.Adapter<RecommendAdapter.view
     @NonNull
     @Override
     public viewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.viewholder_recommended, parent, false);
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_recommended, parent, false);
         return new viewHolder(view);
     }
 
@@ -122,8 +120,8 @@ public class RecommendAdapter extends RecyclerView.Adapter<RecommendAdapter.view
                 if (str.isEmpty()) {
                     list = listold;
                 } else {
-                    List<Food> mlist = new ArrayList<>();
-                    for (Food food : listold) {
+                    List<RecommendedModule> mlist = new ArrayList<>();
+                    for (RecommendedModule food : listold) {
                         if (food.getTitle().toLowerCase().contains(str.toLowerCase())) {
                             mlist.add(food);
                         }
@@ -138,7 +136,7 @@ public class RecommendAdapter extends RecyclerView.Adapter<RecommendAdapter.view
 
             @Override
             protected void publishResults(CharSequence constraint, FilterResults results) {
-                list = (List<Food>) results.values;
+                list = (List<RecommendedModule>) results.values;
                 notifyDataSetChanged();
             }
         };

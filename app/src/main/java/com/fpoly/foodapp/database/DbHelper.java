@@ -22,8 +22,10 @@ public class DbHelper extends SQLiteOpenHelper {
                 "mCheck INTEGER not null," +
                 "name TEXT not null," +
                 "cost REAL not null," +
+                "idUser INTEGER REFERENCES User(id)," +
                 "quantities INTEGER not null)";
         db.execSQL(createTableItemCart);
+
         String createTableUser = "create table User(" +
                 "id INTEGER PRIMARY KEY AUTOINCREMENT," +
                 "img TEXT ," +
@@ -34,6 +36,13 @@ public class DbHelper extends SQLiteOpenHelper {
                 "address TEXT )";
         db.execSQL(createTableUser);
 
+        String createTableVoucher = "create table Voucher(" +
+                "id INTEGER PRIMARY KEY AUTOINCREMENT," +
+                "img INTEGER not null," +
+                "voucherTitle TEXT not null," +
+                "voucherDeadline TEXT not null)";
+        db.execSQL(createTableVoucher);
+
     }
 
     @Override
@@ -42,6 +51,8 @@ public class DbHelper extends SQLiteOpenHelper {
         db.execSQL(dropTableItemCart);
         String dropTableUser = "drop table if exists User";
         db.execSQL(dropTableUser);
+        String dropTableVoucher = "drop table if exists Voucher";
+        db.execSQL(dropTableVoucher);
 
         onCreate(db);
 
