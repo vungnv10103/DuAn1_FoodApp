@@ -17,19 +17,17 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.fpoly.foodapp.R;
 import com.fpoly.foodapp.activities.ShowDetailActivity;
-import com.fpoly.foodapp.modules.FeaturedModule;
-import com.fpoly.foodapp.modules.FeaturedVerModule;
-import com.fpoly.foodapp.modules.Food;
+import com.fpoly.foodapp.modules.RecommendedModule;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class FeaturedVerAdapter extends RecyclerView.Adapter<FeaturedVerAdapter.ViewHolder> implements Filterable {
     private Context context;
-    private List<Food> list;
-    private List<Food> listold;
+    private List<RecommendedModule> list;
+    private List<RecommendedModule> listold;
 
-    public FeaturedVerAdapter(Context context,List<Food> list) {
+    public FeaturedVerAdapter(Context context,List<RecommendedModule> list) {
         this.context = context;
         this.list = list;
         this.listold = list;;
@@ -80,8 +78,8 @@ public class FeaturedVerAdapter extends RecyclerView.Adapter<FeaturedVerAdapter.
 
                 }
                 else {
-                    List<Food> mlist = new ArrayList<>();
-                    for( Food food :listold){
+                    List<RecommendedModule> mlist = new ArrayList<>();
+                    for( RecommendedModule food :listold){
                         if(food.getTitle().toLowerCase().contains(str.toLowerCase())){
                             mlist.add(food);
                         }
@@ -96,7 +94,7 @@ public class FeaturedVerAdapter extends RecyclerView.Adapter<FeaturedVerAdapter.
 
             @Override
             protected void publishResults(CharSequence constraint, FilterResults results) {
-                list = (List<Food>) results.values;
+                list = (List<RecommendedModule>) results.values;
                 notifyDataSetChanged();
             }
         };

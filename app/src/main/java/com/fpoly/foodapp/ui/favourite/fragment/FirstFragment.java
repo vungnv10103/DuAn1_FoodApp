@@ -2,7 +2,6 @@ package com.fpoly.foodapp.ui.favourite.fragment;
 
 import android.os.Bundle;
 
-import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -16,8 +15,7 @@ import com.fpoly.foodapp.R;
 import com.fpoly.foodapp.adapters.FeaturedAdapter;
 import com.fpoly.foodapp.adapters.FeaturedVerAdapter;
 import com.fpoly.foodapp.modules.FeaturedModule;
-import com.fpoly.foodapp.modules.FeaturedVerModule;
-import com.fpoly.foodapp.modules.Food;
+import com.fpoly.foodapp.modules.RecommendedModule;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -29,7 +27,7 @@ public class FirstFragment extends Fragment {
     RecyclerView recyclerView;
     FeaturedAdapter featuredAdapter;
     //////Ver
-    List<Food> foods;
+    List<RecommendedModule> foods;
     RecyclerView recyclerView2;
     FeaturedVerAdapter featuredVerAdapter;
     SwipeRefreshLayout swipeRefreshLayout;
@@ -65,11 +63,11 @@ public class FirstFragment extends Fragment {
         recyclerView2.setLayoutManager(new LinearLayoutManager(getContext(), RecyclerView.VERTICAL, false));
 
         foods = new ArrayList<>();
-        foods.add(new Food(R.drawable.ver1, "Creamy sticky rice", 2.5, R.drawable.plus_circle));
-        foods.add(new Food(R.drawable.ver2, "Hamburger", 2.8, R.drawable.plus_circle));
-        foods.add(new Food(R.drawable.ver3, "Pasta", 2.8, R.drawable.plus_circle));
-        foods.add(new Food(R.drawable.ver3, "Pasta 2", 2.8, R.drawable.plus_circle));
-        foods.add(new Food(R.drawable.ver3, "Pasta 3", 2.8, R.drawable.plus_circle));
+        foods.add(new RecommendedModule(R.drawable.ver1, "Creamy sticky rice", 2.5, R.drawable.plus_circle));
+        foods.add(new RecommendedModule(R.drawable.ver2, "Hamburger", 2.8, R.drawable.plus_circle));
+        foods.add(new RecommendedModule(R.drawable.ver3, "Pasta", 2.8, R.drawable.plus_circle));
+        foods.add(new RecommendedModule(R.drawable.ver3, "Pasta 2", 2.8, R.drawable.plus_circle));
+        foods.add(new RecommendedModule(R.drawable.ver3, "Pasta 3", 2.8, R.drawable.plus_circle));
 
 
         featuredVerAdapter = new FeaturedVerAdapter(getContext(), foods);

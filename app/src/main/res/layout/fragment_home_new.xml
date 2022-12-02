@@ -49,7 +49,7 @@
                             android:textSize="18dp"
                             android:textStyle="bold"
                             app:layout_constraintStart_toStartOf="@+id/edSearchHome"
-                            app:layout_constraintTop_toBottomOf="@+id/MainView" />
+                            app:layout_constraintTop_toBottomOf="@+id/rcvCategory" />
 
                         <TextView
                             android:id="@+id/tvUserNameHome"
@@ -184,14 +184,14 @@
                             app:layout_constraintTop_toBottomOf="@+id/edSearchHome" />
 
                         <androidx.recyclerview.widget.RecyclerView
-                            android:id="@+id/Main_popular"
+                            android:id="@+id/rcvRecommend"
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
                             app:layout_constraintTop_toBottomOf="@+id/textView7"
                             tools:layout_editor_absoluteX="0dp" />
 
                         <androidx.recyclerview.widget.RecyclerView
-                            android:id="@+id/MainView"
+                            android:id="@+id/rcvCategory"
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
                             app:layout_constraintEnd_toEndOf="parent"

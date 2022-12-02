@@ -8,6 +8,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.cardview.widget.CardView;
@@ -56,7 +57,6 @@ public class HomeHorAdapter extends RecyclerView.Adapter<HomeHorAdapter.ViewHold
             homeVerModules.add(new HomeVerModule(R.drawable.pizza3_new, "Pizza 3", "10:00 - 23:00", "4.9", "Min - $40"));
             homeVerModules.add(new HomeVerModule(R.drawable.pizza4, "Pizza 4", "10:00 - 23:00", "4.9", "Min - $40"));
             homeVerModules.add(new HomeVerModule(R.drawable.pizza5, "Pizza 5", "10:00 - 23:00", "4.9", "Min - $40"));
-
             updateVerticalRec.callBack(position, homeVerModules);
             check = false;
         }
@@ -67,6 +67,7 @@ public class HomeHorAdapter extends RecyclerView.Adapter<HomeHorAdapter.ViewHold
                 notifyDataSetChanged();
 
                 if (position == 0) {
+
                     ArrayList<HomeVerModule> homeVerModules = new ArrayList<>();
                     homeVerModules.add(new HomeVerModule(R.drawable.pizza1_new, "Pizza 1", "10:00 - 23:00", "4.9", "Min - $40"));
                     homeVerModules.add(new HomeVerModule(R.drawable.pizza2, "Pizza 2", "10:00 - 23:00", "4.9", "Min - $40"));
@@ -81,7 +82,6 @@ public class HomeHorAdapter extends RecyclerView.Adapter<HomeHorAdapter.ViewHold
                     homeVerModules.add(new HomeVerModule(R.drawable.burger2, "Burger 2", "10:00 - 23:00", "4.9", "Min - $40"));
                     homeVerModules.add(new HomeVerModule(R.drawable.burger4, "Burger 3", "10:00 - 23:00", "4.9", "Min - $40"));
 
-
                     updateVerticalRec.callBack(position, homeVerModules);
                 } else if (position == 2) {
                     ArrayList<HomeVerModule> homeVerModules = new ArrayList<>();
@@ -89,7 +89,6 @@ public class HomeHorAdapter extends RecyclerView.Adapter<HomeHorAdapter.ViewHold
                     homeVerModules.add(new HomeVerModule(R.drawable.fries2, "Fries 2", "10:00 - 23:00", "4.9", "Min - $40"));
                     homeVerModules.add(new HomeVerModule(R.drawable.fries3, "Fries 3", "10:00 - 23:00", "4.9", "Min - $40"));
                     homeVerModules.add(new HomeVerModule(R.drawable.fries4, "Fries 4", "10:00 - 23:00", "4.9", "Min - $40"));
-
 
                     updateVerticalRec.callBack(position, homeVerModules);
                 } else if (position == 3) {
@@ -99,7 +98,6 @@ public class HomeHorAdapter extends RecyclerView.Adapter<HomeHorAdapter.ViewHold
                     homeVerModules.add(new HomeVerModule(R.drawable.icecream3, "Ice-cream 3", "10:00 - 23:00", "4.9", "Min - $40"));
                     homeVerModules.add(new HomeVerModule(R.drawable.icecream4, "Ice-cream 4", "10:00 - 23:00", "4.9", "Min - $40"));
 
-
                     updateVerticalRec.callBack(position, homeVerModules);
                 } else if (position == 4) {
                     ArrayList<HomeVerModule> homeVerModules = new ArrayList<>();
@@ -107,7 +105,6 @@ public class HomeHorAdapter extends RecyclerView.Adapter<HomeHorAdapter.ViewHold
                     homeVerModules.add(new HomeVerModule(R.drawable.sandwich2, "Sandwich 2", "10:00 - 23:00", "4.9", "Min - $40"));
                     homeVerModules.add(new HomeVerModule(R.drawable.sandwich3, "Sandwich 3", "10:00 - 23:00", "4.9", "Min - $40"));
                     homeVerModules.add(new HomeVerModule(R.drawable.sandwich4, "Sandwich 4", "10:00 - 23:00", "4.9", "Min - $40"));
-
 
                     updateVerticalRec.callBack(position, homeVerModules);
                 }
@@ -123,8 +120,6 @@ public class HomeHorAdapter extends RecyclerView.Adapter<HomeHorAdapter.ViewHold
                     homeVerModules.add(new HomeVerModule(R.drawable.carrot, "Carrot", "10:00 - 23:00", "4.9", "Min - $40"));
                     homeVerModules.add(new HomeVerModule(R.drawable.watermelon, "Watermelon", "10:00 - 23:00", "4.9", "Min - $40"));
                     homeVerModules.add(new HomeVerModule(R.drawable.lemon, "Lemon", "10:00 - 23:00", "4.9", "Min - $40"));
-
-
 
                     updateVerticalRec.callBack(position, homeVerModules);
                 }

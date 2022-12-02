@@ -72,6 +72,11 @@ public class UsersDAO {
         List<UsersModule> list = getData(sql, email);
         return list.get(0).bitmap;
     }
+    public int getIDUser(String email) {
+        String sql = "SELECT * FROM User WHERE email=?";
+        List<UsersModule> list = getData(sql, email);
+        return list.get(0).id;
+    }
 
     public int delete(int id) {
         return db.delete("User", "id=?", new String[]{String.valueOf(id)});

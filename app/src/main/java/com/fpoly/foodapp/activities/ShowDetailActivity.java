@@ -5,12 +5,14 @@ import androidx.fragment.app.FragmentTransaction;
 
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.fpoly.foodapp.DAO.UsersDAO;
 import com.fpoly.foodapp.DAO.demo_item_cart_dao;
 import com.fpoly.foodapp.R;
 import com.fpoly.foodapp.adapters.demo_cart_item_adapter;
@@ -29,6 +31,7 @@ public class ShowDetailActivity extends AppCompatActivity {
     int quantity = 1;
     static demo_item_cart_dao demo_item_cart_dao;
     demo_cart_item item;
+    static UsersDAO usersDAO;
 
 
     @Override
@@ -37,6 +40,7 @@ public class ShowDetailActivity extends AppCompatActivity {
         setContentView(R.layout.activity_showdetail);
         init();
         demo_item_cart_dao = new demo_item_cart_dao(getApplicationContext());
+        usersDAO = new UsersDAO(getApplicationContext());
 
         tvQuantity.setText(String.valueOf(quantity));
         Intent intent = getIntent();
@@ -80,9 +84,12 @@ public class ShowDetailActivity extends AppCompatActivity {
         tvAddToCart.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                SharedPreferences pref = getSharedPreferences("USER_FILE", MODE_PRIVATE);
+                String email = pref.getString("EMAIL", "");
                 item = new demo_cart_item();
                 int quanti = Integer.parseInt(tvQuantity.getText().toString());
                 double cost_total = price * quanti;
+                item.idUser = usersDAO.getIDUser(email);
                 item.check = 0;
                 item.name = title;
                 item.cost = cost_total;

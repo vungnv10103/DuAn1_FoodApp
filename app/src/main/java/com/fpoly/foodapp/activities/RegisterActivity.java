@@ -30,16 +30,14 @@ public class RegisterActivity extends AppCompatActivity {
     Button btnSignUp;
     ImageView imgShowHidePwd, imgShowConfirmPass;
     public FirebaseAuth auth = FirebaseAuth.getInstance();
-    public int dem =  auth.getCurrentUser().getProviderData().size();
-    public int count = 12 ;
+    public int dem = auth.getCurrentUser().getProviderData().size();
+    public int count = 12;
 
-    public static  final  String SHARED_PREFERENCES_NAME = "dem";
+    public static final String SHARED_PREFERENCES_NAME = "dem";
 
     SharedPreferences sharedPreferences;
     SharedPreferences.Editor editor;
-    public static  final String COOUNT_KEY = "count";
-
-
+    public static final String COOUNT_KEY = "count";
 
 
     @SuppressLint("MissingInflatedId")
@@ -54,7 +52,6 @@ public class RegisterActivity extends AppCompatActivity {
         imgShowConfirmPass = findViewById(R.id.img_show_hide_confirm_pwd);
 
 
-
         btnSignUp = findViewById(R.id.register);
         btnSignUp.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -66,11 +63,10 @@ public class RegisterActivity extends AppCompatActivity {
         imgShowHidePwd.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (edPass.getTransformationMethod().equals(HideReturnsTransformationMethod.getInstance())){
+                if (edPass.getTransformationMethod().equals(HideReturnsTransformationMethod.getInstance())) {
                     edPass.setTransformationMethod(PasswordTransformationMethod.getInstance());
                     imgShowHidePwd.setImageResource(R.drawable.ic_baseline_eye_off_24);
-                }
-                else {
+                } else {
                     edPass.setTransformationMethod(HideReturnsTransformationMethod.getInstance());
                     imgShowHidePwd.setImageResource(R.drawable.ic_baseline_eye_on_24);
                 }
@@ -80,11 +76,10 @@ public class RegisterActivity extends AppCompatActivity {
         imgShowConfirmPass.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (edConfirmPass.getTransformationMethod().equals(HideReturnsTransformationMethod.getInstance())){
+                if (edConfirmPass.getTransformationMethod().equals(HideReturnsTransformationMethod.getInstance())) {
                     edConfirmPass.setTransformationMethod(PasswordTransformationMethod.getInstance());
                     imgShowConfirmPass.setImageResource(R.drawable.ic_baseline_eye_off_24);
-                }
-                else {
+                } else {
                     edConfirmPass.setTransformationMethod(HideReturnsTransformationMethod.getInstance());
                     imgShowConfirmPass.setImageResource(R.drawable.ic_baseline_eye_on_24);
                 }
@@ -94,41 +89,40 @@ public class RegisterActivity extends AppCompatActivity {
     }
 
 
-
     private void onClickSingUp() {
         String email = edEmail.getText().toString().trim();
-        String pass  = edPass.getText().toString().trim();
-        String confirm  = edConfirmPass.getText().toString();
+        String pass = edPass.getText().toString().trim();
+        String confirm = edConfirmPass.getText().toString();
 
 
-        if (validate()>0){
-           if(confirm.equals(pass)){
+        if (validate() > 0) {
+            if (confirm.equals(pass)) {
 
-               auth.createUserWithEmailAndPassword(email , pass).addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
-                   @Override
-                   public void onComplete(@NonNull Task<AuthResult> task) {
-                       if(task.isSuccessful()){
-//                           Intent intent = new Intent(RegisterActivity.this , MainActivity.class);
-//                           startActivity(intent);
-//                           //đóng tất cả các activity trước main
-//                           finishAffinity();
+                auth.createUserWithEmailAndPassword(email, pass).addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
+                    @Override
+                    public void onComplete(@NonNull Task<AuthResult> task) {
+                        if (task.isSuccessful()) {
+                            Intent intent = new Intent(RegisterActivity.this, MainActivity.class);
+                            startActivity(intent);
+                            //đóng tất cả các activity trước main
+                            Toast.makeText(RegisterActivity.this, "đăng kí thành  công", Toast.LENGTH_SHORT).show();
+                            finishAffinity();
 
 
-//                           Toast.makeText(RegisterActivity.this, "đăng kí thành  công", Toast.LENGTH_SHORT).show();
-                              count++;
-                              remember();
-                                Toast.makeText(RegisterActivity.this, "có "+ count +" tài khoản" , Toast.LENGTH_LONG).show();
-                       }else {
-                           Toast.makeText(RegisterActivity.this, "Đăng kí thất bại.", Toast.LENGTH_SHORT).show();
-                       }
+                            count++;
+                            remember();
+                            Toast.makeText(RegisterActivity.this, "có " + count + " tài khoản", Toast.LENGTH_LONG).show();
+                        } else {
+                            Toast.makeText(RegisterActivity.this, "Đăng kí thất bại.", Toast.LENGTH_SHORT).show();
+                        }
 
-                   }
-               });
+                    }
+                });
 
-           }else {
-               Toast.makeText(this, "Mật khẩu không trùng khớp.", Toast.LENGTH_SHORT).show();
-           }
-        }else {
+            } else {
+                Toast.makeText(this, "Mật khẩu không trùng khớp.", Toast.LENGTH_SHORT).show();
+            }
+        } else {
             Toast.makeText(this, "Điền đủ thông tin.", Toast.LENGTH_SHORT).show();
         }
 
@@ -139,19 +133,20 @@ public class RegisterActivity extends AppCompatActivity {
 
         Intent intent = new Intent(RegisterActivity.this, LoginActivity.class);
         Bundle bundle = new Bundle();
-        bundle.putInt("count"  , count);
-        intent.putExtra("sotaikhoandangki" , bundle );
+        bundle.putInt("count", count);
+        intent.putExtra("sotaikhoandangki", bundle);
         startActivity(intent);
 
     }
-    public int validate(){
+
+    public int validate() {
         int check = -1;
         String email = edEmail.getText().toString().trim();
-        String pass  = edPass.getText().toString().trim();
-        String confirm  = edConfirmPass.getText().toString();
-        if (email.isEmpty() || pass.isEmpty() || confirm.isEmpty()){
+        String pass = edPass.getText().toString().trim();
+        String confirm = edConfirmPass.getText().toString();
+        if (email.isEmpty() || pass.isEmpty() || confirm.isEmpty()) {
             check = -1;
-        }else {
+        } else {
             check = 1;
         }
         return check;
@@ -166,15 +161,15 @@ public class RegisterActivity extends AppCompatActivity {
 
     @Override
     protected void onStart() {
-        sharedPreferences  = getSharedPreferences(SHARED_PREFERENCES_NAME ,MODE_PRIVATE);
-        count=sharedPreferences.getInt(COOUNT_KEY,0);
+        sharedPreferences = getSharedPreferences(SHARED_PREFERENCES_NAME, MODE_PRIVATE);
+        count = sharedPreferences.getInt(COOUNT_KEY, 0);
         super.onStart();
     }
 
-    public void remember(){
-        sharedPreferences  = getSharedPreferences(SHARED_PREFERENCES_NAME ,MODE_PRIVATE);
+    public void remember() {
+        sharedPreferences = getSharedPreferences(SHARED_PREFERENCES_NAME, MODE_PRIVATE);
         editor = sharedPreferences.edit();
-        editor.putInt(COOUNT_KEY , count);
+        editor.putInt(COOUNT_KEY, count);
         editor.commit();
     }
 }

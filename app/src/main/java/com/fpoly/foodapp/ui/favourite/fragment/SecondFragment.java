@@ -14,7 +14,7 @@ import com.fpoly.foodapp.R;
 import com.fpoly.foodapp.adapters.FeaturedAdapter;
 import com.fpoly.foodapp.adapters.FeaturedVerAdapter;
 import com.fpoly.foodapp.modules.FeaturedModule;
-import com.fpoly.foodapp.modules.Food;
+import com.fpoly.foodapp.modules.RecommendedModule;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -27,7 +27,7 @@ public class SecondFragment extends Fragment {
     RecyclerView recyclerView;
     FeaturedAdapter featuredAdapter;
     //////Ver
-    List<Food> foods;
+    List<RecommendedModule> foods;
     RecyclerView recyclerView2;
     FeaturedVerAdapter featuredVerAdapter;
 
@@ -59,11 +59,11 @@ public class SecondFragment extends Fragment {
         recyclerView2.setLayoutManager(new LinearLayoutManager(getContext(), RecyclerView.VERTICAL, false));
 
         foods = new ArrayList<>();
-        foods.add(new Food(R.drawable.popular4, "Foie Gras", 3.5, R.drawable.plus_circle));
-        foods.add(new Food(R.drawable.popular5, "Sausage", 1.2, R.drawable.plus_circle));
-        foods.add(new Food(R.drawable.popular6, "Crepe Cake", 2.6, R.drawable.plus_circle));
-        foods.add(new Food(R.drawable.popular6, "Crepe Cake 2", 2.6, R.drawable.plus_circle));
-        foods.add(new Food(R.drawable.popular6, "Crepe Cake 3", 2.6, R.drawable.plus_circle));
+        foods.add(new RecommendedModule(R.drawable.popular4, "Foie Gras", 3.5, R.drawable.plus_circle));
+        foods.add(new RecommendedModule(R.drawable.popular5, "Sausage", 1.2, R.drawable.plus_circle));
+        foods.add(new RecommendedModule(R.drawable.popular6, "Crepe Cake", 2.6, R.drawable.plus_circle));
+        foods.add(new RecommendedModule(R.drawable.popular6, "Crepe Cake 2", 2.6, R.drawable.plus_circle));
+        foods.add(new RecommendedModule(R.drawable.popular6, "Crepe Cake 3", 2.6, R.drawable.plus_circle));
 
 
         featuredVerAdapter = new FeaturedVerAdapter(getContext(), foods);

@@ -94,6 +94,9 @@ public class LoginActivity extends AppCompatActivity {
                 list = (ArrayList<UsersModule>) usersDAO.getALL();
                 String email = edEmail.getText().toString().trim();
                 String pass = edPass.getText().toString().trim();
+                int begin_index = email.indexOf("@");
+                int end_index = email.indexOf(".");
+                String domain_name = email.substring(begin_index + 1, end_index);
                 if (email.equals("foodapp@admin.com") && pass.equals("vung123")) {
                     Intent intent = new Intent(LoginActivity.this, AdminActivity.class);
                     startActivity(intent);
@@ -114,7 +117,8 @@ public class LoginActivity extends AppCompatActivity {
                                         if (email.equals("admin@gmail.com")) {
                                             Intent intent = new Intent(LoginActivity.this, AdminActivity.class);
                                             startActivity(intent);
-                                        } else {
+                                        }
+                                        else {
                                             progressDialog.dismiss();
                                             rememberUser(email, pass, chbRemember.isChecked());
                                             item = new UsersModule();

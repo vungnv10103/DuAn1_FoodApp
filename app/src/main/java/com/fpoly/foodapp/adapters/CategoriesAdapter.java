@@ -6,8 +6,6 @@ import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Filter;
-import android.widget.Filterable;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -17,30 +15,29 @@ import androidx.recyclerview.widget.RecyclerView;
 
 
 import com.fpoly.foodapp.R;
-import com.fpoly.foodapp.modules.Category;
-import com.fpoly.foodapp.modules.Food;
-import com.fpoly.foodapp.modules.HomeVerModule;
+import com.fpoly.foodapp.modules.AddRecommendModule;
+import com.fpoly.foodapp.modules.CategoryModule;
+import com.fpoly.foodapp.modules.RecommendedModule;
 
 import java.util.ArrayList;
-import java.util.List;
 
 public class CategoriesAdapter extends RecyclerView.Adapter<CategoriesAdapter.viewHolder> {
     UpdateVerticalRec updateVerticalRec;
-    ArrayList<Category> list ;
-    ArrayList<Category> listold ;
+    ArrayList<CategoryModule> list ;
+    ArrayList<CategoryModule> listOld;
     Context context;
     boolean check = true;
     boolean selected = true;
     int row_index = -1;
     Activity activity;
 
-    public CategoriesAdapter(ArrayList<Category> list, Context context) {
+    public CategoriesAdapter(ArrayList<CategoryModule> list, Context context) {
         this.list = list;
         this.context = context;
-        this.listold = list;
+        this.listOld = list;
     }
 
-    public CategoriesAdapter(UpdateVerticalRec updateVerticalRec, Activity activity, ArrayList<Category> list) {
+    public CategoriesAdapter(UpdateVerticalRec updateVerticalRec, Activity activity, ArrayList<CategoryModule> list) {
         this.updateVerticalRec = updateVerticalRec;
         this.list = list;
         this.activity = activity;
@@ -49,7 +46,7 @@ public class CategoriesAdapter extends RecyclerView.Adapter<CategoriesAdapter.vi
     @NonNull
     @Override
     public viewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.view_holder_category , parent , false);
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_category, parent , false);
         return new viewHolder(view);
     }
 
@@ -59,15 +56,17 @@ public class CategoriesAdapter extends RecyclerView.Adapter<CategoriesAdapter.vi
         holder.name.setText(list.get(position).getName());
 
         if (check) {
-            ArrayList<Food> foodList = new ArrayList<>();
-            foodList.add(new Food(R.drawable.pizza1 , "Pepperoni Pizza" , 13.0 , R.drawable.plus_circle));
-            foodList.add(new Food(R.drawable.pizza3 , "Vegetable Pizza" , 11.0 , R.drawable.plus_circle));
-            foodList.add(new Food(R.drawable.pizza5 , "Tomato Pizza" , 12.6 , R.drawable.plus_circle));
-            foodList.add(new Food(R.drawable.pizza6 , "Cheese Pizza" , 10.5 , R.drawable.plus_circle));
-            foodList.add(new Food(R.drawable.pizza7 , "Lamacun Pizza" , 15.2 , R.drawable.plus_circle));
-            foodList.add(new Food(R.drawable.pizza8 , "Beef Pizza" , 14.7 , R.drawable.plus_circle));
+            ArrayList<RecommendedModule> foodList = new ArrayList<>();
+            ArrayList<AddRecommendModule> list = new ArrayList<>();
+            list.add(new AddRecommendModule(R.drawable.ic_baseline_add_24));
+            foodList.add(new RecommendedModule(R.drawable.pizza1 , "Pepperoni Pizza" , 13.0 , R.drawable.plus_circle));
+            foodList.add(new RecommendedModule(R.drawable.pizza3 , "Vegetable Pizza" , 11.0 , R.drawable.plus_circle));
+            foodList.add(new RecommendedModule(R.drawable.pizza5 , "Tomato Pizza" , 12.6 , R.drawable.plus_circle));
+            foodList.add(new RecommendedModule(R.drawable.pizza6 , "Cheese Pizza" , 10.5 , R.drawable.plus_circle));
+            foodList.add(new RecommendedModule(R.drawable.pizza7 , "Lamacun Pizza" , 15.2 , R.drawable.plus_circle));
+            foodList.add(new RecommendedModule(R.drawable.pizza8 , "Beef Pizza" , 14.7 , R.drawable.plus_circle));
 
-            updateVerticalRec.callBackNew(position, foodList);
+            updateVerticalRec.callBackNew(position, foodList, list);
             check = false;
         }
         holder.cardView.setOnClickListener(new View.OnClickListener() {
@@ -77,60 +76,72 @@ public class CategoriesAdapter extends RecyclerView.Adapter<CategoriesAdapter.vi
                 notifyDataSetChanged();
 
                 if (position == 0) {
-                    ArrayList<Food> foodList = new ArrayList<>();
-                    foodList.add(new Food(R.drawable.pizza1 , "Pepperoni Pizza" , 13.0 , R.drawable.plus_circle));
-                    foodList.add(new Food(R.drawable.pizza3 , "Vegetable Pizza" , 11.0 , R.drawable.plus_circle));
-                    foodList.add(new Food(R.drawable.pizza5 , "Tomato Pizza" , 12.6 , R.drawable.plus_circle));
-                    foodList.add(new Food(R.drawable.pizza6 , "Cheese Pizza" , 10.5 , R.drawable.plus_circle));
-                    foodList.add(new Food(R.drawable.pizza7 , "Lamacun Pizza" , 15.2 , R.drawable.plus_circle));
-                    foodList.add(new Food(R.drawable.pizza8 , "Beef Pizza" , 14.7 , R.drawable.plus_circle));
+                    ArrayList<RecommendedModule> foodList = new ArrayList<>();
+                    ArrayList<AddRecommendModule> list = new ArrayList<>();
+                    list.add(new AddRecommendModule(R.drawable.ic_baseline_add_24));
+                    foodList.add(new RecommendedModule(R.drawable.pizza1 , "Pepperoni Pizza" , 13.0 , R.drawable.plus_circle));
+                    foodList.add(new RecommendedModule(R.drawable.pizza3 , "Vegetable Pizza" , 11.0 , R.drawable.plus_circle));
+                    foodList.add(new RecommendedModule(R.drawable.pizza5 , "Tomato Pizza" , 12.6 , R.drawable.plus_circle));
+                    foodList.add(new RecommendedModule(R.drawable.pizza6 , "Cheese Pizza" , 10.5 , R.drawable.plus_circle));
+                    foodList.add(new RecommendedModule(R.drawable.pizza7 , "Lamacun Pizza" , 15.2 , R.drawable.plus_circle));
+                    foodList.add(new RecommendedModule(R.drawable.pizza8 , "Beef Pizza" , 14.7 , R.drawable.plus_circle));
 
-                    updateVerticalRec.callBackNew(position, foodList);
+                    updateVerticalRec.callBackNew(position, foodList, list);
                 } else if (position == 1) {
-                    ArrayList<Food> foodList = new ArrayList<>();
-                    foodList.add(new Food(R.drawable.burger1 , "Pepperoni Burger" , 13.0 , R.drawable.plus_circle));
-                    foodList.add(new Food(R.drawable.burger2 , "Vegetable Burger" , 11.0 , R.drawable.plus_circle));
-                    foodList.add(new Food(R.drawable.burger4 , "Tomato Burger" , 12.6 , R.drawable.plus_circle));
+                    ArrayList<RecommendedModule> foodList = new ArrayList<>();
+                    ArrayList<AddRecommendModule> list = new ArrayList<>();
+                    list.add(new AddRecommendModule(R.drawable.ic_baseline_add_24));
+                    foodList.add(new RecommendedModule(R.drawable.burger1 , "Pepperoni Burger" , 13.0 , R.drawable.plus_circle));
+                    foodList.add(new RecommendedModule(R.drawable.burger2 , "Vegetable Burger" , 11.0 , R.drawable.plus_circle));
+                    foodList.add(new RecommendedModule(R.drawable.burger4 , "Tomato Burger" , 12.6 , R.drawable.plus_circle));
 
-                    updateVerticalRec.callBackNew(position, foodList);
+                    updateVerticalRec.callBackNew(position, foodList, list);
                 } else if (position == 2) {
-                    ArrayList<Food> foodList = new ArrayList<>();
-                    foodList.add(new Food(R.drawable.fries1 , "Pepperoni Fries" , 13.0 , R.drawable.plus_circle));
-                    foodList.add(new Food(R.drawable.fries2 , "Vegetable Fries" , 11.0 , R.drawable.plus_circle));
-                    foodList.add(new Food(R.drawable.fries3 , "Tomato Fries" , 12.6 , R.drawable.plus_circle));
-                    foodList.add(new Food(R.drawable.fries4 , "Cheese Fries" , 10.5 , R.drawable.plus_circle));
+                    ArrayList<RecommendedModule> foodList = new ArrayList<>();
+                    ArrayList<AddRecommendModule> list = new ArrayList<>();
+                    list.add(new AddRecommendModule(R.drawable.ic_baseline_add_24));
+                    foodList.add(new RecommendedModule(R.drawable.fries1 , "Pepperoni Fries" , 13.0 , R.drawable.plus_circle));
+                    foodList.add(new RecommendedModule(R.drawable.fries2 , "Vegetable Fries" , 11.0 , R.drawable.plus_circle));
+                    foodList.add(new RecommendedModule(R.drawable.fries3 , "Tomato Fries" , 12.6 , R.drawable.plus_circle));
+                    foodList.add(new RecommendedModule(R.drawable.fries4 , "Cheese Fries" , 10.5 , R.drawable.plus_circle));
 
-                    updateVerticalRec.callBackNew(position, foodList);
+                    updateVerticalRec.callBackNew(position, foodList, list);
                 } else if (position == 3) {
-                    ArrayList<Food> foodList = new ArrayList<>();
-                    foodList.add(new Food(R.drawable.icecream1 , "Pepperoni Ice-cream" , 13.0 , R.drawable.plus_circle));
-                    foodList.add(new Food(R.drawable.icecream2 , "Vegetable Ice-cream" , 11.0 , R.drawable.plus_circle));
-                    foodList.add(new Food(R.drawable.icecream3 , "Tomato Ice-cream" , 12.6 , R.drawable.plus_circle));
-                    foodList.add(new Food(R.drawable.icecream4 , "Cheese Ice-cream" , 10.5 , R.drawable.plus_circle));
+                    ArrayList<RecommendedModule> foodList = new ArrayList<>();
+                    ArrayList<AddRecommendModule> list = new ArrayList<>();
+                    list.add(new AddRecommendModule(R.drawable.ic_baseline_add_24));
+                    foodList.add(new RecommendedModule(R.drawable.icecream1 , "Pepperoni Ice-cream" , 13.0 , R.drawable.plus_circle));
+                    foodList.add(new RecommendedModule(R.drawable.icecream2 , "Vegetable Ice-cream" , 11.0 , R.drawable.plus_circle));
+                    foodList.add(new RecommendedModule(R.drawable.icecream3 , "Tomato Ice-cream" , 12.6 , R.drawable.plus_circle));
+                    foodList.add(new RecommendedModule(R.drawable.icecream4 , "Cheese Ice-cream" , 10.5 , R.drawable.plus_circle));
 
-                    updateVerticalRec.callBackNew(position, foodList);
+                    updateVerticalRec.callBackNew(position, foodList, list);
                 } else if (position == 4) {
-                    ArrayList<Food> foodList = new ArrayList<>();
-                    foodList.add(new Food(R.drawable.sandwich1 , "Pepperoni Sandwich" , 13.0 , R.drawable.plus_circle));
-                    foodList.add(new Food(R.drawable.sandwich2 , "Vegetable Sandwich" , 11.0 , R.drawable.plus_circle));
-                    foodList.add(new Food(R.drawable.sandwich3 , "Tomato Sandwich" , 12.6 , R.drawable.plus_circle));
-                    foodList.add(new Food(R.drawable.sandwich4 , "Cheese Sandwich" , 10.5 , R.drawable.plus_circle));
+                    ArrayList<RecommendedModule> foodList = new ArrayList<>();
+                    ArrayList<AddRecommendModule> list = new ArrayList<>();
+                    list.add(new AddRecommendModule(R.drawable.ic_baseline_add_24));
+                    foodList.add(new RecommendedModule(R.drawable.sandwich1 , "Pepperoni Sandwich" , 13.0 , R.drawable.plus_circle));
+                    foodList.add(new RecommendedModule(R.drawable.sandwich2 , "Vegetable Sandwich" , 11.0 , R.drawable.plus_circle));
+                    foodList.add(new RecommendedModule(R.drawable.sandwich3 , "Tomato Sandwich" , 12.6 , R.drawable.plus_circle));
+                    foodList.add(new RecommendedModule(R.drawable.sandwich4 , "Cheese Sandwich" , 10.5 , R.drawable.plus_circle));
 
-                    updateVerticalRec.callBackNew(position, foodList);
+                    updateVerticalRec.callBackNew(position, foodList, list);
                 }
                 else if (position == 5) {
-                    ArrayList<Food> foodList = new ArrayList<>();
-                    foodList.add(new Food(R.drawable.strawberry , "Strawberry" , 13.0 , R.drawable.plus_circle));
-                    foodList.add(new Food(R.drawable.mango , "Mango" , 11.0 , R.drawable.plus_circle));
-                    foodList.add(new Food(R.drawable.guava , "Guava" , 12.6 , R.drawable.plus_circle));
-                    foodList.add(new Food(R.drawable.grapefruit , "Grapefruit" , 10.5 , R.drawable.plus_circle));
-                    foodList.add(new Food(R.drawable.pineapple , "Pineapple" , 12.6 , R.drawable.plus_circle));
-                    foodList.add(new Food(R.drawable.tomato , "Tomato" , 12.6 , R.drawable.plus_circle));
-                    foodList.add(new Food(R.drawable.carrot , "Carrot" , 12.6 , R.drawable.plus_circle));
-                    foodList.add(new Food(R.drawable.watermelon , "Watermelon" , 12.6 , R.drawable.plus_circle));
-                    foodList.add(new Food(R.drawable.lemon , "Lemon" , 12.6 , R.drawable.plus_circle));
+                    ArrayList<RecommendedModule> foodList = new ArrayList<>();
+                    ArrayList<AddRecommendModule> list = new ArrayList<>();
+                    list.add(new AddRecommendModule(R.drawable.ic_baseline_add_24));
+                    foodList.add(new RecommendedModule(R.drawable.strawberry , "Strawberry" , 13.0 , R.drawable.plus_circle));
+                    foodList.add(new RecommendedModule(R.drawable.mango , "Mango" , 11.0 , R.drawable.plus_circle));
+                    foodList.add(new RecommendedModule(R.drawable.guava , "Guava" , 12.6 , R.drawable.plus_circle));
+                    foodList.add(new RecommendedModule(R.drawable.grapefruit , "Grapefruit" , 10.5 , R.drawable.plus_circle));
+                    foodList.add(new RecommendedModule(R.drawable.pineapple , "Pineapple" , 12.6 , R.drawable.plus_circle));
+                    foodList.add(new RecommendedModule(R.drawable.tomato , "Tomato" , 12.6 , R.drawable.plus_circle));
+                    foodList.add(new RecommendedModule(R.drawable.carrot , "Carrot" , 12.6 , R.drawable.plus_circle));
+                    foodList.add(new RecommendedModule(R.drawable.watermelon , "Watermelon" , 12.6 , R.drawable.plus_circle));
+                    foodList.add(new RecommendedModule(R.drawable.lemon , "Lemon" , 12.6 , R.drawable.plus_circle));
 
-                    updateVerticalRec.callBackNew(position, foodList);
+                    updateVerticalRec.callBackNew(position, foodList, list);
                 }
             }
         });
