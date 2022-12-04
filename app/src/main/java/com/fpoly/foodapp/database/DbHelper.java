@@ -43,6 +43,31 @@ public class DbHelper extends SQLiteOpenHelper {
                 "voucherDeadline TEXT not null)";
         db.execSQL(createTableVoucher);
 
+        String createTableCategory = "create table Category(" +
+                "id INTEGER PRIMARY KEY AUTOINCREMENT," +
+                "img TEXT not null," +
+                "name TEXT not null)";
+        db.execSQL(createTableCategory);
+
+        String createTableProduct = "create table Product(" +
+                "id INTEGER PRIMARY KEY AUTOINCREMENT," +
+                "img TEXT not null," +
+                "name TEXT not null," +
+                "cost REAL not null," +
+                "location TEXT not null," +
+                "quantity INTEGER not null," +
+                "type TEXT REFERENCES Category(name))";
+        db.execSQL(createTableProduct);
+
+        String createTableRecommended = "create table Recommend(" +
+                "id INTEGER PRIMARY KEY AUTOINCREMENT," +
+                "img TEXT not null," +
+                "name TEXT not null," +
+                "cost REAL not null)";
+        db.execSQL(createTableRecommended);
+
+
+
     }
 
     @Override
@@ -53,6 +78,12 @@ public class DbHelper extends SQLiteOpenHelper {
         db.execSQL(dropTableUser);
         String dropTableVoucher = "drop table if exists Voucher";
         db.execSQL(dropTableVoucher);
+        String dropTableCategory = "drop table if exists Category";
+        db.execSQL(dropTableCategory);
+        String dropTableProduct = "drop table if exists Product";
+        db.execSQL(dropTableProduct);
+        String dropTableRecommend = "drop table if exists Recommend";
+        db.execSQL(dropTableRecommend);
 
         onCreate(db);
 

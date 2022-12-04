@@ -3,7 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_height="110dp"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:id="@+id/card_view"
+    android:id="@+id/card_view_add_item"
     android:layout_marginTop="8dp"
     android:layout_width="75dp"
 
@@ -13,7 +13,7 @@
     >
 
     <ImageView
-        android:id="@+id/img_cat1"
+        android:id="@+id/img_add_item_cate"
         android:layout_width="35dp"
         android:layout_height="35dp"
         android:layout_gravity="center"

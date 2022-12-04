@@ -42,7 +42,7 @@ public class FeaturedVerAdapter extends RecyclerView.Adapter<FeaturedVerAdapter.
     @Override
     public void onBindViewHolder(@NonNull FeaturedVerAdapter.ViewHolder holder, @SuppressLint("RecyclerView") int position) {
         holder.img.setImageResource(list.get(position).getImg());
-        holder.imgAdd.setImageResource(list.get(position).getResource_image());
+        holder.imgAdd.setImageResource(R.drawable.plus_circle);
         holder.tvTitle.setText(list.get(position).getTitle());
         holder.tvPrice.setText(String.valueOf(list.get(position).getMoney()));
         holder.imgAdd.setOnClickListener(new View.OnClickListener() {

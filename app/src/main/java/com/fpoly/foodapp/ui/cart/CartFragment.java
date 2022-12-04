@@ -96,6 +96,7 @@ public class CartFragment extends Fragment {
         });
 
         navView = getActivity().findViewById(R.id.nav_view);
+
         checkItemSelected(1);
 
 

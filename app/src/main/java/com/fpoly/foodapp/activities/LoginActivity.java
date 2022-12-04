@@ -22,6 +22,9 @@ import android.text.format.Formatter;
 import android.text.method.HideReturnsTransformationMethod;
 import android.text.method.PasswordTransformationMethod;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
+import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
@@ -49,7 +52,7 @@ import java.util.Locale;
 public class LoginActivity extends AppCompatActivity {
     EditText edEmail, edPass;
     Button btnLogin;
-    ImageView imgShowHidePwd;
+//    ImageView imgShowHidePwd, imgDropDownAcc;
     private CheckBox chbRemember;
     private ProgressDialog progressDialog;
     static UsersDAO usersDAO;
@@ -59,12 +62,18 @@ public class LoginActivity extends AppCompatActivity {
     NetworkChangeListener networkChangeListener = new NetworkChangeListener();
     boolean doubleBackToExitPressedOnce = false;
 
+
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
 
         init();
+
+
+
         usersDAO = new UsersDAO(getApplicationContext());
 
 
@@ -72,19 +81,19 @@ public class LoginActivity extends AppCompatActivity {
         edEmail.setText(pref.getString("EMAIL", ""));
         edPass.setText(pref.getString("PASSWORD", ""));
         chbRemember.setChecked(pref.getBoolean("REMEMBER", false));
-        imgShowHidePwd.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if (edPass.getTransformationMethod().equals(HideReturnsTransformationMethod.getInstance())) {
-                    edPass.setTransformationMethod(PasswordTransformationMethod.getInstance());
-                    imgShowHidePwd.setImageResource(R.drawable.ic_baseline_eye_off_24);
-                } else {
-                    edPass.setTransformationMethod(HideReturnsTransformationMethod.getInstance());
-                    imgShowHidePwd.setImageResource(R.drawable.ic_baseline_eye_on_24);
-                }
-
-            }
-        });
+//        imgShowHidePwd.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                if (edPass.getTransformationMethod().equals(HideReturnsTransformationMethod.getInstance())) {
+//                    edPass.setTransformationMethod(PasswordTransformationMethod.getInstance());
+//                    imgShowHidePwd.setImageResource(R.drawable.ic_baseline_eye_off_24);
+//                } else {
+//                    edPass.setTransformationMethod(HideReturnsTransformationMethod.getInstance());
+//                    imgShowHidePwd.setImageResource(R.drawable.ic_baseline_eye_on_24);
+//                }
+//
+//            }
+//        });
 
 
         btnLogin.setOnClickListener(new View.OnClickListener() {
@@ -175,7 +184,7 @@ public class LoginActivity extends AppCompatActivity {
         edEmail = findViewById(R.id.edEmail);
         edPass = findViewById(R.id.edPass);
         btnLogin = findViewById(R.id.btnSignIn);
-        imgShowHidePwd = findViewById(R.id.img_show_hide_pwd);
+//        imgShowHidePwd = findViewById(R.id.img_show_hide_pwd);
         progressDialog = new ProgressDialog(this);
     }
 

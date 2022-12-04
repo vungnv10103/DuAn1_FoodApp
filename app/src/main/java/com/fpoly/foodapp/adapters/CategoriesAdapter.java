@@ -173,7 +173,7 @@ public class CategoriesAdapter extends RecyclerView.Adapter<CategoriesAdapter.vi
 
         public viewHolder(@NonNull View itemView) {
             super(itemView);
-            imageView = itemView.findViewById(R.id.img_cat1);
+            imageView = itemView.findViewById(R.id.img_item_cate);
             name  =itemView.findViewById(R.id.tvNameItem);
             cardView = itemView.findViewById(R.id.card_view);
         }

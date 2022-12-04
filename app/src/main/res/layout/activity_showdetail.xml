@@ -27,6 +27,7 @@
                 android:id="@+id/imgFood"
                 android:layout_width="match_parent"
                 android:layout_height="270dp"
+                android:scaleType="centerCrop"
                 app:srcCompat="@drawable/burger_large"
                 android:layout_margin="24dp"/>
 

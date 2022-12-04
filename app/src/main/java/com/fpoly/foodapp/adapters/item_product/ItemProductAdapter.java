@@ -1,14 +1,10 @@
-package com.fpoly.foodapp.adapters;
-
+package com.fpoly.foodapp.adapters.item_product;
 
 import android.annotation.SuppressLint;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.Bitmap;
-import android.net.Uri;
 import android.os.Bundle;
-import android.provider.MediaStore;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -21,42 +17,44 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-
-import com.fpoly.foodapp.DAO.RecommendDAO;
 import com.fpoly.foodapp.R;
 import com.fpoly.foodapp.activities.ShowDetailActivity;
+import com.fpoly.foodapp.adapters.product.ListProduct;
 import com.fpoly.foodapp.modules.RecommendedModule;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-public class RecommendAdapter extends RecyclerView.Adapter<RecommendAdapter.viewHolder> implements Filterable {
+public class ItemProductAdapter extends RecyclerView.Adapter<ItemProductAdapter.viewHolder> implements Filterable {
+    Context context;
     ImageView imgZoomIn;
-    private Context context;
-    static RecommendDAO recommendDAO;
-    private List<RecommendedModule> list;
-    private List<RecommendedModule> listold;
+    ArrayList<ItemProduct> list;
+    ArrayList<ItemProduct> listOld;
 
-
-    public RecommendAdapter(Context context, List<RecommendedModule> list) {
+    public ItemProductAdapter(Context context) {
         this.context = context;
+    }
+    public void setData(ArrayList<ItemProduct> list) {
+        this.listOld = list;
         this.list = list;
-        this.listold = list;
+        notifyDataSetChanged();
+
     }
 
     @NonNull
     @Override
     public viewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_recommended, parent, false);
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_products, parent, false);
         return new viewHolder(view);
     }
 
     @Override
-    public void onBindViewHolder(@NonNull viewHolder holder, @SuppressLint("RecyclerView") int position) {
-        recommendDAO = new RecommendDAO(context);
-        String path = recommendDAO.getUriImg(list.get(position).getTitle());
-        holder.imgAdd.setImageResource(list.get(position).getImg());
+    public void onBindViewHolder(@NonNull ItemProductAdapter.viewHolder holder, @SuppressLint("RecyclerView") int position) {
+        ItemProduct item = list.get(position);
+        if (item == null) {
+            return;
+        }
+        holder.img.setImageResource(item.getImg());
         holder.img.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -77,54 +75,49 @@ public class RecommendAdapter extends RecyclerView.Adapter<RecommendAdapter.view
                 dialog.show();
             }
         });
-        try {
-            Bitmap bitmap = MediaStore.Images.Media.getBitmap(context.getContentResolver(), Uri.parse(path));
-            holder.img.setImageBitmap(bitmap);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
-        holder.tvTitle.setText(list.get(position).getTitle());
-        holder.tvPrice.setText(String.valueOf(list.get(position).getMoney()));
+        holder.imgAdd.setImageResource(item.getResource_image());
+        holder.tvPrice.setText("" + item.getMoney());
+        holder.tvTitle.setText(item.getTitle());
         holder.imgAdd.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(context, ShowDetailActivity.class);
-                context.startActivity(intent);
-                Intent intent1 = new Intent(context, ShowDetailActivity.class);
+                Intent intent1 = new Intent(v.getContext(), ShowDetailActivity.class);
                 Bundle bundle = new Bundle();
                 bundle.putInt("image", list.get(position).getImg());
                 bundle.putDouble("price", list.get(position).getMoney());
                 bundle.putString("title", list.get(position).getTitle());
                 intent1.putExtra("data", bundle);
-                context.startActivity(intent1);
+                v.getContext().startActivity(intent1);
             }
         });
+
+
+
 
     }
 
     @Override
     public int getItemCount() {
-        return list.size();
+        if (list != null) {
+            return list.size();
+        }
+        return 0;
     }
 
-
     public class viewHolder extends RecyclerView.ViewHolder {
-
         TextView tvTitle, tvPrice;
         ImageView img, imgAdd;
 
+
         public viewHolder(@NonNull View itemView) {
             super(itemView);
-            tvTitle = itemView.findViewById(R.id.tvTitleRecommended);
+            tvTitle = itemView.findViewById(R.id.tvTitleProduct);
             tvPrice = itemView.findViewById(R.id.tvPrice);
-            img = itemView.findViewById(R.id.imgRecommended);
+            img = itemView.findViewById(R.id.imgProducts);
             imgAdd = itemView.findViewById(R.id.imgAdd);
-
 
         }
     }
-
     @Override
     public Filter getFilter() {
         return new Filter() {
@@ -132,15 +125,15 @@ public class RecommendAdapter extends RecyclerView.Adapter<RecommendAdapter.view
             protected FilterResults performFiltering(CharSequence constraint) {
                 String str = constraint.toString();
                 if (str.isEmpty()) {
-                    list = listold;
+                    list = listOld;
                 } else {
-                    List<RecommendedModule> mlist = new ArrayList<>();
-                    for (RecommendedModule food : listold) {
+                    List<ItemProduct> mlist = new ArrayList<>();
+                    for (ItemProduct food : listOld) {
                         if (food.getTitle().toLowerCase().contains(str.toLowerCase())) {
                             mlist.add(food);
                         }
                     }
-                    list = mlist;
+                    list = (ArrayList<ItemProduct>) mlist;
                 }
 
                 FilterResults filterResults = new FilterResults();
@@ -150,10 +143,11 @@ public class RecommendAdapter extends RecyclerView.Adapter<RecommendAdapter.view
 
             @Override
             protected void publishResults(CharSequence constraint, FilterResults results) {
-                list = (List<RecommendedModule>) results.values;
+                list = (ArrayList<ItemProduct>) results.values;
                 notifyDataSetChanged();
             }
         };
     }
+
 }
 
