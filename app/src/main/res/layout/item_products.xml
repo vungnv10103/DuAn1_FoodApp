@@ -20,7 +20,7 @@
         app:layout_constraintBottom_toBottomOf="@+id/tvIcon"
         app:layout_constraintEnd_toStartOf="@+id/tvIcon"
         app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="@+id/imgRecommended"
+        app:layout_constraintStart_toStartOf="@+id/imgProducts"
         app:layout_constraintTop_toTopOf="@+id/tvIcon" />
 
     <TextView
@@ -34,11 +34,11 @@
         android:textSize="18sp"
         android:textStyle="bold"
         app:layout_constraintEnd_toStartOf="@+id/imgAdd"
-        app:layout_constraintTop_toBottomOf="@+id/tvTitleRecommended" />
+        app:layout_constraintTop_toBottomOf="@+id/tvTitleProduct" />
 
     <de.hdodenhof.circleimageview.CircleImageView
 
-        android:id="@+id/imgRecommended"
+        android:id="@+id/imgProducts"
         android:layout_width="100dp"
         android:layout_height="100dp"
         android:layout_marginStart="16dp"
@@ -49,35 +49,24 @@
         app:layout_constraintTop_toTopOf="parent"
         app:srcCompat="@drawable/burger" />
 
-    <ImageView
-        android:id="@+id/imgDeleteItemRecommend"
-        android:visibility="invisible"
-        android:layout_width="20dp"
-        android:layout_height="20dp"
-        android:layout_marginStart="12dp"
-        android:layout_marginTop="124dp"
-        android:src="@drawable/ic_baseline_delete_24"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
     <TextView
-        android:id="@+id/tvTitleRecommended"
+        android:id="@+id/tvTitleProduct"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Title"
         android:layout_marginTop="8dp"
         android:textColor="#373b54"
         android:textStyle="bold"
-        app:layout_constraintEnd_toEndOf="@+id/imgRecommended"
-        app:layout_constraintStart_toStartOf="@+id/imgRecommended"
-        app:layout_constraintTop_toBottomOf="@+id/imgRecommended" />
+        app:layout_constraintEnd_toEndOf="@+id/imgProducts"
+        app:layout_constraintStart_toStartOf="@+id/imgProducts"
+        app:layout_constraintTop_toBottomOf="@+id/imgProducts" />
 
     <ImageView
         android:id="@+id/imgAdd"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="12dp"
-        app:layout_constraintEnd_toEndOf="@+id/imgRecommended"
-        app:layout_constraintTop_toBottomOf="@+id/tvTitleRecommended"
+        app:layout_constraintEnd_toEndOf="@+id/imgProducts"
+        app:layout_constraintTop_toBottomOf="@+id/tvTitleProduct"
         app:srcCompat="@drawable/plus_circle" />
 </androidx.constraintlayout.widget.ConstraintLayout>

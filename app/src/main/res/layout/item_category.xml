@@ -6,14 +6,24 @@
     android:id="@+id/card_view"
     android:layout_marginTop="8dp"
     android:layout_width="75dp"
-
     android:layout_marginStart="25dp"
     android:background="@drawable/background_category"
     android:elevation="3dp"
     >
 
     <ImageView
-        android:id="@+id/img_cat1"
+        android:id="@+id/imgDeleteItemCategory"
+        android:visibility="invisible"
+        android:layout_width="20dp"
+        android:layout_height="20dp"
+        android:layout_marginStart="26dp"
+        android:layout_marginTop="90dp"
+        android:src="@drawable/ic_baseline_delete_24"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <ImageView
+        android:id="@+id/img_item_cate"
         android:layout_width="35dp"
         android:layout_height="35dp"
         android:layout_gravity="center"
@@ -33,9 +43,9 @@
         android:textColor="#6e6e70"
         android:textSize="15sp"
         android:textStyle="bold"
-        app:layout_constraintEnd_toEndOf="@+id/img_cat1"
-        app:layout_constraintStart_toStartOf="@+id/img_cat1"
-        app:layout_constraintTop_toBottomOf="@+id/img_cat1" />
+        app:layout_constraintEnd_toEndOf="@+id/img_item_cate"
+        app:layout_constraintStart_toStartOf="@+id/img_item_cate"
+        app:layout_constraintTop_toBottomOf="@+id/img_item_cate" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -3,13 +3,13 @@ package com.fpoly.foodapp.ui.home;
 import static android.content.Context.MODE_PRIVATE;
 
 import android.annotation.SuppressLint;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
-import androidx.recyclerview.widget.ConcatAdapter;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.viewpager2.widget.ViewPager2;
@@ -26,17 +26,24 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.fpoly.foodapp.DAO.CategoryDAO;
+//import com.fpoly.foodapp.DAO.ProductDAO;
+import com.fpoly.foodapp.DAO.RecommendDAO;
 import com.fpoly.foodapp.DAO.UsersDAO;
 import com.fpoly.foodapp.R;
-import com.fpoly.foodapp.adapters.AddRecommendedItemAdapter;
-import com.fpoly.foodapp.adapters.CategoriesAdapter;
+import com.fpoly.foodapp.activities.AddItemCategoryActivity;
+import com.fpoly.foodapp.activities.AddItemProductActivity;
+import com.fpoly.foodapp.activities.AddItemRecommendActivity;
 import com.fpoly.foodapp.adapters.RecommendAdapter;
 import com.fpoly.foodapp.adapters.SlideShowAdapter;
-import com.fpoly.foodapp.adapters.UpdateVerticalRec;
-import com.fpoly.foodapp.modules.AddRecommendModule;
-import com.fpoly.foodapp.modules.CategoryModule;
-import com.fpoly.foodapp.modules.RecommendedModule;
-import com.fpoly.foodapp.modules.HomeVerModule;
+import com.fpoly.foodapp.adapters.category.ItemCategory;
+import com.fpoly.foodapp.adapters.category.ItemCategoryAdapter;
+import com.fpoly.foodapp.adapters.item_product.ItemProduct;
+import com.fpoly.foodapp.adapters.item_product.ItemProductAdapter;
+import com.fpoly.foodapp.adapters.product.ListProduct;
+import com.fpoly.foodapp.adapters.product.ListProductsAdapter;
+import com.fpoly.foodapp.adapters.recommend.ItemRecommend;
+import com.fpoly.foodapp.adapters.recommend.RecommendAdapterNew;
 import com.fpoly.foodapp.modules.photo;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
@@ -47,17 +54,25 @@ import java.util.List;
 import me.relex.circleindicator.CircleIndicator3;
 
 
-public class HomeFragmentNew extends Fragment implements UpdateVerticalRec {
+public class HomeFragmentNew extends Fragment {
 
 
-    RecyclerView recyclerCategory, recyclerViewRecommend;
-    ArrayList<CategoryModule> listCategories;
-    ArrayList<AddRecommendModule> listAddRecommend;
-    ArrayList<RecommendedModule> listRecommend;
-    RecommendAdapter recommendAdapter;
-    AddRecommendedItemAdapter addRecommendedItemAdapter;
+    RecyclerView recyclerCategory, recyclerViewRecommend, recyclerViewProduct;
+    ListProductsAdapter listProductsAdapter;
 
-    CategoriesAdapter categoriesAdapter;
+    ItemCategoryAdapter categoryAdapter;
+    CategoryDAO categoryDAO;
+    List<ItemCategory> listCate;
+
+//    static ProductDAO productDAO;
+    List<ItemProduct> listProduct;
+    ItemProductAdapter itemProductAdapter;
+
+    RecommendAdapterNew recommendAdapterNew;
+    ArrayList<ItemRecommend> listRecommend;
+    static RecommendDAO recommendDAO;
+
+
     EditText edSearch;
     TextView tvUserName;
     ImageView imgAvatar, imgDeleteSearch;
@@ -72,7 +87,7 @@ public class HomeFragmentNew extends Fragment implements UpdateVerticalRec {
     private Runnable runnable = new Runnable() {
         @Override
         public void run() {
-            if (viewPager2.getCurrentItem() == listCategories.size() - 1) {
+            if (viewPager2.getCurrentItem() == listPhotos.size() - 1) {
                 viewPager2.setCurrentItem(0);
             } else {
                 viewPager2.setCurrentItem(viewPager2.getCurrentItem() + 1);
@@ -91,12 +106,30 @@ public class HomeFragmentNew extends Fragment implements UpdateVerticalRec {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_home_new, container, false);
+        categoryDAO = new CategoryDAO(getContext());
+        edSearch = view.findViewById(R.id.edSearchHome);
+        imgDeleteSearch = view.findViewById(R.id.imgDeleteSearch);
+        itemProductAdapter = new ItemProductAdapter(getContext());
 
+        recommendDAO = new RecommendDAO(getContext());
         usersDAO = new UsersDAO(getActivity());
         imgAvatar = view.findViewById(R.id.imgAvatar);
+        imgAvatar.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(getContext(), AddItemCategoryActivity.class));
+//                startActivity(new Intent(getContext(), AddItemProductActivity.class));
+            }
+        });
 
         SharedPreferences pref = getActivity().getSharedPreferences("USER_FILE", MODE_PRIVATE);
         tvUserName = view.findViewById(R.id.tvUserNameHome);
+        tvUserName.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(getContext(), AddItemRecommendActivity.class));
+            }
+        });
         String userName = pref.getString("name", "");
         if (userName.isEmpty() || userName.equals("null")) {
             tvUserName.setText("Username");
@@ -115,30 +148,22 @@ public class HomeFragmentNew extends Fragment implements UpdateVerticalRec {
         }
 
 
+
         recyclerViewRecommend = view.findViewById(R.id.rcvRecommend);
         recyclerCategory = view.findViewById(R.id.rcvCategory);
-        edSearch = view.findViewById(R.id.edSearchHome);
-        imgDeleteSearch = view.findViewById(R.id.imgDeleteSearch);
+        recyclerViewProduct = view.findViewById(R.id.rcvProduct);
+
+        listProductsAdapter = new ListProductsAdapter(getContext());
+        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext(), RecyclerView.VERTICAL, false);
+        recyclerViewProduct.setLayoutManager(linearLayoutManager);
+        listProductsAdapter.setData(getListProduct());
+        recyclerViewProduct.setAdapter(listProductsAdapter);
 
 
-        listCategories = new ArrayList<>();
-        listCategories.add(new CategoryModule(R.drawable.cat_1, "Pizza"));
-        listCategories.add(new CategoryModule(R.drawable.cat_2, "Burger"));
-        listCategories.add(new CategoryModule(R.drawable.fried_potatoes, "Fried"));
-        listCategories.add(new CategoryModule(R.drawable.ice_cream, "Ice_cream"));
-        listCategories.add(new CategoryModule(R.drawable.sandwich, "Sandwich"));
-        listCategories.add(new CategoryModule(R.drawable.fruit_juice, "Fruit Juice"));
-        categoriesAdapter = new CategoriesAdapter(this, getActivity(), listCategories);
-
-        recyclerCategory.setAdapter(categoriesAdapter);
-
-        recyclerCategory.setLayoutManager(new LinearLayoutManager(getContext(), RecyclerView.HORIZONTAL, false));
-        recyclerCategory.setHasFixedSize(true);
-        recyclerCategory.setNestedScrollingEnabled(false);
 
         listSlideShow();
-        listRecommended();
-        listUpdate();
+        listCategory();
+        listRecommend();
 
         viewPager2 = view.findViewById(R.id.viewpager_slideshow);
         indicator3 = view.findViewById(R.id.indicator);
@@ -156,7 +181,6 @@ public class HomeFragmentNew extends Fragment implements UpdateVerticalRec {
             }
         });
 
-        // viewPager2.setPageTransformer(new ZoomOutPageTransformer());
 
         edSearch.addTextChangedListener(new TextWatcher() {
             @Override
@@ -166,7 +190,6 @@ public class HomeFragmentNew extends Fragment implements UpdateVerticalRec {
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
-
 
             }
 
@@ -183,10 +206,39 @@ public class HomeFragmentNew extends Fragment implements UpdateVerticalRec {
                 } else {
                     imgDeleteSearch.setVisibility(View.INVISIBLE);
                 }
-                recommendAdapter.getFilter().filter(s.toString());
+                recommendAdapterNew.getFilter().filter(s.toString());
             }
         });
         return view;
+    }
+    private ArrayList<ListProduct> getListProduct() {
+        ArrayList<ListProduct> list = new ArrayList<>();
+        ArrayList<ItemProduct> list1 = new ArrayList<>();
+        ArrayList<ItemProduct> list2 = new ArrayList<>();
+        list1.add(new ItemProduct(R.drawable.pizza1_new, "Pizza", 13.5, R.drawable.plus_circle));
+        list1.add(new ItemProduct(R.drawable.burger1, "Burger", 15.7, R.drawable.plus_circle));
+        list1.add(new ItemProduct(R.drawable.fries1, "Fried", 16.2, R.drawable.plus_circle));
+        list1.add(new ItemProduct(R.drawable.strawberry, "Strawberry", 13.5, R.drawable.plus_circle));
+        list1.add(new ItemProduct(R.drawable.watermelon, "Watermelon", 15.7, R.drawable.plus_circle));
+        list1.add(new ItemProduct(R.drawable.burger2, "Burger", 16.2, R.drawable.plus_circle));
+        list1.add(new ItemProduct(R.drawable.pizza2, "Pizza", 13.5, R.drawable.plus_circle));
+        list1.add(new ItemProduct(R.drawable.icecream2, "Ice cream", 13.5, R.drawable.plus_circle));
+
+        list2.add(new ItemProduct(R.drawable.burger4, "Burger", 13.5, R.drawable.plus_circle));
+        list2.add(new ItemProduct(R.drawable.icecream4, "Ice cream", 15.7, R.drawable.plus_circle));
+        list2.add(new ItemProduct(R.drawable.mango, "Mango", 16.2, R.drawable.plus_circle));
+        list2.add(new ItemProduct(R.drawable.carrot, "Carrot", 13.5, R.drawable.plus_circle));
+        list2.add(new ItemProduct(R.drawable.pizza3_new, "Pizza", 15.7, R.drawable.plus_circle));
+        list2.add(new ItemProduct(R.drawable.fries4, "Fried", 16.2, R.drawable.plus_circle));
+        list2.add(new ItemProduct(R.drawable.sandwich3, "Sandwich", 13.5, R.drawable.plus_circle));
+
+
+        list.add(new ListProduct("Món mới trong tuần", list1));
+        list.add(new ListProduct("Được yêu thích", list2));
+
+
+
+        return list;
     }
 
     private void listSlideShow() {
@@ -199,23 +251,31 @@ public class HomeFragmentNew extends Fragment implements UpdateVerticalRec {
         listPhotos.add(new photo(R.drawable.fruit_juice_banner));
 
     }
+    private void listCategory() {
+        listCate =  categoryDAO.getALL();
+        if (listCate.size() == 0) {
+            //Toast.makeText(getContext(), "Bấm vào avatar góc trái để thêm item category.", Toast.LENGTH_SHORT).show();
+        }
+        else {
+            categoryAdapter = new ItemCategoryAdapter(getContext(), listCate);
+            recyclerCategory.setAdapter(categoryAdapter);
 
-    private void listRecommended() {
-        listRecommend = new ArrayList<>();
-        listAddRecommend = new ArrayList<>();
+            recyclerCategory.setLayoutManager(new LinearLayoutManager(getContext(), RecyclerView.HORIZONTAL, false));
+            recyclerCategory.setHasFixedSize(true);
+            recyclerCategory.setNestedScrollingEnabled(false);
+        }
 
-        listRecommend.add(new RecommendedModule(R.drawable.pizza1, "Pepperoni Pizza", 13.0, R.drawable.plus_circle));
-        listRecommend.add(new RecommendedModule(R.drawable.pizza3, "Vegetable Pizza", 11.0, R.drawable.plus_circle));
-        listRecommend.add(new RecommendedModule(R.drawable.pizza5, "Tomato Pizza", 12.6, R.drawable.plus_circle));
-        listRecommend.add(new RecommendedModule(R.drawable.pizza6, "Cheese Pizza", 10.5, R.drawable.plus_circle));
-        listRecommend.add(new RecommendedModule(R.drawable.pizza7, "Lamacun Pizza", 15.2, R.drawable.plus_circle));
-        listRecommend.add(new RecommendedModule(R.drawable.pizza8, "Beef Pizza", 14.7, R.drawable.plus_circle));
-        listAddRecommend.add(new AddRecommendModule(R.drawable.ic_baseline_add_24));
 
-        recommendAdapter = new RecommendAdapter(getContext(), listRecommend);
-        addRecommendedItemAdapter = new AddRecommendedItemAdapter(getContext(), listAddRecommend);
 
-        recyclerViewRecommend.setAdapter(addRecommendedItemAdapter);
+    }
+    public void listRecommend() {
+        listRecommend = (ArrayList<ItemRecommend>) recommendDAO.getALL();
+        if (listRecommend.size() == 0) {
+           // Toast.makeText(getContext(), "Bấm vào TextView User để thêm item recommend.", Toast.LENGTH_SHORT).show();
+        }
+        recommendAdapterNew = new RecommendAdapterNew(getContext(), listRecommend);
+        recyclerViewRecommend.setAdapter(recommendAdapterNew);
+
         recyclerViewRecommend.setLayoutManager(new LinearLayoutManager(getContext(), RecyclerView.HORIZONTAL, false));
         recyclerViewRecommend.setHasFixedSize(true);
         recyclerViewRecommend.setNestedScrollingEnabled(false);
@@ -224,35 +284,7 @@ public class HomeFragmentNew extends Fragment implements UpdateVerticalRec {
 
     }
 
-    public void listUpdate() {
-        listRecommend = new ArrayList<>();
-        recommendAdapter = new RecommendAdapter(getActivity(), listRecommend);
-        recyclerViewRecommend.setAdapter(recommendAdapter);
-        recyclerViewRecommend.setLayoutManager(new LinearLayoutManager(getActivity(), RecyclerView.HORIZONTAL, false));
-    }
 
 
-    @Override
-    public void callBack(int pos, ArrayList<HomeVerModule> list) {
 
-    }
-
-    @Override
-    public void callBackNew(int pos, ArrayList<RecommendedModule> list, ArrayList<AddRecommendModule> listNew) {
-        SharedPreferences pref = getActivity().getSharedPreferences("USER_FILE", MODE_PRIVATE);
-        String email = pref.getString("EMAIL", "");
-        int begin_index = email.indexOf("@");
-        int end_index = email.indexOf(".");
-        String domain_name = email.substring(begin_index + 1, end_index);
-        recommendAdapter = new RecommendAdapter(getContext(), list);
-        addRecommendedItemAdapter = new AddRecommendedItemAdapter(getContext(),listNew);
-        recommendAdapter.notifyDataSetChanged();
-        recyclerViewRecommend.setAdapter(recommendAdapter);
-
-        if (domain_name.equals("merchant")) {
-            ConcatAdapter concatAdapter = new ConcatAdapter(recommendAdapter, addRecommendedItemAdapter);
-            recommendAdapter.notifyDataSetChanged();
-            recyclerViewRecommend.setAdapter(concatAdapter);
-        }
-    }
 }

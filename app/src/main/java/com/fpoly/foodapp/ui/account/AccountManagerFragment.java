@@ -15,6 +15,7 @@ import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.provider.MediaStore;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -73,9 +74,9 @@ public class AccountManagerFragment extends Fragment {
                 Uri uri = intent.getData();
                 realPath = getRealPathFromURI(uri);
                 SharedPreferences pref = getActivity().getSharedPreferences("USER_FILE", MODE_PRIVATE);
-
+                Bitmap bitmap = null;
                 try {
-                    Bitmap bitmap = MediaStore.Images.Media.getBitmap(getActivity().getContentResolver(), uri);
+                    bitmap = MediaStore.Images.Media.getBitmap(getActivity().getContentResolver(), uri);
                     imgProfile.setImageBitmap(bitmap);
                     item.bitmap = "" + uri;
                     item.name = "null";
@@ -83,8 +84,8 @@ public class AccountManagerFragment extends Fragment {
                     item.pass = pref.getString("PASSWORD", "");
                     item.phoneNumber = "null";
                     item.address = "null";
-
                     if (usersDAO.updateImg(item) > 0) {
+                        Log.d("path" , String.valueOf(uri));
                         Toast.makeText(getActivity(), "Lưu ảnh thành công !", Toast.LENGTH_SHORT).show();
                     }
 //                    rememberImg(uri);
@@ -309,6 +310,7 @@ public class AccountManagerFragment extends Fragment {
         }
         try {
             String path = usersDAO.getUriImg(email);
+
             Bitmap bitmap = MediaStore.Images.Media.getBitmap(getActivity().getContentResolver(), Uri.parse(path));
             imgProfile.setImageBitmap(bitmap);
 

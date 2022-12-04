@@ -1,26 +1,22 @@
-package com.fpoly.foodapp.modules;
+package com.fpoly.foodapp.adapters.item_product;
 
-public class RecommendedModule {
-    private int id;
+public class ItemProduct {
     private int img;
-    private String title ;
+    private String title;
     private double money;
     private int resource_image;
 
-    public RecommendedModule(int img, String title, double money, int resource_image) {
+
+    public ItemProduct() {
+    }
+
+    public ItemProduct(int img, String title, double money, int resource_image) {
         this.img = img;
         this.title = title;
         this.money = money;
         this.resource_image = resource_image;
     }
 
-    public int getId() {
-        return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
-    }
 
     public int getImg() {
         return img;
@@ -52,9 +48,6 @@ public class RecommendedModule {
 
     public void setResource_image(int resource_image) {
         this.resource_image = resource_image;
-    }
-
-    public RecommendedModule() {
     }
 }
 

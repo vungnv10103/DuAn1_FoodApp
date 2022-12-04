@@ -17,22 +17,6 @@
         tools:layout_editor_absoluteY="0dp" />
 
     <TextView
-        android:id="@+id/textView3"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:fontFamily="@font/amarante"
-        android:text="My Food App"
-        android:textAlignment="center"
-        android:textColor="@color/white"
-        android:textSize="33sp"
-        app:layout_constraintBottom_toBottomOf="@+id/imageView"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.168" />
-
-    <TextView
         android:id="@+id/textView4"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -48,56 +32,109 @@
         app:layout_constraintTop_toBottomOf="@+id/textView3" />
 
 
-    <EditText
-        android:id="@+id/edEmail"
-        android:textColor="@color/white"
-        android:layout_width="0dp"
+
+    <TextView
+        android:id="@+id/textView3"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="40dp"
-        android:backgroundTint="@color/white"
-        android:drawableLeft="@drawable/avatar_default"
-        android:drawablePadding="12dp"
-        android:hint="Email"
-        android:textColorHint="@color/white"
+        android:fontFamily="@font/amarante"
+        android:text="My Food App"
+        android:textAlignment="center"
+        android:textColor="@color/white"
+        android:textSize="33sp"
         app:layout_constraintBottom_toBottomOf="@+id/imageView"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView4"
-        app:layout_constraintVertical_bias="0.0"
-        app:layout_constraintWidth_percent=".8" />
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.168" />
 
 
-    <EditText
-        android:id="@+id/edPass"
-        android:layout_width="0dp"
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/til_Email"
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:backgroundTint="@color/white"
-        android:drawableLeft="@drawable/ic_baseline_vpn_key_24"
-
-        android:drawablePadding="12dp"
-        android:hint="Password"
-        android:layout_marginTop="84dp"
-        android:inputType="textPassword"
-        android:textColor="@color/white"
+        android:layout_marginStart="35dp"
+        android:layout_marginEnd="35dp"
+        android:hint="Email"
+        android:layout_marginTop="30dp"
         android:textColorHint="@color/white"
-        app:layout_constraintBottom_toBottomOf="parent"
+        app:endIconTint="@color/white"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView4"
-        app:layout_constraintVertical_bias="0.036"
-        app:layout_constraintWidth_percent=".8" />
-
-
-    <ImageView
-        android:id="@+id/img_show_hide_pwd"
-        android:layout_width="wrap_content"
+       >
+        <AutoCompleteTextView
+            android:id="@+id/edEmail"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:drawableStart="@drawable/avatar_default"
+            android:drawablePadding="12dp"
+            android:textColor="@color/white" />
+    </com.google.android.material.textfield.TextInputLayout>
+    <com.google.android.material.textfield.TextInputLayout
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
+        android:id="@+id/til_Pass"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:layout_constraintTop_toBottomOf="@+id/edEmail"
-        app:layout_constraintEnd_toEndOf="@+id/edPass"
-        android:layout_marginTop="25dp"
-        android:src="@drawable/ic_baseline_eye_on_24"
-        tools:layout_editor_absoluteX="346dp"
-        tools:layout_editor_absoluteY="316dp" />
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        android:hint="Pass"
+        android:layout_marginLeft="35dp"
+        android:layout_marginRight="35dp"
+        android:layout_marginTop="10dp"
+        android:textColorHint="@color/white"
+        app:layout_constraintTop_toBottomOf="@+id/til_Email"
+        app:passwordToggleTint="@color/white"
+        app:passwordToggleEnabled="true">
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/edPass"
+            android:inputType="textPassword"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:drawableStart="@drawable/ic_baseline_vpn_key_24"
+            android:textColor="@color/white"
+            android:drawablePadding="12dp"
+
+            />
+
+
+    </com.google.android.material.textfield.TextInputLayout>
+
+
+
+
+
+<!--    <EditText-->
+<!--        android:id="@+id/edPass"-->
+<!--        android:layout_width="0dp"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:layout_marginTop="84dp"-->
+<!--        android:backgroundTint="@color/white"-->
+<!--        android:drawableLeft="@drawable/ic_baseline_vpn_key_24"-->
+<!--        android:drawablePadding="12dp"-->
+<!--        android:hint="Password"-->
+<!--        android:inputType="textPassword"-->
+<!--        android:textColor="@color/white"-->
+<!--        android:textColorHint="@color/white"-->
+<!--        app:layout_constraintBottom_toBottomOf="parent"-->
+<!--        app:layout_constraintEnd_toEndOf="parent"-->
+<!--        app:layout_constraintStart_toStartOf="parent"-->
+<!--        app:layout_constraintTop_toBottomOf="@+id/textView4"-->
+<!--        app:layout_constraintVertical_bias="0.036"-->
+<!--        app:layout_constraintWidth_percent=".8" />-->
+
+
+<!--    <ImageView-->
+<!--        android:id="@+id/img_show_hide_pwd"-->
+<!--        android:layout_width="wrap_content"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:layout_marginBottom="12dp"-->
+<!--        android:src="@drawable/ic_baseline_eye_on_24"-->
+<!--        app:layout_constraintBottom_toBottomOf="@+id/til_Pass"-->
+<!--        app:layout_constraintEnd_toEndOf="@+id/til_Pass" />-->
 
     <Button
         android:id="@+id/btnSignIn"
@@ -110,7 +147,7 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/edPass"
+        app:layout_constraintTop_toBottomOf="@+id/checkBoxRemember"
         app:layout_constraintVertical_bias="0.6"
         app:layout_constraintWidth_percent=".8" />
 
@@ -131,11 +168,12 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginLeft="6dp"
         android:layout_marginTop="20dp"
+        android:minHeight="48dp"
         android:onClick="register"
         android:text="Register"
         android:textColor="#ff5353"
-        android:layout_marginLeft="6dp"
         android:textStyle="bold"
         app:layout_constraintStart_toEndOf="@+id/textView5"
         app:layout_constraintTop_toBottomOf="@+id/btnSignIn" />
@@ -145,11 +183,11 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="37dp"
-        android:textColor="@color/white"
         android:layout_marginTop="4dp"
         android:text="Remember me"
+        android:textColor="@color/white"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/edPass" />
+        app:layout_constraintTop_toBottomOf="@+id/til_Pass" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

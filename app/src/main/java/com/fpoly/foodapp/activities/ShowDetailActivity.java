@@ -6,7 +6,10 @@ import androidx.fragment.app.FragmentTransaction;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Bitmap;
+import android.net.Uri;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -18,6 +21,8 @@ import com.fpoly.foodapp.R;
 import com.fpoly.foodapp.adapters.demo_cart_item_adapter;
 import com.fpoly.foodapp.modules.demo_cart_item;
 import com.fpoly.foodapp.ui.cart.CartFragment;
+
+import java.io.IOException;
 
 
 public class ShowDetailActivity extends AppCompatActivity {
@@ -34,19 +39,21 @@ public class ShowDetailActivity extends AppCompatActivity {
     static UsersDAO usersDAO;
 
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_showdetail);
         init();
+        Intent intent = getIntent();
+        Bundle bundle = intent.getBundleExtra("data");
+        checkImg();
         demo_item_cart_dao = new demo_item_cart_dao(getApplicationContext());
         usersDAO = new UsersDAO(getApplicationContext());
 
         tvQuantity.setText(String.valueOf(quantity));
-        Intent intent = getIntent();
-        Bundle bundle = intent.getBundleExtra("data");
 
-        imgProduct.setImageResource(bundle.getInt("image"));
+
         String title = bundle.getString("title");
         tvTitle.setText(title);
         double price = bundle.getDouble("price");
@@ -120,6 +127,24 @@ public class ShowDetailActivity extends AppCompatActivity {
         tvAddToCart = findViewById(R.id.tvAddToCart);
         imgProduct = findViewById(R.id.imgFood);
 
+    }
+    public void checkImg(){
+        Intent intent = getIntent();
+        Bundle bundle = intent.getBundleExtra("data");
+        int img = bundle.getInt("image");
+        String uri = bundle.getString("image_resource");
+        if (uri != null){
+            Bitmap bitmap  = null;
+            try {
+                bitmap = MediaStore.Images.Media.getBitmap(getApplication().getContentResolver(), Uri.parse(uri));
+                imgProduct.setImageBitmap(bitmap);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+        else {
+            imgProduct.setImageResource(img);
+        }
     }
 
     @Override
