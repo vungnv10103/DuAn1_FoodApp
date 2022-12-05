@@ -133,7 +133,8 @@ public class LoginActivity extends AppCompatActivity {
                                                 Intent intent = new Intent(LoginActivity.this, MainActivity.class);
                                                 startActivity(intent);
                                                 finishAffinity();
-                                            } else {
+                                            }
+                                            else {
                                                 if (usersDAO.insert(item) > 0) {
                                                     // thêm lần đầu
 //                                                    Toast.makeText(getApplicationContext(), "Success.", Toast.LENGTH_SHORT).show();
