@@ -10,6 +10,8 @@ import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.provider.MediaStore;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -32,7 +34,7 @@ import java.io.IOException;
 
 public class AddItemCategoryActivity extends AppCompatActivity {
     EditText edName;
-    ImageView imgAvatar;
+    ImageView imgAvatar, imgDeleteNameCate;
     Button btnOpenGallery, btnSave, btnCancel;
     public static final int PICK_IMAGE = 1;
     public static final int KITKAT_VALUE = 1002;
@@ -49,12 +51,41 @@ public class AddItemCategoryActivity extends AppCompatActivity {
         setContentView(R.layout.activity_add_item_category);
         init();
 
+        edName.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                if (!edName.getText().toString().trim().isEmpty()) {
+                    imgDeleteNameCate.setVisibility(View.VISIBLE);
+                    imgDeleteNameCate.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            edName.setText("");
+                        }
+                    });
+                } else {
+                    imgDeleteNameCate.setVisibility(View.INVISIBLE);
+                }
+            }
+        });
+
         btnCancel.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 edName.setText("");
                 imgAvatar.setImageResource(R.drawable.avatar_default);
                 imgAvatar.setTag("default_avatar");
+                startActivity(new Intent(getApplicationContext(), MainActivity.class));
+                finishAffinity();
             }
         });
 
@@ -134,6 +165,7 @@ public class AddItemCategoryActivity extends AppCompatActivity {
         btnSave = findViewById(R.id.btnSaveItem);
         btnCancel = findViewById(R.id.btnCancel);
         categoryDAO = new CategoryDAO(getApplication());
+        imgDeleteNameCate = findViewById(R.id.imgDeleteNameCate);
     }
 
 //    @Override

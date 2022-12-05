@@ -33,6 +33,7 @@ public class DbHelper extends SQLiteOpenHelper {
                 "email TEXT not null," +
                 "pass TEXT not null," +
                 "phoneNumber TEXT ," +
+                "feedback TEXT ," +
                 "address TEXT )";
         db.execSQL(createTableUser);
 
@@ -62,7 +63,9 @@ public class DbHelper extends SQLiteOpenHelper {
         String createTableRecommended = "create table Recommend(" +
                 "id INTEGER PRIMARY KEY AUTOINCREMENT," +
                 "img TEXT not null," +
+                "favourite INTEGER not null," +
                 "name TEXT not null," +
+                "idUser INTEGER REFERENCES User(id)," +
                 "cost REAL not null)";
         db.execSQL(createTableRecommended);
 

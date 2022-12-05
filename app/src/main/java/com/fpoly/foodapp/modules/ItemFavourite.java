@@ -1,6 +1,6 @@
-package com.fpoly.foodapp.adapters.recommend;
+package com.fpoly.foodapp.modules;
 
-public class ItemRecommend {
+public class ItemFavourite {
     public int id;
     public int idUser;
     public String title;
@@ -8,6 +8,6 @@ public class ItemRecommend {
     public String img_resource;
     public int favourite;
 
-    public ItemRecommend() {
+    public ItemFavourite() {
     }
 }

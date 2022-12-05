@@ -23,7 +23,7 @@
                 android:id="@+id/imgProfileEdit"
                 android:layout_width="122dp"
                 android:layout_height="122dp"
-                android:src="@drawable/burger1" />
+                android:src="@drawable/user" />
         </LinearLayout>
     </FrameLayout>
 
@@ -31,6 +31,8 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:gravity="center_horizontal"
+        android:paddingStart="30dp"
+        android:paddingEnd="30dp"
         android:orientation="vertical">
 
         <LinearLayout
@@ -40,6 +42,7 @@
             android:orientation="vertical">
 
             <TextView
+                android:layout_marginStart="6dp"
                 android:layout_width="93dp"
                 android:layout_height="38dp"
                 android:text="Họ Và Tên: " />
@@ -59,10 +62,12 @@
             <TextView
                 android:layout_width="93dp"
                 android:layout_height="38dp"
+                android:layout_marginStart="6dp"
                 android:text="Số Điện Thoại: " />
 
             <EditText
                 android:id="@+id/edEditPhoneNumber"
+                android:inputType="number"
                 android:layout_width="356dp"
                 android:layout_height="wrap_content" />
         </LinearLayout>
@@ -76,7 +81,8 @@
             <TextView
                 android:layout_width="93dp"
                 android:layout_height="38dp"
-                android:text="Address: " />
+                android:layout_marginStart="6dp"
+                android:text="Địa chỉ: " />
 
             <EditText
                 android:id="@+id/edEditAddress"

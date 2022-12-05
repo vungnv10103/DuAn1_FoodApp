@@ -82,6 +82,7 @@
                 </LinearLayout>
 
                 <LinearLayout
+                    android:id="@+id/oder_favourite"
                     android:layout_width="299dp"
                     android:layout_height="64dp"
                     android:layout_marginTop="30dp"
@@ -99,12 +100,13 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Đơn Hàng Yêu Thích"
+                        android:text="Món Ăn Yêu Thích"
                         android:textColor="@color/black"
                         android:textSize="20dp" />
                 </LinearLayout>
 
                 <LinearLayout
+                    android:id="@+id/order_history"
                     android:layout_width="299dp"
                     android:layout_height="64dp"
                     android:layout_marginTop="30dp"
@@ -117,12 +119,12 @@
                         android:layout_height="43dp"
                         android:layout_marginLeft="10dp"
                         android:layout_marginRight="20dp"
-                        android:src="@drawable/support_accview" />
+                        android:src="@drawable/ic_baseline_assignment_24" />
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Trung Tâm Hỗ Trợ"
+                        android:text="Lịch sử đơn hàng"
                         android:textColor="@color/black"
                         android:textSize="20dp" />
                 </LinearLayout>

@@ -4,6 +4,7 @@ import static android.content.Context.MODE_PRIVATE;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -18,6 +19,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.fpoly.foodapp.DAO.VoucherDAO;
 import com.fpoly.foodapp.R;
+import com.fpoly.foodapp.activities.MainActivity;
 import com.fpoly.foodapp.modules.VoucherModule;
 
 import java.util.List;
@@ -46,19 +48,21 @@ public class DealAdapter extends RecyclerView.Adapter<DealAdapter.ViewHolder> {
 
         holder.imgVoucher.setImageResource(newOb.img);
         holder.tvID.setText("ID: " + newOb.id);
-        holder.tvDiscount.setText(newOb.voucherTitle);
+        holder.tvDiscount.setText(newOb.discount + "");
         holder.tvDeadlineVoucher.setText(newOb.voucherDeadline);
 
 
         holder.btnSave.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                rememberVoucher(newOb.id, newOb.voucherTitle, newOb.voucherDeadline);
+                rememberVoucher(newOb.id, newOb.discount, newOb.voucherDeadline);
                 if (voucherDAO.delete(newOb.id) > 0) {
                     voucherList.remove(position);
                     notifyDataSetChanged();
-
                     Toast.makeText(context, "Đã lưu !", Toast.LENGTH_SHORT).show();
+                    v.getContext().startActivity(new Intent(v.getContext(), MainActivity.class));
+
+
 
                 }
 
@@ -95,16 +99,17 @@ public class DealAdapter extends RecyclerView.Adapter<DealAdapter.ViewHolder> {
         }
     }
 
-    public void rememberVoucher(int id, String discount, String deadline) {
+    public void rememberVoucher(int id, int discount, String deadline) {
         SharedPreferences pref = context.getSharedPreferences("VOUCHER", MODE_PRIVATE);
         SharedPreferences.Editor editor = pref.edit();
 
         // lưu dữ liệu
         editor.putInt("ID", id);
-        editor.putString("DISCOUNT", discount);
+        editor.putInt("DISCOUNT", discount);
         editor.putString("DEADLINE", deadline);
 
         // lưu lại
         editor.commit();
     }
+
 }
