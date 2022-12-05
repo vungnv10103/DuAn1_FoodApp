@@ -1,6 +1,7 @@
 package com.fpoly.foodapp.adapters;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -25,13 +26,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Billdetails_adapter extends RecyclerView.Adapter<Billdetails_adapter.ViewHolder> {
-    private ArrayList<billdetailmodel> list ;
-    private Context  context ;
+    private ArrayList<billdetailmodel> list;
+    private Context context;
 
 
     CartFragment cartFragment = new CartFragment();
-
-
 
 
     public Billdetails_adapter(ArrayList<billdetailmodel> list, Context context) {
@@ -42,7 +41,7 @@ public class Billdetails_adapter extends RecyclerView.Adapter<Billdetails_adapte
     @NonNull
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_bill_detail , parent , false);
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_bill_detail, parent, false);
 
         return new ViewHolder(view);
     }
@@ -50,24 +49,23 @@ public class Billdetails_adapter extends RecyclerView.Adapter<Billdetails_adapte
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
 
-        holder.txtmadonhang.setText(""+list.get(position).getMadonhang());
+        holder.txtmadonhang.setText("" + list.get(position).getMadonhang());
         holder.txttrangthai.setText(list.get(position).getTrangthai());
         holder.ngaymua.setText(list.get(position).getNgaymua());
-        holder.txttongtien.setText(""+list.get(position).getTongtien());
-        holder.txttiensanpham.setText(""+list.get(position).getTongtiensanpham());
-        holder.txtdeliverybill.setText(""+list.get(position).getDalivery());
-        holder.txttaxbill.setText(""+list.get(position).getTax());
+
+
+        holder.txttongtien.setText(String.format("%.2f", list.get(position).getTongtien()) + " $");
+        holder.txttiensanpham.setText("" + list.get(position).getTongtiensanpham());
+        holder.txtdeliverybill.setText("" + list.get(position).getDalivery());
+        holder.txttaxbill.setText("" + list.get(position).getTax());
         holder.txttensanphamdamua.setText(list.get(position).getSoluongsanphan());
         holder.btnthnahtoan.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                holder.txttrangthai.setText("da thanhtoan");
+                holder.txttrangthai.setText("Đã thanh toán");
+                holder.txttrangthai.setTextColor(Color.GREEN);
             }
         });
-
-
-
-
 
 
     }
@@ -78,9 +76,10 @@ public class Billdetails_adapter extends RecyclerView.Adapter<Billdetails_adapte
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {
-        TextView txtmadonhang , ngaymua ,txttongtien , txttiensanpham  ,txtdeliverybill , txttaxbill , txttensanphamdamua , txttrangthai;
+        TextView txtmadonhang, ngaymua, txttongtien, txttiensanpham, txtdeliverybill, txttaxbill, txttensanphamdamua, txttrangthai;
 
         ConstraintLayout btnthnahtoan;
+
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
             txtmadonhang = itemView.findViewById(R.id.txtmadonhang1);
@@ -92,7 +91,6 @@ public class Billdetails_adapter extends RecyclerView.Adapter<Billdetails_adapte
             txttensanphamdamua = itemView.findViewById(R.id.txtcacsanphamdadat);
             txttrangthai = itemView.findViewById(R.id.txttrangthai);
             btnthnahtoan = itemView.findViewById(R.id.thanhtoan);
-
 
 
         }

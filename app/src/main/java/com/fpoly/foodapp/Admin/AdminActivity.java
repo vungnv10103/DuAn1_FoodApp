@@ -13,6 +13,8 @@ import android.widget.Toast;
 
 import com.fpoly.foodapp.R;
 import com.fpoly.foodapp.activities.Billdetail_activity;
+import com.fpoly.foodapp.activities.FavouriteActivity;
+import com.fpoly.foodapp.activities.ListUserActivity;
 import com.fpoly.foodapp.activities.LoginActivity;
 import com.github.mikephil.charting.animation.Easing;
 import com.github.mikephil.charting.charts.PieChart;
@@ -69,7 +71,8 @@ public class AdminActivity extends AppCompatActivity {
         constraintLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(AdminActivity.this, "Món ăn yêu thích", Toast.LENGTH_SHORT).show();
+                startActivity(new Intent(getApplicationContext(), FavouriteActivity.class));
+                finishAffinity();
             }
         });
         constraintLayout1.setOnClickListener(new View.OnClickListener() {
@@ -87,7 +90,8 @@ public class AdminActivity extends AppCompatActivity {
         constraintLayout3.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(AdminActivity.this, "đổi mật khẩu", Toast.LENGTH_SHORT).show();
+                startActivity(new Intent(getApplicationContext(), ListUserActivity.class));
+                finishAffinity();
             }
         });
     }

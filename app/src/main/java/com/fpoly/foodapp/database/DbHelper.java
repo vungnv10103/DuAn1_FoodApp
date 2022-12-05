@@ -23,7 +23,6 @@ public class DbHelper extends SQLiteOpenHelper {
                 "name TEXT not null," +
                 "cost REAL not null," +
                 "idUser INTEGER REFERENCES User(id)," +
-                "location TEXT not null," +
                 "quantities INTEGER not null)";
         db.execSQL(createTableItemCart);
 
@@ -35,7 +34,7 @@ public class DbHelper extends SQLiteOpenHelper {
                 "pass TEXT not null," +
                 "phoneNumber TEXT ," +
                 "feedback TEXT ," +
-                "address TEXT )";
+                "address TEXT not null)";
         db.execSQL(createTableUser);
 
         String createTableVoucher = "create table Voucher(" +

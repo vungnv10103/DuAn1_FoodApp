@@ -50,7 +50,7 @@ public class CartFragment extends Fragment {
     static UsersDAO usersDAO;
     int temp = 0;
     int temp2 = 0;
-    public   String date;
+    public String date;
     private String chuoi = "";
     public ArrayList<billdetailmodel> moduleArrayList;
 
@@ -133,7 +133,7 @@ public class CartFragment extends Fragment {
         if (list.size() == 0) {
             titleCart.setVisibility(View.INVISIBLE);
             Toast.makeText(getContext(), "Giỏ hàng trống. Quay lại mua hàng.", Toast.LENGTH_SHORT).show();
-        }else {
+        } else {
 
             CartItemAdapter = new CartItemAdapter(list, getContext());
             recyclerView.setAdapter(CartItemAdapter);
@@ -146,7 +146,7 @@ public class CartFragment extends Fragment {
             reference.setValue(list, new DatabaseReference.CompletionListener() {
                 @Override
                 public void onComplete(@Nullable DatabaseError error, @NonNull DatabaseReference ref) {
-                    Toast.makeText(getContext(), "thanhf coong", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getContext(), "Thàng công", Toast.LENGTH_SHORT).show();
                 }
             });
         }
@@ -221,7 +221,7 @@ public class CartFragment extends Fragment {
         SharedPreferences pref = getContext().getSharedPreferences("TOTAL_PRICE", MODE_PRIVATE);
 
 
-        if (mCheck != 0 ) {
+        if (mCheck != 0) {
 //            Double total = Double.valueOf(pref.getString("COST", ""));
             CartItemDAO = new CartItemDAO(getContext());
             double totalPriceItem = total();
@@ -237,15 +237,15 @@ public class CartFragment extends Fragment {
                 @Override
                 public void onClick(View v) {
                     Random random = new Random();
-                    int id_randum =-1*random.nextInt();
+                    int id_randum = -1 * random.nextInt();
                     double tongtiensanpham = total();
                     double taxi = tongtiensanpham * 0.1;
-                    double delivery = tongtiensanpham*0.05;
-                    double total = tongtiensanpham + tongtiensanpham * 0.1 + tongtiensanpham * 0.05;
+                    double delivery = tongtiensanpham * 0.05;
+                    double total = tongtiensanpham + tongtiensanpham * 0.1 + tongtiensanpham * 0.05 - coupon;
 
                     FirebaseDatabase database = FirebaseDatabase.getInstance();
                     DatabaseReference reference = database.getReference("objec_bill");
-                    moduleArrayList.add(new billdetailmodel(id_randum , chuoi , "chua  thanh toan" ,date  , tongtiensanpham ,taxi , delivery ,total ));
+                    moduleArrayList.add(new billdetailmodel(id_randum, chuoi, "Chưa thanh toán", date, tongtiensanpham, taxi, delivery, total));
                     reference.setValue(moduleArrayList, new DatabaseReference.CompletionListener() {
                         @Override
                         public void onComplete(@Nullable DatabaseError error, @NonNull DatabaseReference ref) {
@@ -258,16 +258,16 @@ public class CartFragment extends Fragment {
         }
 
 
-        }
-    public void getdata(){
-        FirebaseDatabase database =FirebaseDatabase.getInstance();
+    }
+
+    public void getdata() {
+        FirebaseDatabase database = FirebaseDatabase.getInstance();
         DatabaseReference reference = database.getReference("object_cart");
         reference.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
-                for(DataSnapshot snapshot1 :snapshot.getChildren())
-                {
-                    CartItemModule item =snapshot1.getValue(CartItemModule.class);
+                for (DataSnapshot snapshot1 : snapshot.getChildren()) {
+                    CartItemModule item = snapshot1.getValue(CartItemModule.class);
                     list.add(item);
                 }
                 CartItemAdapter.notifyDataSetChanged();
@@ -278,15 +278,16 @@ public class CartFragment extends Fragment {
 
             }
         });
-    }    @Override
-    public void onStart() {
-        super.onStart();
-        getdata();
-        for (int i = 0 ; i<list.size();i++){
-            chuoi+=list.get(i).getName()+"  số lượng:"+list.get(i).getQuantities()+"-";
-        }
     }
 
+    @Override
+    public void onStart() {
+        super.onStart();
+//        getdata();
+        for (int i = 0; i < list.size(); i++) {
+            chuoi += "● " +list.get(i).name + "   --   SL: " + list.get(i).quantities + "\n";
+        }
+    }
 
 
 }

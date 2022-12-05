@@ -32,6 +32,7 @@ import com.fpoly.foodapp.DAO.RecommendDAO;
 import com.fpoly.foodapp.DAO.UsersDAO;
 import com.fpoly.foodapp.R;
 import com.fpoly.foodapp.activities.AddItemCategoryActivity;
+import com.fpoly.foodapp.activities.AddItemProductActivity;
 import com.fpoly.foodapp.activities.AddItemRecommendActivity;
 import com.fpoly.foodapp.adapters.SlideShowAdapter;
 import com.fpoly.foodapp.adapters.category.AddCategoryItemAdapter;
@@ -142,6 +143,7 @@ public class HomeFragmentNew extends Fragment {
             @Override
             public void onClick(View v) {
                 //code
+                startActivity(new Intent(getContext(), AddItemProductActivity.class));
             }
         });
         String userName = usersDAO.getNameUser(email);
