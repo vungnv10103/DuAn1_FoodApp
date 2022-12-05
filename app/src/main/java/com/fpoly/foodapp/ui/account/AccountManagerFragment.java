@@ -244,14 +244,15 @@ public class AccountManagerFragment extends Fragment {
 
     public void getSetOtherData(String email) {
 
-        usersDAO = new UsersDAO(getContext());
+        usersDAO = new UsersDAO(getActivity());
         list = (ArrayList<UsersModule>) usersDAO.getALL();
         if (list.size() == 0) {
             return;
         }
         String name = usersDAO.getNameUser(email);
-        if (!name.equals("null") || name.isEmpty()){
-            tvNameUser.setText(usersDAO.getNameUser(email));
+        if (!(name.equals("null") || name.isEmpty())){
+            tvNameUser.setText(name);
+
         }
         try {
             String path = usersDAO.getUriImg(email);

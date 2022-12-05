@@ -109,6 +109,7 @@ public class LoginActivity extends AppCompatActivity {
 
                                         // Sign in success, update UI with the signed-in user's information
                                         if (email.equals("admin@gmail.com")) {
+                                            rememberUser(email, pass, chbRemember.isChecked());
                                             Intent intent = new Intent(LoginActivity.this, AdminActivity.class);
                                             startActivity(intent);
                                         }
@@ -142,7 +143,7 @@ public class LoginActivity extends AppCompatActivity {
                                                     startActivity(intent);
                                                     finishAffinity();
                                                 } else {
-                                                    Toast.makeText(getApplicationContext(), "Thêm thất bại.", Toast.LENGTH_SHORT).show();
+                                                    Toast.makeText(getApplicationContext(), "Đăng nhập thất bại.", Toast.LENGTH_SHORT).show();
                                                 }
                                             }
 

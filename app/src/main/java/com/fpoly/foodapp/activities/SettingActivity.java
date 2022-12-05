@@ -107,9 +107,8 @@ public class SettingActivity extends AppCompatActivity {
                             progressDialog.show();
                             if (usersDAO.updateProfile(item) > 0) {
 
-
                                 Toast.makeText(getApplicationContext(), "Update Success !", Toast.LENGTH_SHORT).show();
-                                dialog.dismiss();SettingActivity.this.notify();
+                                dialog.dismiss();
                             }
                         }
 

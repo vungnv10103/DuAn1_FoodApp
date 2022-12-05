@@ -7,6 +7,7 @@ public class ItemRecommend {
     public Double price;
     public String img_resource;
     public int favourite;
+    public String location;
 
     public ItemRecommend() {
     }
