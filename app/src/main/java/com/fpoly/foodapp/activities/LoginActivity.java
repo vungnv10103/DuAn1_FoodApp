@@ -3,6 +3,7 @@ package com.fpoly.foodapp.activities;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 
 import android.Manifest;
 import android.app.ProgressDialog;
@@ -10,6 +11,9 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
+import android.location.Address;
+import android.location.Geocoder;
+import android.location.Location;
 import android.net.ConnectivityManager;
 import android.os.Build;
 import android.os.Bundle;
@@ -25,12 +29,17 @@ import com.fpoly.foodapp.DAO.UsersDAO;
 import com.fpoly.foodapp.R;
 import com.fpoly.foodapp.Utility.NetworkChangeListener;
 import com.fpoly.foodapp.modules.UsersModule;
+import com.google.android.gms.location.FusedLocationProviderClient;
+import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 
+import java.io.IOException;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Locale;
 
 public class LoginActivity extends AppCompatActivity {
@@ -46,6 +55,10 @@ public class LoginActivity extends AppCompatActivity {
 
     NetworkChangeListener networkChangeListener = new NetworkChangeListener();
     boolean doubleBackToExitPressedOnce = false;
+
+    FusedLocationProviderClient fusedLocationProviderClient;
+    private final static int REQUEST_CODE = 100;
+    String mLocation = "";
 
 
 
@@ -84,6 +97,8 @@ public class LoginActivity extends AppCompatActivity {
         btnLogin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                getLastLocation();
+                progressDialog.show();
 
                 list = (ArrayList<UsersModule>) usersDAO.getALL();
                 String email = edEmail.getText().toString().trim();
@@ -97,7 +112,7 @@ public class LoginActivity extends AppCompatActivity {
                 } else {
                     FirebaseAuth auth = FirebaseAuth.getInstance();
 
-                    progressDialog.show();
+
                     auth.signInWithEmailAndPassword(email, pass)
                             .addOnCompleteListener(LoginActivity.this, new OnCompleteListener<AuthResult>() {
                                 @Override
@@ -110,8 +125,10 @@ public class LoginActivity extends AppCompatActivity {
                                         // Sign in success, update UI with the signed-in user's information
                                         if (email.equals("admin@gmail.com")) {
                                             rememberUser(email, pass, chbRemember.isChecked());
+                                            progressDialog.dismiss();
                                             Intent intent = new Intent(LoginActivity.this, AdminActivity.class);
                                             startActivity(intent);
+
                                         }
                                         else {
                                             progressDialog.dismiss();
@@ -121,7 +138,7 @@ public class LoginActivity extends AppCompatActivity {
                                             item.name = "null";
                                             item.email = email;
                                             item.pass = pass;
-                                            item.address = "null";
+                                            item.address = mLocation;
                                             item.phoneNumber = "null";
                                             item.feedback = "null";
                                             for (UsersModule item : list) {
@@ -189,6 +206,7 @@ public class LoginActivity extends AppCompatActivity {
         btnLogin = findViewById(R.id.btnSignIn);
 //        imgShowHidePwd = findViewById(R.id.img_show_hide_pwd);
         progressDialog = new ProgressDialog(this);
+        fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(this);
     }
 
     public void register(View view) {
@@ -242,6 +260,57 @@ public class LoginActivity extends AppCompatActivity {
     protected void onStop() {
         unregisterReceiver(networkChangeListener);
         super.onStop();
+    }
+    private void getLastLocation() {
+        if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
+
+            fusedLocationProviderClient.getLastLocation()
+                    .addOnSuccessListener(new OnSuccessListener<Location>() {
+                        @Override
+                        public void onSuccess(Location location) {
+                            if (location != null) {
+                                Geocoder geocoder = new Geocoder(LoginActivity.this, Locale.getDefault());
+                                List<Address> addresses = null;
+                                try {
+                                    addresses = geocoder.getFromLocation(location.getLatitude(), location.getLongitude(), 1);
+//                                    edLocation.setText("" + addresses.get(0).getAddressLine(0));
+                                    mLocation = addresses.get(0).getAddressLine(0);
+
+                                } catch (IOException e) {
+                                    e.printStackTrace();
+                                }
+
+
+                            }
+
+                        }
+                    });
+
+
+        } else {
+
+            askPermission();
+
+        }
+    }
+
+    private void askPermission() {
+        ActivityCompat.requestPermissions(LoginActivity.this, new String[]
+                {Manifest.permission.ACCESS_FINE_LOCATION}, REQUEST_CODE);
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+
+        if (requestCode == REQUEST_CODE) {
+            if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                getLastLocation();
+            } else {
+                Toast.makeText(this, "Required Permission", Toast.LENGTH_SHORT).show();
+            }
+        }
+
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
     }
 
 

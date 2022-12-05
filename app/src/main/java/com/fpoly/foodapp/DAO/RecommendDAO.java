@@ -27,6 +27,7 @@ public class RecommendDAO {
 
     public long insert(ItemRecommend obj) {
         ContentValues values = new ContentValues();
+
         values.put("img", obj.img_resource);
         values.put("name", obj.title);
         values.put("cost", obj.price);

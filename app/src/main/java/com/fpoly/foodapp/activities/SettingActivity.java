@@ -71,10 +71,11 @@ public class SettingActivity extends AppCompatActivity {
                 String fullName = usersDAO.getNameUser(email);
                 String phoneNumber = usersDAO.getPhone(email);
                 String address = usersDAO.getAddress(email);
-                if (!(fullName.equals("null") && phoneNumber.equals("null") && address.equals("null"))) {
+                edAddress.setText(address);
+                if (!(fullName.equals("null") && phoneNumber.equals("null"))) {
                     edFullName.setText(fullName);
                     edPhoneNumber.setText(phoneNumber);
-                    edAddress.setText(address);
+
                 }
 
                 btnSave = dialog.findViewById(R.id.btnSave);

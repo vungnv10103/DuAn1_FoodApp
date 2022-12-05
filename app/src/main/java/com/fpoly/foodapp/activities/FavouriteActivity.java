@@ -4,9 +4,11 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.widget.Toast;
 
+import com.fpoly.foodapp.Admin.AdminActivity;
 import com.fpoly.foodapp.DAO.RecommendDAO;
 import com.fpoly.foodapp.R;
 import com.fpoly.foodapp.adapters.FavouriteAdapter;
@@ -27,6 +29,7 @@ public class FavouriteActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_favourite);
         init();
+        Toast.makeText(this, "" + FavouriteActivity.class.getName(), Toast.LENGTH_SHORT).show();
 
         listFavourite = new ArrayList<>();
         recommendDAO = new RecommendDAO(getApplicationContext());
@@ -44,5 +47,14 @@ public class FavouriteActivity extends AppCompatActivity {
 
     private void init(){
         rcvFavourite = findViewById(R.id.rcvFavourite);
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+
+            startActivity(new Intent(getApplicationContext(), AdminActivity.class));
+            finishAffinity();
+
     }
 }

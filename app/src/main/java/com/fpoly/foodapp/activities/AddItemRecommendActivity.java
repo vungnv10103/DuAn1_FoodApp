@@ -41,6 +41,7 @@ import com.fpoly.foodapp.adapters.category.ItemCategory;
 import com.fpoly.foodapp.adapters.recommend.ItemRecommend;
 import com.fpoly.foodapp.modules.RecommendedModule;
 import com.google.android.gms.location.FusedLocationProviderClient;
+import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.tasks.OnSuccessListener;
 
 import java.io.IOException;
@@ -54,16 +55,14 @@ public class AddItemRecommendActivity extends AppCompatActivity {
     public static final int PICK_IMAGE = 1;
     String realPath = "";
     String mLocation = "";
-    private final static int REQUEST_CODE = 100;
+
     FusedLocationProviderClient fusedLocationProviderClient;
+    private final static int REQUEST_CODE = 100;
 
     static RecommendDAO recommendDAO;
     ItemRecommend item;
 
     static UsersDAO usersDAO;
-
-
-
 
 
     @SuppressLint("MissingInflatedId")
@@ -73,59 +72,59 @@ public class AddItemRecommendActivity extends AppCompatActivity {
         setContentView(R.layout.activity_add_item_recommend);
 
         init();
-       edName.addTextChangedListener(new TextWatcher() {
-           @Override
-           public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+        edName.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
 
-           }
+            }
 
-           @Override
-           public void onTextChanged(CharSequence s, int start, int before, int count) {
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
 
-           }
+            }
 
-           @Override
-           public void afterTextChanged(Editable s) {
-               if (!edName.getText().toString().trim().isEmpty()) {
-                   imgDeleteNameRecommend.setVisibility(View.VISIBLE);
-                   imgDeleteNameRecommend.setOnClickListener(new View.OnClickListener() {
-                       @Override
-                       public void onClick(View v) {
-                           edName.setText("");
-                       }
-                   });
-               } else {
-                   imgDeleteNameRecommend.setVisibility(View.INVISIBLE);
-               }
+            @Override
+            public void afterTextChanged(Editable s) {
+                if (!edName.getText().toString().trim().isEmpty()) {
+                    imgDeleteNameRecommend.setVisibility(View.VISIBLE);
+                    imgDeleteNameRecommend.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            edName.setText("");
+                        }
+                    });
+                } else {
+                    imgDeleteNameRecommend.setVisibility(View.INVISIBLE);
+                }
 
-           }
-       });
-       edCost.addTextChangedListener(new TextWatcher() {
-           @Override
-           public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+            }
+        });
+        edCost.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
 
-           }
+            }
 
-           @Override
-           public void onTextChanged(CharSequence s, int start, int before, int count) {
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
 
-           }
+            }
 
-           @Override
-           public void afterTextChanged(Editable s) {
-               if (!edCost.getText().toString().trim().isEmpty()) {
-                   imgDeleteCost.setVisibility(View.VISIBLE);
-                   imgDeleteCost.setOnClickListener(new View.OnClickListener() {
-                       @Override
-                       public void onClick(View v) {
-                           edName.setText("");
-                       }
-                   });
-               } else {
-                   imgDeleteCost.setVisibility(View.INVISIBLE);
-               }
-           }
-       });
+            @Override
+            public void afterTextChanged(Editable s) {
+                if (!edCost.getText().toString().trim().isEmpty()) {
+                    imgDeleteCost.setVisibility(View.VISIBLE);
+                    imgDeleteCost.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            edName.setText("");
+                        }
+                    });
+                } else {
+                    imgDeleteCost.setVisibility(View.INVISIBLE);
+                }
+            }
+        });
 
 
         btnCancel.setOnClickListener(new View.OnClickListener() {
@@ -143,11 +142,10 @@ public class AddItemRecommendActivity extends AppCompatActivity {
             public void onClick(View v) {
                 String defaultAvatar = imgAvatar.getTag().toString();
 
-                if (validate() > 0){
-                    if (defaultAvatar.equals("default_avatar")){
+                if (validate() > 0) {
+                    if (defaultAvatar.equals("default_avatar")) {
                         Toast.makeText(AddItemRecommendActivity.this, "Chưa chọn ảnh !", Toast.LENGTH_SHORT).show();
-                    }
-                    else {
+                    } else {
                         // code
                         item = new ItemRecommend();
                         SharedPreferences pref = getSharedPreferences("URI_IMG", MODE_PRIVATE);
@@ -156,24 +154,23 @@ public class AddItemRecommendActivity extends AppCompatActivity {
                         String email = pref1.getString("EMAIL", "");
                         int idUser = usersDAO.getIDUser(email);
                         getLastLocation();
+
                         item.idUser = idUser;
                         item.img_resource = uri;
                         item.title = edName.getText().toString().trim();
                         item.price = Double.parseDouble(edCost.getText().toString().trim());
                         item.favourite = 0;
                         item.location = mLocation;
-                        if (recommendDAO.insert(item) > 0){
+                        if (recommendDAO.insert(item) > 0) {
                             Toast.makeText(AddItemRecommendActivity.this, "Thêm thành công !", Toast.LENGTH_SHORT).show();
-                        }
-                        else {
+                        } else {
                             Toast.makeText(AddItemRecommendActivity.this, "Thêm thất bại !", Toast.LENGTH_SHORT).show();
                         }
                         startActivity(new Intent(AddItemRecommendActivity.this, MainActivity.class));
                         finishAffinity();
                     }
 
-                }
-                else {
+                } else {
                     Toast.makeText(AddItemRecommendActivity.this, "Nhập đủ thông tin !", Toast.LENGTH_SHORT).show();
                 }
 
@@ -195,7 +192,8 @@ public class AddItemRecommendActivity extends AppCompatActivity {
             }
         });
     }
-    public void init(){
+
+    public void init() {
         edName = findViewById(R.id.edNameItemRecommend);
         edCost = findViewById(R.id.edCostItemRecommend);
         imgAvatar = findViewById(R.id.imgAvatarItemRecommend);
@@ -206,9 +204,10 @@ public class AddItemRecommendActivity extends AppCompatActivity {
         imgDeleteNameRecommend = findViewById(R.id.imgDeleteNameRecommend);
         imgDeleteCost = findViewById(R.id.imgDeleteCost);
         usersDAO = new UsersDAO(getApplication());
+        fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(this);
     }
 
-//    @Override
+    //    @Override
 //    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
 //        super.onActivityResult(requestCode, resultCode, data);
 //        if (requestCode == PICK_IMAGE && resultCode == Activity.RESULT_OK) {
@@ -234,17 +233,18 @@ public class AddItemRecommendActivity extends AppCompatActivity {
 //
 //        }
 //    }
-    public int validate(){
+    public int validate() {
         int check = -1;
         String name = edName.getText().toString().trim();
         String cost = edCost.getText().toString().trim();
-        if (name.isEmpty() || cost.isEmpty() ){
+        if (name.isEmpty() || cost.isEmpty()) {
             check = -1;
-        }else {
+        } else {
             check = 1;
         }
         return check;
     }
+
     public String getRealPathFromURI(Uri contentUri) {
         String path = null;
         String[] proj = {MediaStore.MediaColumns.DATA};
@@ -256,6 +256,7 @@ public class AddItemRecommendActivity extends AppCompatActivity {
         cursor.close();
         return path;
     }
+
     private ActivityResultLauncher<Intent> intentActivityResultLauncher =
             registerForActivityResult(new ActivityResultContracts.StartActivityForResult(),
                     new ActivityResultCallback<ActivityResult>() {
@@ -286,6 +287,7 @@ public class AddItemRecommendActivity extends AppCompatActivity {
                             }
                         }
                     });
+
     private void getLastLocation() {
         if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
 

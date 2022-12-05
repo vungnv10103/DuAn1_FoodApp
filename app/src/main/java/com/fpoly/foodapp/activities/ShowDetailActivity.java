@@ -93,6 +93,7 @@ public class ShowDetailActivity extends AppCompatActivity {
                 item = new CartItemModule();
                 int quanti = Integer.parseInt(tvQuantity.getText().toString());
                 double cost_total = price * quanti;
+
                 item.idUser = usersDAO.getIDUser(email);
                 item.check = 0;
                 item.name = title;
