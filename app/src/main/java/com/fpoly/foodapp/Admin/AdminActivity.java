@@ -12,6 +12,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.fpoly.foodapp.R;
+import com.fpoly.foodapp.activities.Billdetail_activity;
 import com.fpoly.foodapp.activities.LoginActivity;
 import com.github.mikephil.charting.animation.Easing;
 import com.github.mikephil.charting.charts.PieChart;
@@ -80,7 +81,7 @@ public class AdminActivity extends AppCompatActivity {
         constraintLayout2.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(AdminActivity.this, "Đơn Hàng Đang Duyệt", Toast.LENGTH_SHORT).show();
+                startActivity(new Intent(AdminActivity.this , Billdetail_activity.class));
             }
         });
         constraintLayout3.setOnClickListener(new View.OnClickListener() {
