@@ -78,7 +78,10 @@ public class UsersDAO {
     public String getUriImg(String email) {
         String sql = "SELECT * FROM User WHERE email=?";
         List<UsersModule> list = getData(sql, email);
-        return list.get(0).bitmap;
+        if (list != null){
+            return list.get(0).bitmap;
+        }
+       return "null";
     }
     public int getIDUser(String email) {
         String sql = "SELECT * FROM User WHERE email=?";
@@ -115,6 +118,7 @@ public class UsersDAO {
             obj.pass = cursor.getString(cursor.getColumnIndex("pass"));
             obj.phoneNumber = cursor.getString(cursor.getColumnIndex("phoneNumber"));
             obj.address = cursor.getString(cursor.getColumnIndex("address"));
+
             list.add(obj);
 
         }

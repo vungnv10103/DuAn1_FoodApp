@@ -13,6 +13,7 @@ public class UsersModule {
     public String address;
     public String feedback;
 
+
     public UsersModule(int id, String bitmap, String name, String email, String pass, String phoneNumber, String address) {
         this.id = id;
         this.bitmap = bitmap;
