@@ -23,7 +23,10 @@
         android:theme="@style/Theme.FoodApp"
         tools:targetApi="31">
         <activity
-            android:name=".Billdetail_activity"
+
+            android:name=".activities.LoadingActivity"
+
+        
             android:exported="false">
             <meta-data
                 android:name="android.app.lib_name"
@@ -31,6 +34,7 @@
         </activity>
         <activity
             android:name=".activities.Billdetail_activity"
+
             android:exported="false">
             <meta-data
                 android:name="android.app.lib_name"
