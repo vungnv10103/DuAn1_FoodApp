@@ -6,23 +6,20 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 
-import androidx.annotation.NonNull;
-
 import com.fpoly.foodapp.database.DbHelper;
-import com.fpoly.foodapp.modules.UsersModule;
-import com.fpoly.foodapp.modules.demo_cart_item;
+import com.fpoly.foodapp.modules.CartItemModule;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class demo_item_cart_dao {
+public class CartItemDAO {
     private SQLiteDatabase db;
 
-    public demo_item_cart_dao(Context context) {
+    public CartItemDAO(Context context) {
         DbHelper dbHelper = new DbHelper(context);
         db = dbHelper.getWritableDatabase();
     }
-    public long insert(demo_cart_item obj){
+    public long insert(CartItemModule obj){
         ContentValues values = new ContentValues();
         values.put("idUser", obj.idUser);
         values.put("mCheck", obj.check );
@@ -38,7 +35,7 @@ public class demo_item_cart_dao {
 
     public int getCheck(int id) {
         String sql = "SELECT * FROM ItemCart WHERE id=?";
-        List<demo_cart_item> list = getData(sql, String.valueOf(id));
+        List<CartItemModule> list = getData(sql, String.valueOf(id));
         return list.get(0).check;
     }
 //    public int quant(){
@@ -46,18 +43,18 @@ public class demo_item_cart_dao {
 //    }
 
 
-    public List<demo_cart_item> getALL(int idUser){
+    public List<CartItemModule> getALL(int idUser){
         String sql = "SELECT * FROM ItemCart WHERE idUser=?";
         return getData(sql, String.valueOf(idUser));
     }
 
 
     @SuppressLint("Range")
-    private List<demo_cart_item> getData(String sql, String...selectionArgs){
-        List<demo_cart_item> list = new ArrayList<>();
+    private List<CartItemModule> getData(String sql, String...selectionArgs){
+        List<CartItemModule> list = new ArrayList<>();
         Cursor cursor = db.rawQuery(sql, selectionArgs);
         while (cursor.moveToNext()){
-            demo_cart_item obj = new demo_cart_item();
+            CartItemModule obj = new CartItemModule();
             obj.id = Integer.parseInt(cursor.getString(cursor.getColumnIndex("id")));
             obj.idUser = Integer.parseInt(cursor.getString(cursor.getColumnIndex("idUser")));
             obj.check = Integer.parseInt(cursor.getString(cursor.getColumnIndex("mCheck")));

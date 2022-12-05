@@ -37,12 +37,11 @@ import androidx.fragment.app.Fragment;
 import com.fpoly.foodapp.DAO.UsersDAO;
 import com.fpoly.foodapp.R;
 import com.fpoly.foodapp.activities.DealsActivity;
+import com.fpoly.foodapp.activities.FavouriteActivity;
 import com.fpoly.foodapp.activities.LoginActivity;
 import com.fpoly.foodapp.activities.RateActivity;
 import com.fpoly.foodapp.activities.SettingActivity;
 
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
 import com.fpoly.foodapp.modules.UsersModule;
 
 
@@ -51,7 +50,7 @@ import java.util.ArrayList;
 
 
 public class AccountManagerFragment extends Fragment {
-    LinearLayout linearLayout, btnDeals, btnSetting, btnRating;
+    LinearLayout logout, btnDeals, setting, btnRating, orderHistory, oder_favourite;
     TextView tvNameUser, tvEmail;
     ImageView imgProfile;
     String realPath = "";
@@ -130,6 +129,19 @@ public class AccountManagerFragment extends Fragment {
                              ViewGroup container, Bundle savedInstanceState) {
         View root = inflater.inflate(R.layout.fragment_account, container, false);
 
+        logout = root.findViewById(R.id.Logout);
+        btnDeals = root.findViewById(R.id.btn_Account_Deals);
+        setting = root.findViewById(R.id.btn_Account_setting);
+        btnRating = root.findViewById(R.id.btn_Account_rating);
+        oder_favourite = root.findViewById(R.id.oder_favourite);
+        orderHistory = root.findViewById(R.id.order_history);
+        oder_favourite.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                v.getContext().startActivity(new Intent(getContext(), FavouriteActivity.class));
+            }
+        });
+
         usersDAO = new UsersDAO(getActivity());
         item = new UsersModule();
         imgProfile = root.findViewById(R.id.profile_image);
@@ -138,84 +150,17 @@ public class AccountManagerFragment extends Fragment {
         SharedPreferences pref = getActivity().getSharedPreferences("USER_FILE", MODE_PRIVATE);
         String email = pref.getString("EMAIL", "");
         tvEmail.setText(email);
-        tvEmail.setOnClickListener(new View.OnClickListener() {
+        orderHistory.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                ImageView imgPhoto;
-                EditText edFullName, edPhoneNumber, edAddress;
-                Button btnSave;
 
-                Dialog dialog = new Dialog(v.getContext());
-                dialog.setContentView(R.layout.profile_detail);
-
-                imgPhoto = dialog.findViewById(R.id.imgProfileEdit);
-                edFullName = dialog.findViewById(R.id.edEditName);
-                edPhoneNumber = dialog.findViewById(R.id.edEditPhoneNumber);
-                edAddress = dialog.findViewById(R.id.edEditAddress);
-
-                try {
-                    String path = usersDAO.getUriImg(email);
-                    Bitmap bitmap = MediaStore.Images.Media.getBitmap(getActivity().getContentResolver(), Uri.parse(path));
-                    imgPhoto.setImageBitmap(bitmap);
-
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-                String fullName = usersDAO.getNameUser(email);
-                String phoneNumber = usersDAO.getPhone(email);
-                String address = usersDAO.getAddress(email);
-                if (!(fullName.equals("null") && phoneNumber.equals("null") && address.equals("null"))){
-                    edFullName.setText(fullName);
-                    edPhoneNumber.setText(phoneNumber);
-                    edAddress.setText(address);
-                }
-
-                btnSave = dialog.findViewById(R.id.btnSave);
-
-
-                btnSave.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        String fullName = edFullName.getText().toString().trim();
-                        String phoneNumber = edPhoneNumber.getText().toString().trim();
-                        String address = edAddress.getText().toString().trim();
-                        item.email = tvEmail.getText().toString();
-                        item.name = fullName;
-                        item.phoneNumber = phoneNumber;
-                        item.address = address;
-
-                        if (fullName.isEmpty() || phoneNumber.isEmpty() || address.isEmpty()){
-                            Toast.makeText(getContext(), "Vui lòng điền đủ thông tin !", Toast.LENGTH_SHORT).show();
-                            return;
-                        }
-                        if (usersDAO.updateProfile(item) > 0) {
-                            Toast.makeText(getContext(), "Update Success !", Toast.LENGTH_SHORT).show();
-
-                        }
-                        getSetOtherData(email);
-                        dialog.dismiss();
-                    }
-                });
-
-
-
-                WindowManager.LayoutParams lp = new WindowManager.LayoutParams();
-                lp.copyFrom(dialog.getWindow().getAttributes());
-                lp.width = WindowManager.LayoutParams.MATCH_PARENT;
-                lp.height = WindowManager.LayoutParams.MATCH_PARENT;
-
-                dialog.getWindow().setAttributes(lp);
-                dialog.show();
             }
         });
         getSetOtherData(email);
-        linearLayout = root.findViewById(R.id.Logout);
-        btnDeals = root.findViewById(R.id.btn_Account_Deals);
-        btnSetting = root.findViewById(R.id.btn_Account_setting);
-        btnRating = root.findViewById(R.id.btn_Account_rating);
+
 
         // Log out
-        linearLayout.setOnClickListener(new View.OnClickListener() {
+        logout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(getActivity(), LoginActivity.class);
@@ -239,7 +184,7 @@ public class AccountManagerFragment extends Fragment {
         });
 
         // Setting
-        btnSetting.setOnClickListener(new View.OnClickListener() {
+        setting.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 startActivity(new Intent(getActivity(), SettingActivity.class));

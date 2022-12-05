@@ -1,40 +1,45 @@
 package com.fpoly.foodapp.adapters;
 
+import static android.content.Context.MODE_PRIVATE;
+
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CheckBox;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.fpoly.foodapp.R;
-import com.fpoly.foodapp.modules.demo_cart_item;
+import com.fpoly.foodapp.modules.CartItemModule;
 
 import java.util.List;
 
-public class demo_cart_item_adapter extends RecyclerView.Adapter<demo_cart_item_adapter.ViewHolder> {
-    private List<demo_cart_item> list;
+public class CartItemAdapter extends RecyclerView.Adapter<CartItemAdapter.ViewHolder> {
+    private List<CartItemModule> list;
     private Context context;
+    Double totalPrice = 0.0;
 
-    public demo_cart_item_adapter(List<demo_cart_item> list, Context context) {
+    public CartItemAdapter(List<CartItemModule> list, Context context) {
         this.list = list;
         this.context = context;
     }
 
     @NonNull
     @Override
-    public demo_cart_item_adapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+    public CartItemAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.demo_cart_item, parent, false);
 
         return new ViewHolder(view);
     }
 
     @Override
-    public void onBindViewHolder(@NonNull demo_cart_item_adapter.ViewHolder holder, @SuppressLint("RecyclerView") int position) {
+    public void onBindViewHolder(@NonNull CartItemAdapter.ViewHolder holder, @SuppressLint("RecyclerView") int position) {
 
         holder.tvName.setText(list.get(position).name);
         holder.tvCost.setText("" + list.get(position).cost);
@@ -45,11 +50,27 @@ public class demo_cart_item_adapter extends RecyclerView.Adapter<demo_cart_item_
                 boolean check = holder.cbCheck.isChecked();
                 if (check) {     // true
 
+                    totalPrice += list.get(position).cost;
+
                 } else {
 
                 }
+//                Toast.makeText(context, "" + totalPrice, Toast.LENGTH_SHORT).show();
+                SharedPreferences pref = v.getContext().getSharedPreferences("TOTAL_PRICE", MODE_PRIVATE);
+                SharedPreferences.Editor editor = pref.edit();
+                if (!check) {
+                    editor.clear();
+                } else {
+                    // lưu dữ liệu
+                    editor.putString("COST", String.format("%.2f", totalPrice));
+                }
+                // lưu lại
+                editor.commit();
+
             }
+
         });
+
 
     }
 

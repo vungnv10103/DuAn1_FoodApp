@@ -119,7 +119,7 @@ public class Fragment_NewDeals extends Fragment {
                             }
 
                             String time = edDeadline.getText().toString().trim();
-                            addData(R.drawable.coupon, String.valueOf(discount), time);
+                            addData(R.drawable.coupon,discount, time);
                             listData();
                             dialog.dismiss();
                         }
@@ -164,7 +164,7 @@ public class Fragment_NewDeals extends Fragment {
         recyclerView.setNestedScrollingEnabled(false);
     }
 
-    private void addData(int img , String discount, String time) {
+    private void addData(int img , int discount, String time) {
         voucherDAO = new VoucherDAO(getContext());
         voucherList = (ArrayList<VoucherModule>) voucherDAO.getALL();
         item = new VoucherModule();
@@ -176,7 +176,7 @@ public class Fragment_NewDeals extends Fragment {
         recyclerView.setHasFixedSize(true);
         recyclerView.setNestedScrollingEnabled(false);
         item.img = img;
-        item.voucherTitle = discount;
+        item.discount = discount;
         item.voucherDeadline = time;
         if (voucherDAO.insert(item) > 0) {
             Toast.makeText(getContext(), "Thêm thành công !", Toast.LENGTH_SHORT).show();

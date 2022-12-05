@@ -12,7 +12,7 @@
         android:layout_marginTop="52dp"
         android:ems="10"
         android:hint="Giảm giá (%)"
-        android:inputType="textPersonName"
+        android:inputType="number"
         android:minHeight="48dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.497"

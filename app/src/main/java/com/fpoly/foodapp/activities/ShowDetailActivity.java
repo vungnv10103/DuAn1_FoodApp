@@ -1,7 +1,6 @@
 package com.fpoly.foodapp.activities;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.fragment.app.FragmentTransaction;
 
 
 import android.content.Intent;
@@ -16,11 +15,9 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.fpoly.foodapp.DAO.UsersDAO;
-import com.fpoly.foodapp.DAO.demo_item_cart_dao;
+import com.fpoly.foodapp.DAO.CartItemDAO;
 import com.fpoly.foodapp.R;
-import com.fpoly.foodapp.adapters.demo_cart_item_adapter;
-import com.fpoly.foodapp.modules.demo_cart_item;
-import com.fpoly.foodapp.ui.cart.CartFragment;
+import com.fpoly.foodapp.modules.CartItemModule;
 
 import java.io.IOException;
 
@@ -34,8 +31,8 @@ public class ShowDetailActivity extends AppCompatActivity {
     TextView tvTotalPrices, tvAddToCart;
 
     int quantity = 1;
-    static demo_item_cart_dao demo_item_cart_dao;
-    demo_cart_item item;
+    static CartItemDAO CartItemDAO;
+    CartItemModule item;
     static UsersDAO usersDAO;
 
 
@@ -48,7 +45,7 @@ public class ShowDetailActivity extends AppCompatActivity {
         Intent intent = getIntent();
         Bundle bundle = intent.getBundleExtra("data");
         checkImg();
-        demo_item_cart_dao = new demo_item_cart_dao(getApplicationContext());
+        CartItemDAO = new CartItemDAO(getApplicationContext());
         usersDAO = new UsersDAO(getApplicationContext());
 
         tvQuantity.setText(String.valueOf(quantity));
@@ -93,7 +90,7 @@ public class ShowDetailActivity extends AppCompatActivity {
             public void onClick(View v) {
                 SharedPreferences pref = getSharedPreferences("USER_FILE", MODE_PRIVATE);
                 String email = pref.getString("EMAIL", "");
-                item = new demo_cart_item();
+                item = new CartItemModule();
                 int quanti = Integer.parseInt(tvQuantity.getText().toString());
                 double cost_total = price * quanti;
                 item.idUser = usersDAO.getIDUser(email);
@@ -101,7 +98,7 @@ public class ShowDetailActivity extends AppCompatActivity {
                 item.name = title;
                 item.cost = cost_total;
                 item.quantities = quanti;
-                if (demo_item_cart_dao.insert(item) > 0) {
+                if (CartItemDAO.insert(item) > 0) {
                     Toast.makeText(getApplicationContext(), "Đã thêm vào giỏ hàng.", Toast.LENGTH_SHORT).show();
                 } else {
                     Toast.makeText(getApplicationContext(), "Failed.", Toast.LENGTH_SHORT).show();

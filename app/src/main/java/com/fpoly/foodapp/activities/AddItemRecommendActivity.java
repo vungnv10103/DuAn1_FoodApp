@@ -17,6 +17,8 @@ import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -25,6 +27,7 @@ import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.fpoly.foodapp.DAO.RecommendDAO;
+import com.fpoly.foodapp.DAO.UsersDAO;
 import com.fpoly.foodapp.R;
 import com.fpoly.foodapp.adapters.category.ItemCategory;
 import com.fpoly.foodapp.adapters.recommend.ItemRecommend;
@@ -34,13 +37,16 @@ import java.io.IOException;
 
 public class AddItemRecommendActivity extends AppCompatActivity {
     EditText edName, edCost;
-    ImageView imgAvatar;
+    ImageView imgAvatar, imgDeleteNameRecommend, imgDeleteCost;
     Button btnOpenGallery, btnSave, btnCancel;
     public static final int PICK_IMAGE = 1;
     String realPath = "";
 
     static RecommendDAO recommendDAO;
     ItemRecommend item;
+
+    static UsersDAO usersDAO;
+
 
 
 
@@ -52,14 +58,68 @@ public class AddItemRecommendActivity extends AppCompatActivity {
         setContentView(R.layout.activity_add_item_recommend);
 
         init();
+       edName.addTextChangedListener(new TextWatcher() {
+           @Override
+           public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+           }
+
+           @Override
+           public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+           }
+
+           @Override
+           public void afterTextChanged(Editable s) {
+               if (!edName.getText().toString().trim().isEmpty()) {
+                   imgDeleteNameRecommend.setVisibility(View.VISIBLE);
+                   imgDeleteNameRecommend.setOnClickListener(new View.OnClickListener() {
+                       @Override
+                       public void onClick(View v) {
+                           edName.setText("");
+                       }
+                   });
+               } else {
+                   imgDeleteNameRecommend.setVisibility(View.INVISIBLE);
+               }
+
+           }
+       });
+       edCost.addTextChangedListener(new TextWatcher() {
+           @Override
+           public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+           }
+
+           @Override
+           public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+           }
+
+           @Override
+           public void afterTextChanged(Editable s) {
+               if (!edCost.getText().toString().trim().isEmpty()) {
+                   imgDeleteCost.setVisibility(View.VISIBLE);
+                   imgDeleteCost.setOnClickListener(new View.OnClickListener() {
+                       @Override
+                       public void onClick(View v) {
+                           edName.setText("");
+                       }
+                   });
+               } else {
+                   imgDeleteCost.setVisibility(View.INVISIBLE);
+               }
+           }
+       });
+
 
         btnCancel.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                edName.setText("");
-                edCost.setText("");
                 imgAvatar.setImageResource(R.drawable.avatar_default);
                 imgAvatar.setTag("default_avatar");
+                startActivity(new Intent(getApplicationContext(), MainActivity.class));
+                finishAffinity();
             }
         });
 
@@ -77,10 +137,15 @@ public class AddItemRecommendActivity extends AppCompatActivity {
                         item = new ItemRecommend();
                         SharedPreferences pref = getSharedPreferences("URI_IMG", MODE_PRIVATE);
                         String uri = pref.getString("img", "");
+                        SharedPreferences pref1 = getSharedPreferences("USER_FILE", MODE_PRIVATE);
+                        String email = pref1.getString("EMAIL", "");
+                        int idUser = usersDAO.getIDUser(email);
 
+                        item.idUser = idUser;
                         item.img_resource = uri;
                         item.title = edName.getText().toString().trim();
                         item.price = Double.parseDouble(edCost.getText().toString().trim());
+                        item.favourite = 0;
                         if (recommendDAO.insert(item) > 0){
                             Toast.makeText(AddItemRecommendActivity.this, "Thêm thành công !", Toast.LENGTH_SHORT).show();
                         }
@@ -122,6 +187,9 @@ public class AddItemRecommendActivity extends AppCompatActivity {
         btnSave = findViewById(R.id.btnSaveItem);
         btnCancel = findViewById(R.id.btnCancel);
         recommendDAO = new RecommendDAO(getApplication());
+        imgDeleteNameRecommend = findViewById(R.id.imgDeleteNameRecommend);
+        imgDeleteCost = findViewById(R.id.imgDeleteCost);
+        usersDAO = new UsersDAO(getApplication());
     }
 
 //    @Override

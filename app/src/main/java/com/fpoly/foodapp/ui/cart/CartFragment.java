@@ -3,7 +3,6 @@ package com.fpoly.foodapp.ui.cart;
 import static android.content.Context.MODE_PRIVATE;
 
 import android.annotation.SuppressLint;
-import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -18,19 +17,15 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.WindowManager;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.fpoly.foodapp.Admin.AdminActivity;
 import com.fpoly.foodapp.DAO.UsersDAO;
-import com.fpoly.foodapp.DAO.demo_item_cart_dao;
+import com.fpoly.foodapp.DAO.CartItemDAO;
 import com.fpoly.foodapp.R;
 import com.fpoly.foodapp.activities.DealsActivity;
-import com.fpoly.foodapp.activities.MainActivity;
-import com.fpoly.foodapp.adapters.demo_cart_item_adapter;
-import com.fpoly.foodapp.modules.demo_cart_item;
-import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.fpoly.foodapp.adapters.CartItemAdapter;
+import com.fpoly.foodapp.modules.CartItemModule;
 import com.google.android.material.snackbar.Snackbar;
 
 import java.util.ArrayList;
@@ -39,12 +34,12 @@ public class CartFragment extends Fragment {
 
     private ConstraintLayout checkOut, titleCart;
     RecyclerView recyclerView;
-    private ArrayList<demo_cart_item> list;
-    demo_cart_item_adapter demo_cart_item_adapter;
-    static demo_item_cart_dao demo_item_cart_dao;
+    private ArrayList<CartItemModule> list;
+    CartItemAdapter CartItemAdapter;
+    static CartItemDAO CartItemDAO;
     static UsersDAO usersDAO;
-    BottomNavigationView navView;
     int temp = 0;
+    int temp2 = 0;
 
 
     TextView tvToTal, tvDelivery, tvTax, tvCouponCost, tvCoupon;
@@ -77,7 +72,7 @@ public class CartFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_cart, container, false);
-        demo_item_cart_dao = new demo_item_cart_dao(getContext());
+        CartItemDAO = new CartItemDAO(getContext());
         usersDAO = new UsersDAO(getContext());
         titleCart = view.findViewById(R.id.title_cart);
         checkOut = view.findViewById(R.id.checkOut);
@@ -87,21 +82,26 @@ public class CartFragment extends Fragment {
         tvToTalPriceFinal = view.findViewById(R.id.total_price_cart);
         recyclerView = view.findViewById(R.id.rec_cart);
         tvCouponCost = view.findViewById(R.id.tvCouponCost);
+        tvCouponCost.setText("Chọn voucher");
         tvCoupon = view.findViewById(R.id.tvCoupon);
+        tvCoupon.setText("Voucher: ");
+        SharedPreferences pref = getContext().getSharedPreferences("VOUCHER", MODE_PRIVATE);
+        int discount = pref.getInt("DISCOUNT", 0);
         tvCouponCost.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                temp2++;
                 startActivity(new Intent(getContext(), DealsActivity.class));
+
+
             }
         });
 
-        navView = getActivity().findViewById(R.id.nav_view);
 
-        checkItemSelected(1);
+        checkItemSelected(1, discount);
 
 
         listData();
-
 
 
         return view;
@@ -111,13 +111,13 @@ public class CartFragment extends Fragment {
         SharedPreferences pref = getContext().getSharedPreferences("USER_FILE", MODE_PRIVATE);
         String email = pref.getString("EMAIL", "");
         int idUser = usersDAO.getIDUser(email);
-        list = (ArrayList<demo_cart_item>) demo_item_cart_dao.getALL(idUser);
+        list = (ArrayList<CartItemModule>) CartItemDAO.getALL(idUser);
         if (list.size() == 0) {
             titleCart.setVisibility(View.INVISIBLE);
             Toast.makeText(getContext(), "Giỏ hàng trống. Quay lại mua hàng.", Toast.LENGTH_SHORT).show();
         }
-        demo_cart_item_adapter = new demo_cart_item_adapter(list, getContext());
-        recyclerView.setAdapter(demo_cart_item_adapter);
+        CartItemAdapter = new CartItemAdapter(list, getContext());
+        recyclerView.setAdapter(CartItemAdapter);
 
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext(), RecyclerView.VERTICAL, false));
         recyclerView.setHasFixedSize(true);
@@ -133,7 +133,7 @@ public class CartFragment extends Fragment {
         SharedPreferences pref = getContext().getSharedPreferences("USER_FILE", MODE_PRIVATE);
         String email = pref.getString("EMAIL", "");
         int idUser = usersDAO.getIDUser(email);
-        list = (ArrayList<demo_cart_item>) demo_item_cart_dao.getALL(idUser);
+        list = (ArrayList<CartItemModule>) CartItemDAO.getALL(idUser);
         for (int i = 0; i < list.size(); i++) {
             price += list.get(i).cost;
         }
@@ -149,24 +149,24 @@ public class CartFragment extends Fragment {
 
             @Override
             public void onSwiped(@NonNull RecyclerView.ViewHolder viewHolder, int direction) {
-                demo_cart_item delete = list.get(viewHolder.getAdapterPosition());
+                CartItemModule delete = list.get(viewHolder.getAdapterPosition());
                 int position = viewHolder.getAdapterPosition();
                 int id = delete.id;
 //                Toast.makeText(getContext(), "before "+ id, Toast.LENGTH_SHORT).show();
                 list.remove(viewHolder.getAdapterPosition());
-                demo_cart_item_adapter.notifyItemRemoved(viewHolder.getAdapterPosition());
-                demo_item_cart_dao.delete(delete.id);
+                CartItemAdapter.notifyItemRemoved(viewHolder.getAdapterPosition());
+                CartItemDAO.delete(delete.id);
 
                 Snackbar snackbar = Snackbar.make(recyclerView, "Deleted " + delete.name, Snackbar.LENGTH_LONG);
                 snackbar.setAction("Undo", new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
 //                        Toast.makeText(getContext(), "after " + delete.id, Toast.LENGTH_SHORT).show();
-                        list.add(position ,delete);
-                        demo_cart_item_adapter.notifyItemInserted(position);
-                        if (id == delete.id && temp == 0){
-                            demo_item_cart_dao.insert(delete);
-                            demo_cart_item_adapter.notifyDataSetChanged();
+                        list.add(position, delete);
+                        CartItemAdapter.notifyItemInserted(position);
+                        if (id == delete.id && temp == 0) {
+                            CartItemDAO.insert(delete);
+                            CartItemAdapter.notifyDataSetChanged();
 
                             temp++;
                         }
@@ -180,15 +180,22 @@ public class CartFragment extends Fragment {
         }).attachToRecyclerView(recyclerView);
 
     }
-    public void checkItemSelected(int mCheck){
 
-        if (mCheck != 0){
-            demo_item_cart_dao = new demo_item_cart_dao(getContext());
+    public void checkItemSelected(int mCheck, int discount) {
+        SharedPreferences pref = getContext().getSharedPreferences("TOTAL_PRICE", MODE_PRIVATE);
+
+
+        if (mCheck != 0 ) {
+//            Double total = Double.valueOf(pref.getString("COST", ""));
+            CartItemDAO = new CartItemDAO(getContext());
             double totalPriceItem = total();
             tvToTal.setText(String.format("%.2f", totalPriceItem) + " $");
             tvTax.setText(String.format("%.2f", totalPriceItem * 0.1) + " $");
+            Double coupon = discount * totalPriceItem / 100;
+            tvCouponCost.setText(coupon + " $");
+            tvCoupon.setText("Voucher: " + discount + "%");
             tvDelivery.setText(String.format("%.2f", totalPriceItem * 0.05) + " $");
-            double totalFinal = totalPriceItem + totalPriceItem * 0.1 + totalPriceItem * 0.05;
+            double totalFinal = totalPriceItem + totalPriceItem * 0.1 + totalPriceItem * 0.05 - coupon;
             tvToTalPriceFinal.setText(String.format("%.2f", totalFinal) + " $");
             checkOut.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -202,7 +209,9 @@ public class CartFragment extends Fragment {
                 }
             });
         }
-    }
+
+
+        }
 
 
 

@@ -37,11 +37,11 @@ public class DealsActivity extends AppCompatActivity {
             public void onConfigureTab(@NonNull TabLayout.Tab tab, int position) {
                 switch (position){
                     case 0:
-                        tab.setText("ƯU ĐÃI MỚI");
+                        tab.setText("ƯU ĐÃI CỦA BẠN");
                         break;
 
                     case 1:
-                        tab.setText("ƯU ĐÃI CỦA BẠN");
+                        tab.setText("ƯU ĐÃI MỚI");
                         break;
                 }
             }

@@ -11,46 +11,31 @@ import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.net.ConnectivityManager;
-import android.net.NetworkInfo;
-import android.net.Uri;
-import android.net.wifi.WifiManager;
 import android.os.Build;
 import android.os.Bundle;
-import android.os.Handler;
-import android.os.Looper;
-import android.text.format.Formatter;
-import android.text.method.HideReturnsTransformationMethod;
-import android.text.method.PasswordTransformationMethod;
 import android.view.View;
-import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
-import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
-import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.fpoly.foodapp.Admin.AdminActivity;
 import com.fpoly.foodapp.DAO.UsersDAO;
-import com.fpoly.foodapp.DAO.demo_item_cart_dao;
 import com.fpoly.foodapp.R;
 import com.fpoly.foodapp.Utility.NetworkChangeListener;
 import com.fpoly.foodapp.modules.UsersModule;
-import com.fpoly.foodapp.modules.demo_cart_item;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.auth.UserInfo;
 
 import java.util.ArrayList;
-import java.util.List;
 import java.util.Locale;
 
 public class LoginActivity extends AppCompatActivity {
     EditText edEmail, edPass;
+    TextView tvTitleApp;
     Button btnLogin;
 //    ImageView imgShowHidePwd, imgDropDownAcc;
     private CheckBox chbRemember;
@@ -137,6 +122,7 @@ public class LoginActivity extends AppCompatActivity {
                                             item.pass = pass;
                                             item.address = "null";
                                             item.phoneNumber = "null";
+                                            item.feedback = "null";
                                             for (UsersModule item : list) {
                                                 if (email.toLowerCase(Locale.ROOT).equals(item.email.toLowerCase(Locale.ROOT))) {
                                                     temp++;
@@ -176,11 +162,26 @@ public class LoginActivity extends AppCompatActivity {
 
             }
         });
+        tvTitleApp.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(usersDAO.checkLogin(edEmail.getText().toString().trim(), edPass.getText().toString().trim())>0  ){
+                    Toast.makeText(LoginActivity.this, "Đăng nhập thành công", Toast.LENGTH_SHORT).show();
+                    rememberUser(edEmail.getText().toString().trim(), edPass.getText().toString().trim() ,chbRemember.isChecked());
+                    Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+                    startActivity(intent);
+                    finish();
+                }else {
+                    Toast.makeText(LoginActivity.this, "Tên đăng nhập và mật khẩu không đúng", Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
 
     }
 
     public void init() {
         chbRemember = findViewById(R.id.checkBoxRemember);
+        tvTitleApp = findViewById(R.id.tvTitleApp);
         edEmail = findViewById(R.id.edEmail);
         edPass = findViewById(R.id.edPass);
         btnLogin = findViewById(R.id.btnSignIn);

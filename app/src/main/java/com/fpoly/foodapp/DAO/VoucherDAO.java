@@ -23,7 +23,7 @@ public class VoucherDAO {
     public long insert(VoucherModule obj) {
         ContentValues values = new ContentValues();
         values.put("img", obj.img);
-        values.put("voucherTitle", obj.voucherTitle);
+        values.put("voucherTitle", obj.discount);
         values.put("voucherDeadline", obj.voucherDeadline);
 
         return db.insert("Voucher", null, values);
@@ -51,7 +51,7 @@ public class VoucherDAO {
             VoucherModule obj = new VoucherModule();
             obj.id = Integer.parseInt(cursor.getString(cursor.getColumnIndex("id")));
             obj.img = Integer.parseInt(cursor.getString(cursor.getColumnIndex("img")));
-            obj.voucherTitle = cursor.getString(cursor.getColumnIndex("voucherTitle"));
+            obj.discount = Integer.parseInt(cursor.getString(cursor.getColumnIndex("voucherTitle")));
             obj.voucherDeadline = cursor.getString(cursor.getColumnIndex("voucherDeadline"));
             list.add(obj);
 

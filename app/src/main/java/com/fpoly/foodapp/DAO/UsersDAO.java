@@ -6,11 +6,8 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 
-import androidx.annotation.NonNull;
-
 import com.fpoly.foodapp.database.DbHelper;
 import com.fpoly.foodapp.modules.UsersModule;
-import com.fpoly.foodapp.modules.demo_cart_item;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -31,9 +28,11 @@ public class UsersDAO {
         values.put("pass", obj.pass);
         values.put("phoneNumber", obj.phoneNumber);
         values.put("address", obj.address);
+        values.put("feedback", obj.feedback);
 
         return db.insert("User", null, values);
     }
+
 
     public int updateProfile( UsersModule obj) {
         ContentValues values = new ContentValues();
@@ -47,7 +46,16 @@ public class UsersDAO {
     public int updateImg(UsersModule obj) {
         ContentValues values = new ContentValues();
         values.put("img", obj.bitmap);
-
+        return db.update("User", values, "email=?", new String[]{obj.email});
+    }
+    public int updateFeedBack(UsersModule obj) {
+        ContentValues values = new ContentValues();
+        values.put("feedback", obj.feedback);
+        return db.update("User", values, "email=?", new String[]{obj.email});
+    }
+    public int updatePass(UsersModule obj){
+        ContentValues values = new ContentValues();
+        values.put("pass", obj.pass);
         return db.update("User", values, "email=?", new String[]{obj.email});
     }
 
@@ -76,6 +84,11 @@ public class UsersDAO {
         String sql = "SELECT * FROM User WHERE email=?";
         List<UsersModule> list = getData(sql, email);
         return list.get(0).id;
+    }
+    public String getCurrentPass(String email) {
+        String sql = "SELECT * FROM User WHERE email=?";
+        List<UsersModule> list = getData(sql, email);
+        return list.get(0).pass;
     }
 
     public int delete(int id) {
@@ -106,6 +119,16 @@ public class UsersDAO {
 
         }
         return list;
+
+    }
+    // check login in sqlite
+    public int checkLogin(String email, String pass){
+        String sql = "SELECT * FROM User WHERE email=? AND pass=?";
+        List<UsersModule> list = getData(sql,email,pass);
+        if(list == null || list.size()==0){
+            return -1;
+        }
+        return 1;
 
     }
 }
