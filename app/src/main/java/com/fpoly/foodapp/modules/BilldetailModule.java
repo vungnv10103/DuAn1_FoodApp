@@ -1,70 +1,109 @@
 package com.fpoly.foodapp.modules;
 
+import android.widget.TextView;
+
+import androidx.constraintlayout.widget.ConstraintLayout;
+import androidx.recyclerview.widget.RecyclerView;
+
 public class BilldetailModule {
-    private int id ;
-    private int billId;
-    private String productID;
-    private String dateTime;
-    private int quantities;
-    private String note;
+ private int id ;
 
-    public BilldetailModule() {
-    }
+ private int madonhang ;
+ private String soluongsanphan;
+ private String trangthai;
+ private String ngaymua;
+ private double tongtiensanpham;
+ private double tax;
+ private double dalivery;
+ private double tongtien;
 
-    public int getId() {
-        return id;
-    }
+ public int getMadonhang() {
+  return madonhang;
+ }
 
-    public void setId(int id) {
-        this.id = id;
-    }
+ public BilldetailModule() {
+ }
 
-    public int getBillId() {
-        return billId;
-    }
+ public BilldetailModule(int id, int madonhang, String soluongsanphan, String trangthai, String ngaymua, double tongtiensanpham, double tax, double dalivery, double tongtien) {
+  this.id = id;
+  this.madonhang = madonhang;
+  this.soluongsanphan = soluongsanphan;
+  this.trangthai = trangthai;
+  this.ngaymua = ngaymua;
+  this.tongtiensanpham = tongtiensanpham;
+  this.tax = tax;
+  this.dalivery = dalivery;
+  this.tongtien = tongtien;
+ }
 
-    public void setBillId(int billId) {
-        this.billId = billId;
-    }
+ public void setMadonhang(int madonhang) {
+  this.madonhang = madonhang;
+ }
 
-    public String getProductID() {
-        return productID;
-    }
+ public String getSoluongsanphan() {
+  return soluongsanphan;
+ }
 
-    public void setProductID(String productID) {
-        this.productID = productID;
-    }
+ public void setSoluongsanphan(String soluongsanphan) {
+  this.soluongsanphan = soluongsanphan;
+ }
 
-    public String getDateTime() {
-        return dateTime;
-    }
+ public String getTrangthai() {
+  return trangthai;
+ }
 
-    public void setDateTime(String dateTime) {
-        this.dateTime = dateTime;
-    }
+ public void setTrangthai(String trangthai) {
+  this.trangthai = trangthai;
+ }
 
-    public int getQuantities() {
-        return quantities;
-    }
+ public String getNgaymua() {
+  return ngaymua;
+ }
 
-    public void setQuantities(int quantities) {
-        this.quantities = quantities;
-    }
+ public void setNgaymua(String ngaymua) {
+  this.ngaymua = ngaymua;
+ }
 
-    public String getNote() {
-        return note;
-    }
+ public double getTongtiensanpham() {
+  return tongtiensanpham;
+ }
 
-    public void setNote(String note) {
-        this.note = note;
-    }
+ public void setTongtiensanpham(double tongtiensanpham) {
+  this.tongtiensanpham = tongtiensanpham;
+ }
 
-    public BilldetailModule(int id, int billId, String productID, String dateTime, int quantities, String note) {
-        this.id = id;
-        this.billId = billId;
-        this.productID = productID;
-        this.dateTime = dateTime;
-        this.quantities = quantities;
-        this.note = note;
-    }
+ public double getTax() {
+  return tax;
+ }
+
+ public void setTax(double tax) {
+  this.tax = tax;
+ }
+
+ public double getDalivery() {
+  return dalivery;
+ }
+
+ public void setDalivery(double dalivery) {
+  this.dalivery = dalivery;
+ }
+
+ public double getTongtien() {
+  return tongtien;
+ }
+
+ public void setTongtien(double tongtien) {
+  this.tongtien = tongtien;
+ }
+
+ public BilldetailModule(int madonhang, String soluongsanphan, String trangthai, String ngaymua, double tongtiensanpham, double tax, double dalivery, double tongtien) {
+  this.madonhang = madonhang;
+  this.soluongsanphan = soluongsanphan;
+  this.trangthai = trangthai;
+  this.ngaymua = ngaymua;
+  this.tongtiensanpham = tongtiensanpham;
+  this.tax = tax;
+  this.dalivery = dalivery;
+  this.tongtien = tongtien;
+ }
 }

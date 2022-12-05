@@ -42,9 +42,11 @@ public class DbHelper extends SQLiteOpenHelper {
                 "voucherTitle TEXT not null," +
                 "voucherDeadline TEXT not null)";
         db.execSQL(createTableVoucher);
-
+        String Table_hoa_don_chi_tiet  = "Create table hoadonchitiet(id_bill integer primary key autoincrement , " +
+                " iditem integer references ItemCart(id) , iduser integer references User(id) , " +
+                "dongia float, tongtien float , ngaymua date    )";
+        db.execSQL(Table_hoa_don_chi_tiet);
     }
-
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
         String dropTableItemCart = "drop table if exists ItemCart";
@@ -53,7 +55,8 @@ public class DbHelper extends SQLiteOpenHelper {
         db.execSQL(dropTableUser);
         String dropTableVoucher = "drop table if exists Voucher";
         db.execSQL(dropTableVoucher);
-
+        String droptablebilldetail = "drop table if exists hoadonchitiet";
+        db.execSQL(droptablebilldetail);
         onCreate(db);
 
     }

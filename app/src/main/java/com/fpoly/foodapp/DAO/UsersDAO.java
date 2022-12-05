@@ -31,7 +31,6 @@ public class UsersDAO {
         values.put("pass", obj.pass);
         values.put("phoneNumber", obj.phoneNumber);
         values.put("address", obj.address);
-
         return db.insert("User", null, values);
     }
 
@@ -47,7 +46,6 @@ public class UsersDAO {
     public int updateImg(UsersModule obj) {
         ContentValues values = new ContentValues();
         values.put("img", obj.bitmap);
-
         return db.update("User", values, "email=?", new String[]{obj.email});
     }
 
@@ -103,7 +101,6 @@ public class UsersDAO {
             obj.phoneNumber = cursor.getString(cursor.getColumnIndex("phoneNumber"));
             obj.address = cursor.getString(cursor.getColumnIndex("address"));
             list.add(obj);
-
         }
         return list;
 

@@ -102,12 +102,11 @@ public class RegisterActivity extends AppCompatActivity {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if (task.isSuccessful()) {
-                            Intent intent = new Intent(RegisterActivity.this, MainActivity.class);
-                            startActivity(intent);
+//                            Intent intent = new Intent(RegisterActivity.this, MainActivity.class);
+//                            startActivity(intent);
                             //đóng tất cả các activity trước main
-                            Toast.makeText(RegisterActivity.this, "đăng kí thành  công", Toast.LENGTH_SHORT).show();
-                            finishAffinity();
-
+//                            Toast.makeText(RegisterActivity.this, "đăng kí thành  công", Toast.LENGTH_SHORT).show();
+//                            finishAffinity();
 
                             count++;
                             remember();

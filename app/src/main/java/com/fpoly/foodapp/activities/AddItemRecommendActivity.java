@@ -31,6 +31,7 @@ public class AddItemRecommendActivity extends AppCompatActivity {
 
 
 
+
     @SuppressLint("MissingInflatedId")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,6 +39,7 @@ public class AddItemRecommendActivity extends AppCompatActivity {
         setContentView(R.layout.activity_add_item_recommend);
 
         init();
+
 
         btnCancel.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -77,7 +79,7 @@ public class AddItemRecommendActivity extends AppCompatActivity {
                 Intent intent = new Intent();
                 intent.setType("image/*");
                 intent.setAction(Intent.ACTION_GET_CONTENT);
-                startActivityForResult(Intent.createChooser(intent, "Select Picture"), PICK_IMAGE);
+               startActivityForResult(Intent.createChooser(intent, "Select Picture"), PICK_IMAGE);
             }
         });
     }

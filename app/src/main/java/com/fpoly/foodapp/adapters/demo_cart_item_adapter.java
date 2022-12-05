@@ -14,13 +14,14 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.fpoly.foodapp.R;
 import com.fpoly.foodapp.modules.demo_cart_item;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class demo_cart_item_adapter extends RecyclerView.Adapter<demo_cart_item_adapter.ViewHolder> {
-    private List<demo_cart_item> list;
+    private ArrayList<demo_cart_item> list;
     private Context context;
 
-    public demo_cart_item_adapter(List<demo_cart_item> list, Context context) {
+    public demo_cart_item_adapter(ArrayList<demo_cart_item> list, Context context) {
         this.list = list;
         this.context = context;
     }
@@ -36,20 +37,11 @@ public class demo_cart_item_adapter extends RecyclerView.Adapter<demo_cart_item_
     @Override
     public void onBindViewHolder(@NonNull demo_cart_item_adapter.ViewHolder holder, @SuppressLint("RecyclerView") int position) {
 
-        holder.tvName.setText(list.get(position).name);
-        holder.tvCost.setText("" + list.get(position).cost);
-        holder.tvQuantity.setText("" + list.get(position).quantities);
-        holder.cbCheck.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                boolean check = holder.cbCheck.isChecked();
-                if (check) {     // true
+        holder.tvName.setText(list.get(position).getName());
+        holder.tvCost.setText("" + list.get(position).getCost());
+        holder.tvQuantity.setText("" + list.get(position).getQuantities());
 
-                } else {
 
-                }
-            }
-        });
 
     }
 
