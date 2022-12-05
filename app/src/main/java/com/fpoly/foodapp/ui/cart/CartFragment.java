@@ -8,6 +8,7 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.ItemTouchHelper;
@@ -26,20 +27,32 @@ import com.fpoly.foodapp.R;
 import com.fpoly.foodapp.activities.DealsActivity;
 import com.fpoly.foodapp.adapters.CartItemAdapter;
 import com.fpoly.foodapp.modules.CartItemModule;
+import com.fpoly.foodapp.modules.billdetailmodel;
 import com.google.android.material.snackbar.Snackbar;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Random;
 
 public class CartFragment extends Fragment {
 
     private ConstraintLayout checkOut, titleCart;
-    RecyclerView recyclerView;
+    RecyclerView recyclerView, RCL;
     private ArrayList<CartItemModule> list;
     CartItemAdapter CartItemAdapter;
     static CartItemDAO CartItemDAO;
     static UsersDAO usersDAO;
     int temp = 0;
     int temp2 = 0;
+    public   String date;
+    private String chuoi = "";
+    public ArrayList<billdetailmodel> moduleArrayList;
 
 
     TextView tvToTal, tvDelivery, tvTax, tvCouponCost, tvCoupon;
@@ -85,6 +98,11 @@ public class CartFragment extends Fragment {
         tvCouponCost.setText("Chọn voucher");
         tvCoupon = view.findViewById(R.id.tvCoupon);
         tvCoupon.setText("Voucher: ");
+        Calendar calendar = Calendar.getInstance();
+        SimpleDateFormat format = new SimpleDateFormat("dd-MMM-yyyy hh:mm:ss ");
+        date = format.format(calendar.getTime());
+
+        moduleArrayList = new ArrayList<>();
         SharedPreferences pref = getContext().getSharedPreferences("VOUCHER", MODE_PRIVATE);
         int discount = pref.getInt("DISCOUNT", 0);
         tvCouponCost.setOnClickListener(new View.OnClickListener() {
@@ -115,7 +133,25 @@ public class CartFragment extends Fragment {
         if (list.size() == 0) {
             titleCart.setVisibility(View.INVISIBLE);
             Toast.makeText(getContext(), "Giỏ hàng trống. Quay lại mua hàng.", Toast.LENGTH_SHORT).show();
+        }else {
+
+            CartItemAdapter = new CartItemAdapter(list, getContext());
+            recyclerView.setAdapter(CartItemAdapter);
+            recyclerView.setLayoutManager(new LinearLayoutManager(getContext(), RecyclerView.VERTICAL, false));
+            recyclerView.setHasFixedSize(true);
+            recyclerView.setNestedScrollingEnabled(false);
+            swipeToDelete();
+            FirebaseDatabase database = FirebaseDatabase.getInstance();
+            DatabaseReference reference = database.getReference("object_cart");
+            reference.setValue(list, new DatabaseReference.CompletionListener() {
+                @Override
+                public void onComplete(@Nullable DatabaseError error, @NonNull DatabaseReference ref) {
+                    Toast.makeText(getContext(), "thanhf coong", Toast.LENGTH_SHORT).show();
+                }
+            });
         }
+
+
         CartItemAdapter = new CartItemAdapter(list, getContext());
         recyclerView.setAdapter(CartItemAdapter);
 
@@ -200,11 +236,22 @@ public class CartFragment extends Fragment {
             checkOut.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    sharedPreferences = getContext().getSharedPreferences(TOTAL_KEY, MODE_PRIVATE);
-                    editor = sharedPreferences.edit();
-                    editor.putFloat(TOTAL_FINAL_KEY, (float) totalFinal);
-                    editor.commit();
+                    Random random = new Random();
+                    int id_randum =-1*random.nextInt();
+                    double tongtiensanpham = total();
+                    double taxi = tongtiensanpham * 0.1;
+                    double delivery = tongtiensanpham*0.05;
+                    double total = tongtiensanpham + tongtiensanpham * 0.1 + tongtiensanpham * 0.05;
 
+                    FirebaseDatabase database = FirebaseDatabase.getInstance();
+                    DatabaseReference reference = database.getReference("objec_bill");
+                    moduleArrayList.add(new billdetailmodel(id_randum , chuoi , "chua  thanh toan" ,date  , tongtiensanpham ,taxi , delivery ,total ));
+                    reference.setValue(moduleArrayList, new DatabaseReference.CompletionListener() {
+                        @Override
+                        public void onComplete(@Nullable DatabaseError error, @NonNull DatabaseReference ref) {
+                            Toast.makeText(getContext(), "push thanh cong", Toast.LENGTH_SHORT).show();
+                        }
+                    });
 
                 }
             });
@@ -212,6 +259,33 @@ public class CartFragment extends Fragment {
 
 
         }
+    public void getdata(){
+        FirebaseDatabase database =FirebaseDatabase.getInstance();
+        DatabaseReference reference = database.getReference("object_cart");
+        reference.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                for(DataSnapshot snapshot1 :snapshot.getChildren())
+                {
+                    CartItemModule item =snapshot1.getValue(CartItemModule.class);
+                    list.add(item);
+                }
+                CartItemAdapter.notifyDataSetChanged();
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+    }    @Override
+    public void onStart() {
+        super.onStart();
+        getdata();
+        for (int i = 0 ; i<list.size();i++){
+            chuoi+=list.get(i).getName()+"  số lượng:"+list.get(i).getQuantities()+"-";
+        }
+    }
 
 
 

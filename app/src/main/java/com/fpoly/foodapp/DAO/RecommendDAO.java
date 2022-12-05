@@ -32,6 +32,7 @@ public class RecommendDAO {
         values.put("cost", obj.price);
         values.put("idUser", obj.idUser);
         values.put("favourite", obj.favourite);
+        values.put("location", obj.location);
 
 
         return db.insert("Recommend", null, values);
@@ -81,6 +82,7 @@ public class RecommendDAO {
             obj.title = cursor.getString(cursor.getColumnIndex("name"));
             obj.price = Double.parseDouble(cursor.getString(cursor.getColumnIndex("cost")));
             obj.favourite = Integer.parseInt(cursor.getString(cursor.getColumnIndex("favourite")));
+            obj.location = cursor.getString(cursor.getColumnIndex("location"));
             list.add(obj);
 
         }

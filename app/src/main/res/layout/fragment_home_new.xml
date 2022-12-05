@@ -58,6 +58,7 @@
                             android:layout_marginStart="104dp"
                             android:layout_marginTop="20dp"
                             android:text="Hello Username"
+                            android:tag="null"
                             android:textColor="#ff3d00"
                             android:textSize="20sp"
                             android:textStyle="bold"

@@ -23,6 +23,7 @@ public class DbHelper extends SQLiteOpenHelper {
                 "name TEXT not null," +
                 "cost REAL not null," +
                 "idUser INTEGER REFERENCES User(id)," +
+                "location TEXT not null," +
                 "quantities INTEGER not null)";
         db.execSQL(createTableItemCart);
 
@@ -66,6 +67,7 @@ public class DbHelper extends SQLiteOpenHelper {
                 "favourite INTEGER not null," +
                 "name TEXT not null," +
                 "idUser INTEGER REFERENCES User(id)," +
+                "location TEXT not null," +
                 "cost REAL not null)";
         db.execSQL(createTableRecommended);
 

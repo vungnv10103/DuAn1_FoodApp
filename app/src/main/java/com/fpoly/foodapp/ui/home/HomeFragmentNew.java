@@ -66,7 +66,7 @@ public class HomeFragmentNew extends Fragment {
     CategoryDAO categoryDAO;
     List<ItemCategory> listCate;
 
-//    static ProductDAO productDAO;
+    //    static ProductDAO productDAO;
     List<ItemProduct> listProduct;
     ItemProductAdapter itemProductAdapter;
 
@@ -136,6 +136,7 @@ public class HomeFragmentNew extends Fragment {
         });
 
         SharedPreferences pref = getActivity().getSharedPreferences("USER_FILE", MODE_PRIVATE);
+        String email = pref.getString("EMAIL", "");
         tvUserName = view.findViewById(R.id.tvUserNameHome);
         tvUserName.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -143,14 +144,13 @@ public class HomeFragmentNew extends Fragment {
                 //code
             }
         });
-        String userName = pref.getString("name", "");
+        String userName = usersDAO.getNameUser(email);
         if (userName.isEmpty() || userName.equals("null")) {
             tvUserName.setText("Username");
+
         } else {
             tvUserName.setText(userName);
         }
-
-        String email = pref.getString("EMAIL", "");
 
 
         try {
@@ -162,15 +162,11 @@ public class HomeFragmentNew extends Fragment {
         }
 
 
-
-
-
         listProductsAdapter = new ListProductsAdapter(getContext());
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext(), RecyclerView.VERTICAL, false);
         recyclerViewProduct.setLayoutManager(linearLayoutManager);
         listProductsAdapter.setData(getListProduct());
         recyclerViewProduct.setAdapter(listProductsAdapter);
-
 
 
         listSlideShow();
@@ -179,7 +175,7 @@ public class HomeFragmentNew extends Fragment {
         int begin_index = email.indexOf("@");
         int end_index = email.indexOf(".");
         String domain_name = email.substring(begin_index + 1, end_index);
-        if (domain_name.equals("merchant")){
+        if (domain_name.equals("merchant")) {
 
             showMenuAddItemRecommend();
             showMenuAddItemCategory();
@@ -231,6 +227,7 @@ public class HomeFragmentNew extends Fragment {
         });
         return view;
     }
+
     private ArrayList<ListProduct> getListProduct() {
         ArrayList<ListProduct> list = new ArrayList<>();
         ArrayList<ItemProduct> list1 = new ArrayList<>();
@@ -258,7 +255,6 @@ public class HomeFragmentNew extends Fragment {
         list.add(new ListProduct("Được yêu thích", list2));
 
 
-
         return list;
     }
 
@@ -272,12 +268,12 @@ public class HomeFragmentNew extends Fragment {
         listPhotos.add(new photo(R.drawable.fruit_juice_banner));
 
     }
+
     private void listCategory() {
-        listCate =  categoryDAO.getALL();
+        listCate = categoryDAO.getALL();
         if (listCate.size() == 0) {
             //Toast.makeText(getContext(), "Bấm vào avatar góc trái để thêm item category.", Toast.LENGTH_SHORT).show();
-        }
-        else {
+        } else {
             categoryAdapter = new ItemCategoryAdapter(getContext(), listCate);
             recyclerCategory.setAdapter(categoryAdapter);
 
@@ -287,12 +283,12 @@ public class HomeFragmentNew extends Fragment {
         }
 
 
-
     }
+
     public void listRecommend() {
         listRecommend = (ArrayList<ItemRecommend>) recommendDAO.getALL();
         if (listRecommend.size() == 0) {
-           // Toast.makeText(getContext(), "Bấm vào TextView User để thêm item recommend.", Toast.LENGTH_SHORT).show();
+            // Toast.makeText(getContext(), "Bấm vào TextView User để thêm item recommend.", Toast.LENGTH_SHORT).show();
         }
         recommendAdapterNew = new RecommendAdapterNew(getContext(), listRecommend);
         recyclerViewRecommend.setAdapter(recommendAdapterNew);
@@ -302,9 +298,10 @@ public class HomeFragmentNew extends Fragment {
         recyclerViewRecommend.setNestedScrollingEnabled(false);
 
     }
-    private void showMenuAddItemCategory(){
+
+    private void showMenuAddItemCategory() {
         listCate = new ArrayList<>();
-        listCate =  categoryDAO.getALL();
+        listCate = categoryDAO.getALL();
         categoryAdapter = new ItemCategoryAdapter(getContext(), listCate);
         addCategory.add(new AddCategoryModule(R.drawable.plus_circle));
         addCategoryItemAdapter = new AddCategoryItemAdapter(getContext(), addCategory);
@@ -312,7 +309,8 @@ public class HomeFragmentNew extends Fragment {
         ConcatAdapter concatAdapter = new ConcatAdapter(categoryAdapter, addCategoryItemAdapter);
         recyclerCategory.setAdapter(concatAdapter);
     }
-    private void showMenuAddItemRecommend(){
+
+    private void showMenuAddItemRecommend() {
         listRecommend = (ArrayList<ItemRecommend>) recommendDAO.getALL();
         recommendAdapterNew = new RecommendAdapterNew(getContext(), listRecommend);
         addRecommend.add(new AddRecommendModule(R.drawable.plus_circle));
@@ -321,8 +319,6 @@ public class HomeFragmentNew extends Fragment {
         ConcatAdapter concatAdapter = new ConcatAdapter(recommendAdapterNew, addRecommendedItemAdapter);
         recyclerViewRecommend.setAdapter(concatAdapter);
     }
-
-
 
 
 }

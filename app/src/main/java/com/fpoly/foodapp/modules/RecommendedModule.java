@@ -7,6 +7,7 @@ public class RecommendedModule {
     private double money;
     private int resource_image;
 
+
     public RecommendedModule(int img, String title, double money, int resource_image) {
         this.img = img;
         this.title = title;

@@ -4,6 +4,7 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.annotation.SuppressLint;
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -16,7 +17,9 @@ import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.fpoly.foodapp.Admin.AdminActivity;
+import com.fpoly.foodapp.DAO.UsersDAO;
 import com.fpoly.foodapp.R;
+import com.fpoly.foodapp.modules.UsersModule;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
@@ -32,6 +35,9 @@ public class RegisterActivity extends AppCompatActivity {
     public FirebaseAuth auth = FirebaseAuth.getInstance();
     public int dem = auth.getCurrentUser().getProviderData().size();
     public int count = 12;
+    private ProgressDialog progressDialog;
+    UsersModule item;
+    static UsersDAO usersDAO;
 
     public static final String SHARED_PREFERENCES_NAME = "dem";
 
@@ -50,6 +56,8 @@ public class RegisterActivity extends AppCompatActivity {
         edConfirmPass = findViewById(R.id.edConfirmPass);
         imgShowHidePwd = findViewById(R.id.img_show_hide_pwd);
         imgShowConfirmPass = findViewById(R.id.img_show_hide_confirm_pwd);
+        progressDialog = new ProgressDialog(this);
+        usersDAO = new UsersDAO(getApplicationContext());
 
 
         btnSignUp = findViewById(R.id.register);
@@ -102,12 +110,25 @@ public class RegisterActivity extends AppCompatActivity {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if (task.isSuccessful()) {
-                            Intent intent = new Intent(RegisterActivity.this, MainActivity.class);
-                            startActivity(intent);
+                            rememberUser(email, pass, true);
+                            item = new UsersModule();
+                            item.bitmap = "null";
+                            item.name = "null";
+                            item.email = email;
+                            item.pass = pass;
+                            item.address = "null";
+                            item.phoneNumber = "null";
+                            item.feedback = "null";
                             //đóng tất cả các activity trước main
-                            Toast.makeText(RegisterActivity.this, "đăng kí thành  công", Toast.LENGTH_SHORT).show();
-                            finishAffinity();
-
+                            Toast.makeText(RegisterActivity.this, "Đăng kí thành  công !", Toast.LENGTH_SHORT).show();
+                            if (usersDAO.insert(item) > 0) {
+                                Toast.makeText(getApplicationContext(), "Đăng nhập thành công !", Toast.LENGTH_SHORT).show();
+                                Intent intent1 = new Intent(RegisterActivity.this, MainActivity.class);
+                                startActivity(intent1);
+                                finishAffinity();
+                            } else {
+                                Toast.makeText(getApplicationContext(), "Đăng nhập thất bại !", Toast.LENGTH_SHORT).show();
+                            }
 
                             count++;
                             remember();
@@ -150,6 +171,21 @@ public class RegisterActivity extends AppCompatActivity {
             check = 1;
         }
         return check;
+    }
+
+    public void rememberUser(String u, String p, boolean status) {
+        SharedPreferences pref = getSharedPreferences("USER_FILE", MODE_PRIVATE);
+        SharedPreferences.Editor editor = pref.edit();
+        if (!status) {
+            editor.clear();
+        } else {
+            // lưu dữ liệu
+            editor.putString("EMAIL", u);
+            editor.putString("PASSWORD", p);
+            editor.putBoolean("REMEMBER", status);
+        }
+        // lưu lại
+        editor.commit();
     }
 
     @Override

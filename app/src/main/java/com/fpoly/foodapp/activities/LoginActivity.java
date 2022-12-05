@@ -109,6 +109,7 @@ public class LoginActivity extends AppCompatActivity {
 
                                         // Sign in success, update UI with the signed-in user's information
                                         if (email.equals("admin@gmail.com")) {
+                                            rememberUser(email, pass, chbRemember.isChecked());
                                             Intent intent = new Intent(LoginActivity.this, AdminActivity.class);
                                             startActivity(intent);
                                         }
@@ -133,7 +134,8 @@ public class LoginActivity extends AppCompatActivity {
                                                 Intent intent = new Intent(LoginActivity.this, MainActivity.class);
                                                 startActivity(intent);
                                                 finishAffinity();
-                                            } else {
+                                            }
+                                            else {
                                                 if (usersDAO.insert(item) > 0) {
                                                     // thêm lần đầu
 //                                                    Toast.makeText(getApplicationContext(), "Success.", Toast.LENGTH_SHORT).show();
@@ -141,7 +143,7 @@ public class LoginActivity extends AppCompatActivity {
                                                     startActivity(intent);
                                                     finishAffinity();
                                                 } else {
-                                                    Toast.makeText(getApplicationContext(), "Thêm thất bại.", Toast.LENGTH_SHORT).show();
+                                                    Toast.makeText(getApplicationContext(), "Đăng nhập thất bại.", Toast.LENGTH_SHORT).show();
                                                 }
                                             }
 
