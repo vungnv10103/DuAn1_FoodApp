@@ -5,12 +5,15 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
+import android.content.IntentFilter;
+import android.net.ConnectivityManager;
 import android.os.Bundle;
 import android.widget.Toast;
 
 import com.fpoly.foodapp.Admin.AdminActivity;
 import com.fpoly.foodapp.DAO.RecommendDAO;
 import com.fpoly.foodapp.R;
+import com.fpoly.foodapp.Utility.NetworkChangeListener;
 import com.fpoly.foodapp.adapters.FavouriteAdapter;
 import com.fpoly.foodapp.adapters.recommend.ItemRecommend;
 import com.fpoly.foodapp.modules.ItemFavourite;
@@ -23,13 +26,14 @@ public class FavouriteActivity extends AppCompatActivity {
     FavouriteAdapter favouriteAdapter;
     List<ItemRecommend> listFavourite;
 
+    NetworkChangeListener networkChangeListener = new NetworkChangeListener();
+
     static RecommendDAO recommendDAO;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_favourite);
         init();
-        Toast.makeText(this, "" + FavouriteActivity.class.getName(), Toast.LENGTH_SHORT).show();
 
         listFavourite = new ArrayList<>();
         recommendDAO = new RecommendDAO(getApplicationContext());
@@ -56,5 +60,17 @@ public class FavouriteActivity extends AppCompatActivity {
             startActivity(new Intent(getApplicationContext(), AdminActivity.class));
             finishAffinity();
 
+    }
+    @Override
+    protected void onStart() {
+        IntentFilter intentFilter = new IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION);
+        registerReceiver(networkChangeListener, intentFilter);
+        super.onStart();
+    }
+
+    @Override
+    protected void onStop() {
+        unregisterReceiver(networkChangeListener);
+        super.onStop();
     }
 }

@@ -6,11 +6,14 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.annotation.SuppressLint;
+import android.content.IntentFilter;
+import android.net.ConnectivityManager;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 
 import com.fpoly.foodapp.R;
+import com.fpoly.foodapp.Utility.NetworkChangeListener;
 import com.fpoly.foodapp.adapters.Billdetails_adapter;
 
 import com.fpoly.foodapp.modules.billdetailmodel;
@@ -23,6 +26,7 @@ import com.google.firebase.database.ValueEventListener;
 import java.util.ArrayList;
 
 public class Billdetail_activity extends AppCompatActivity {
+    NetworkChangeListener networkChangeListener = new NetworkChangeListener();
 
 
     private RecyclerView RCL;
@@ -41,6 +45,8 @@ public class Billdetail_activity extends AppCompatActivity {
 
     @Override
     protected void onStart() {
+        IntentFilter intentFilter = new IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION);
+        registerReceiver(networkChangeListener, intentFilter);
         super.onStart();
         LinearLayoutManager manager = new LinearLayoutManager(this, RecyclerView.VERTICAL, false);
         RCL.setLayoutManager(manager);
@@ -69,6 +75,12 @@ public class Billdetail_activity extends AppCompatActivity {
 
             }
         });
+    }
+
+    @Override
+    protected void onStop() {
+        unregisterReceiver(networkChangeListener);
+        super.onStop();
     }
 
 

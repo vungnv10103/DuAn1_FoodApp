@@ -15,6 +15,7 @@ import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.Dialog;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
@@ -22,6 +23,7 @@ import android.graphics.Bitmap;
 import android.location.Address;
 import android.location.Geocoder;
 import android.location.Location;
+import android.net.ConnectivityManager;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
@@ -37,6 +39,7 @@ import android.widget.Toast;
 import com.fpoly.foodapp.DAO.RecommendDAO;
 import com.fpoly.foodapp.DAO.UsersDAO;
 import com.fpoly.foodapp.R;
+import com.fpoly.foodapp.Utility.NetworkChangeListener;
 import com.fpoly.foodapp.adapters.category.ItemCategory;
 import com.fpoly.foodapp.adapters.recommend.ItemRecommend;
 import com.fpoly.foodapp.modules.RecommendedModule;
@@ -63,6 +66,8 @@ public class AddItemRecommendActivity extends AppCompatActivity {
     ItemRecommend item;
 
     static UsersDAO usersDAO;
+
+    NetworkChangeListener networkChangeListener = new NetworkChangeListener();
 
 
     @SuppressLint("MissingInflatedId")
@@ -338,5 +343,17 @@ public class AddItemRecommendActivity extends AppCompatActivity {
         }
 
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+    }
+    @Override
+    protected void onStart() {
+        IntentFilter intentFilter = new IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION);
+        registerReceiver(networkChangeListener, intentFilter);
+        super.onStart();
+    }
+
+    @Override
+    protected void onStop() {
+        unregisterReceiver(networkChangeListener);
+        super.onStop();
     }
 }

@@ -2,13 +2,20 @@ package com.fpoly.foodapp.ui.home;
 
 import static android.content.Context.MODE_PRIVATE;
 
+import android.Manifest;
 import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
+import android.location.Address;
+import android.location.Geocoder;
+import android.location.Location;
 import android.net.Uri;
 import android.os.Bundle;
 
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.ConcatAdapter;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -47,12 +54,17 @@ import com.fpoly.foodapp.adapters.recommend.ItemRecommend;
 import com.fpoly.foodapp.adapters.recommend.RecommendAdapterNew;
 import com.fpoly.foodapp.modules.AddCategoryModule;
 import com.fpoly.foodapp.modules.AddRecommendModule;
+import com.fpoly.foodapp.modules.CategoryModule;
 import com.fpoly.foodapp.modules.photo;
+import com.google.android.gms.location.FusedLocationProviderClient;
+import com.google.android.gms.location.LocationServices;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 
 import me.relex.circleindicator.CircleIndicator3;
 
@@ -87,6 +99,11 @@ public class HomeFragmentNew extends Fragment {
     ImageView imgAvatar, imgDeleteSearch;
     static UsersDAO usersDAO;
 
+    String mLocation = "";
+
+    FusedLocationProviderClient fusedLocationProviderClient;
+    private final static int REQUEST_CODE = 100;
+
 
     BottomNavigationView viewBottom;
     private ViewPager2 viewPager2;
@@ -119,6 +136,7 @@ public class HomeFragmentNew extends Fragment {
         edSearch = view.findViewById(R.id.edSearchHome);
         imgDeleteSearch = view.findViewById(R.id.imgDeleteSearch);
         itemProductAdapter = new ItemProductAdapter(getContext());
+        fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(getContext());
 
         recyclerViewRecommend = view.findViewById(R.id.rcvRecommend);
         recyclerCategory = view.findViewById(R.id.rcvCategory);
@@ -272,25 +290,42 @@ public class HomeFragmentNew extends Fragment {
     }
 
     private void listCategory() {
+        ItemCategory item = new ItemCategory();
         listCate = categoryDAO.getALL();
         if (listCate.size() == 0) {
+            item.setImg("content://media/external_primary/images/media/1000002401");
+            item.setName("Pizza");
+            categoryDAO.insert(item);
+            listCate = categoryDAO.getALL();
             //Toast.makeText(getContext(), "Bấm vào avatar góc trái để thêm item category.", Toast.LENGTH_SHORT).show();
-        } else {
-            categoryAdapter = new ItemCategoryAdapter(getContext(), listCate);
-            recyclerCategory.setAdapter(categoryAdapter);
-
-            recyclerCategory.setLayoutManager(new LinearLayoutManager(getContext(), RecyclerView.HORIZONTAL, false));
-            recyclerCategory.setHasFixedSize(true);
-            recyclerCategory.setNestedScrollingEnabled(false);
         }
+        categoryAdapter = new ItemCategoryAdapter(getContext(), listCate);
+        recyclerCategory.setAdapter(categoryAdapter);
+
+        recyclerCategory.setLayoutManager(new LinearLayoutManager(getContext(), RecyclerView.HORIZONTAL, false));
+        recyclerCategory.setHasFixedSize(true);
+        recyclerCategory.setNestedScrollingEnabled(false);
 
 
     }
 
     public void listRecommend() {
+        ItemRecommend item = new ItemRecommend();
         listRecommend = (ArrayList<ItemRecommend>) recommendDAO.getALL();
         if (listRecommend.size() == 0) {
-            // Toast.makeText(getContext(), "Bấm vào TextView User để thêm item recommend.", Toast.LENGTH_SHORT).show();
+            SharedPreferences pref1 = getContext().getSharedPreferences("USER_FILE", MODE_PRIVATE);
+            String email = pref1.getString("EMAIL", "");
+            int idUser = usersDAO.getIDUser(email);
+
+            item.idUser = idUser;
+            item.img_resource = "content://media/external_primary/images/media/1000002433";
+            item.title = "Pizza 1";
+            item.price = 15.7;
+            item.favourite = 0;
+            item.location = mLocation;
+
+            recommendDAO.insert(item);
+            listRecommend = (ArrayList<ItemRecommend>) recommendDAO.getALL();
         }
         recommendAdapterNew = new RecommendAdapterNew(getContext(), listRecommend);
         recyclerViewRecommend.setAdapter(recommendAdapterNew);
@@ -320,6 +355,42 @@ public class HomeFragmentNew extends Fragment {
 
         ConcatAdapter concatAdapter = new ConcatAdapter(recommendAdapterNew, addRecommendedItemAdapter);
         recyclerViewRecommend.setAdapter(concatAdapter);
+    }
+    private void askPermission() {
+        ActivityCompat.requestPermissions(getActivity(), new String[]
+                {Manifest.permission.ACCESS_FINE_LOCATION}, REQUEST_CODE);
+    }
+    private void getLastLocation() {
+        if (ContextCompat.checkSelfPermission(getContext(), Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
+
+            fusedLocationProviderClient.getLastLocation()
+                    .addOnSuccessListener(new OnSuccessListener<Location>() {
+                        @Override
+                        public void onSuccess(Location location) {
+                            if (location != null) {
+                                Geocoder geocoder = new Geocoder(getContext(), Locale.getDefault());
+                                List<Address> addresses = null;
+                                try {
+                                    addresses = geocoder.getFromLocation(location.getLatitude(), location.getLongitude(), 1);
+//                                    edLocation.setText("" + addresses.get(0).getAddressLine(0));
+                                    mLocation = addresses.get(0).getAddressLine(0);
+
+                                } catch (IOException e) {
+                                    e.printStackTrace();
+                                }
+
+
+                            }
+
+                        }
+                    });
+
+
+        } else {
+
+            askPermission();
+
+        }
     }
 
 

@@ -18,6 +18,9 @@ import android.net.ConnectivityManager;
 import android.os.Build;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
+import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
@@ -43,10 +46,10 @@ import java.util.List;
 import java.util.Locale;
 
 public class LoginActivity extends AppCompatActivity {
-    EditText edEmail, edPass;
+    EditText edPass;
     TextView tvTitleApp;
     Button btnLogin;
-//    ImageView imgShowHidePwd, imgDropDownAcc;
+    //    ImageView imgShowHidePwd, imgDropDownAcc;
     private CheckBox chbRemember;
     private ProgressDialog progressDialog;
     static UsersDAO usersDAO;
@@ -60,7 +63,8 @@ public class LoginActivity extends AppCompatActivity {
     private final static int REQUEST_CODE = 100;
     String mLocation = "";
 
-
+    ArrayAdapter<String> adapterItems;
+    AutoCompleteTextView autoCompleteTextViewEmail;
 
 
     @Override
@@ -69,16 +73,31 @@ public class LoginActivity extends AppCompatActivity {
         setContentView(R.layout.activity_login);
 
         init();
-
-
-
         usersDAO = new UsersDAO(getApplicationContext());
+        list = (ArrayList<UsersModule>) usersDAO.getALL();
 
+
+
+        String[] listUser = new String[list.size()];
+
+        for (int i = 0; i < list.size(); i++) {
+            String temp = list.get(i).email;
+            listUser[i] = temp;
+        }
 
         SharedPreferences pref = getSharedPreferences("USER_FILE", MODE_PRIVATE);
-        edEmail.setText(pref.getString("EMAIL", ""));
+        autoCompleteTextViewEmail.setText(pref.getString("EMAIL", ""));
         edPass.setText(pref.getString("PASSWORD", ""));
         chbRemember.setChecked(pref.getBoolean("REMEMBER", false));
+        adapterItems = new ArrayAdapter<String>(this, R.layout.list_item_acc, listUser);
+        autoCompleteTextViewEmail.setAdapter(adapterItems);
+        autoCompleteTextViewEmail.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                String pass = usersDAO.autoFillPassWord(listUser[position]);
+                edPass.setText(pass);
+            }
+        });
 //        imgShowHidePwd.setOnClickListener(new View.OnClickListener() {
 //            @Override
 //            public void onClick(View view) {
@@ -101,7 +120,7 @@ public class LoginActivity extends AppCompatActivity {
                 progressDialog.show();
 
                 list = (ArrayList<UsersModule>) usersDAO.getALL();
-                String email = edEmail.getText().toString().trim();
+                String email = autoCompleteTextViewEmail.getText().toString().trim();
                 String pass = edPass.getText().toString().trim();
                 int begin_index = email.indexOf("@");
                 int end_index = email.indexOf(".");
@@ -129,8 +148,7 @@ public class LoginActivity extends AppCompatActivity {
                                             Intent intent = new Intent(LoginActivity.this, AdminActivity.class);
                                             startActivity(intent);
 
-                                        }
-                                        else {
+                                        } else {
                                             progressDialog.dismiss();
                                             rememberUser(email, pass, chbRemember.isChecked());
                                             item = new UsersModule();
@@ -151,8 +169,7 @@ public class LoginActivity extends AppCompatActivity {
                                                 Intent intent = new Intent(LoginActivity.this, MainActivity.class);
                                                 startActivity(intent);
                                                 finishAffinity();
-                                            }
-                                            else {
+                                            } else {
                                                 if (usersDAO.insert(item) > 0) {
                                                     // thêm lần đầu
 //                                                    Toast.makeText(getApplicationContext(), "Success.", Toast.LENGTH_SHORT).show();
@@ -166,8 +183,7 @@ public class LoginActivity extends AppCompatActivity {
 
 
                                         }
-                                    }
-                                    else {
+                                    } else {
                                         // If sign in fails, display a message to the user.
                                         progressDialog.dismiss();
                                         Toast.makeText(LoginActivity.this, "Tài khoản hoặc mật khẩu không đúng.",
@@ -184,13 +200,13 @@ public class LoginActivity extends AppCompatActivity {
         tvTitleApp.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(usersDAO.checkLogin(edEmail.getText().toString().trim(), edPass.getText().toString().trim())>0  ){
+                if (usersDAO.checkLogin(autoCompleteTextViewEmail.getText().toString().trim(), edPass.getText().toString().trim()) > 0) {
                     Toast.makeText(LoginActivity.this, "Đăng nhập thành công", Toast.LENGTH_SHORT).show();
-                    rememberUser(edEmail.getText().toString().trim(), edPass.getText().toString().trim() ,chbRemember.isChecked());
+                    rememberUser(autoCompleteTextViewEmail.getText().toString().trim(), edPass.getText().toString().trim(), chbRemember.isChecked());
                     Intent intent = new Intent(getApplicationContext(), MainActivity.class);
                     startActivity(intent);
                     finish();
-                }else {
+                } else {
                     Toast.makeText(LoginActivity.this, "Tên đăng nhập và mật khẩu không đúng", Toast.LENGTH_SHORT).show();
                 }
             }
@@ -201,7 +217,7 @@ public class LoginActivity extends AppCompatActivity {
     public void init() {
         chbRemember = findViewById(R.id.checkBoxRemember);
         tvTitleApp = findViewById(R.id.tvTitleApp);
-        edEmail = findViewById(R.id.edEmail);
+        autoCompleteTextViewEmail = findViewById(R.id.edEmail);
         edPass = findViewById(R.id.edPass);
         btnLogin = findViewById(R.id.btnSignIn);
 //        imgShowHidePwd = findViewById(R.id.img_show_hide_pwd);
@@ -229,6 +245,7 @@ public class LoginActivity extends AppCompatActivity {
         // lưu lại
         editor.commit();
     }
+
     // phân quyền
     public boolean phanQuyen() {
         if (Build.VERSION.SDK_INT >= 23) {
@@ -249,6 +266,7 @@ public class LoginActivity extends AppCompatActivity {
             return true;
         }
     }
+
     @Override
     protected void onStart() {
         IntentFilter intentFilter = new IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION);
@@ -261,6 +279,7 @@ public class LoginActivity extends AppCompatActivity {
         unregisterReceiver(networkChangeListener);
         super.onStop();
     }
+
     private void getLastLocation() {
         if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
 
@@ -312,8 +331,6 @@ public class LoginActivity extends AppCompatActivity {
 
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
     }
-
-
 
 
 //    @Override

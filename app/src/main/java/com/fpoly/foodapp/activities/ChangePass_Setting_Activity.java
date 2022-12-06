@@ -3,7 +3,9 @@ package com.fpoly.foodapp.activities;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.SharedPreferences;
+import android.net.ConnectivityManager;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -12,6 +14,7 @@ import android.widget.Toast;
 
 import com.fpoly.foodapp.DAO.UsersDAO;
 import com.fpoly.foodapp.R;
+import com.fpoly.foodapp.Utility.NetworkChangeListener;
 import com.fpoly.foodapp.modules.UsersModule;
 
 public class ChangePass_Setting_Activity extends AppCompatActivity {
@@ -19,6 +22,8 @@ public class ChangePass_Setting_Activity extends AppCompatActivity {
     private Button btnChangePass;
     static UsersDAO usersDAO;
     UsersModule item;
+
+    NetworkChangeListener networkChangeListener = new NetworkChangeListener();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -83,5 +88,17 @@ public class ChangePass_Setting_Activity extends AppCompatActivity {
             check = 1;
         }
         return check;
+    }
+    @Override
+    protected void onStart() {
+        IntentFilter intentFilter = new IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION);
+        registerReceiver(networkChangeListener, intentFilter);
+        super.onStart();
+    }
+
+    @Override
+    protected void onStop() {
+        unregisterReceiver(networkChangeListener);
+        super.onStop();
     }
 }

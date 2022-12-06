@@ -6,7 +6,9 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.annotation.SuppressLint;
 import android.app.ProgressDialog;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.SharedPreferences;
+import android.net.ConnectivityManager;
 import android.os.Bundle;
 import android.text.method.HideReturnsTransformationMethod;
 import android.text.method.PasswordTransformationMethod;
@@ -19,6 +21,7 @@ import android.widget.Toast;
 import com.fpoly.foodapp.Admin.AdminActivity;
 import com.fpoly.foodapp.DAO.UsersDAO;
 import com.fpoly.foodapp.R;
+import com.fpoly.foodapp.Utility.NetworkChangeListener;
 import com.fpoly.foodapp.modules.UsersModule;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -44,6 +47,8 @@ public class RegisterActivity extends AppCompatActivity {
     SharedPreferences sharedPreferences;
     SharedPreferences.Editor editor;
     public static final String COOUNT_KEY = "count";
+
+    NetworkChangeListener networkChangeListener = new NetworkChangeListener();
 
 
     @SuppressLint("MissingInflatedId")
@@ -196,7 +201,15 @@ public class RegisterActivity extends AppCompatActivity {
     }
 
     @Override
+    protected void onStop() {
+        unregisterReceiver(networkChangeListener);
+        super.onStop();
+    }
+
+    @Override
     protected void onStart() {
+        IntentFilter intentFilter = new IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION);
+        registerReceiver(networkChangeListener, intentFilter);
         sharedPreferences = getSharedPreferences(SHARED_PREFERENCES_NAME, MODE_PRIVATE);
         count = sharedPreferences.getInt(COOUNT_KEY, 0);
         super.onStart();

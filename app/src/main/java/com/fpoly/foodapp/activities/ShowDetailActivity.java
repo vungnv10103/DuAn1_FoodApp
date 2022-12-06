@@ -4,8 +4,10 @@ import androidx.appcompat.app.AppCompatActivity;
 
 
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
+import android.net.ConnectivityManager;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
@@ -17,6 +19,7 @@ import android.widget.Toast;
 import com.fpoly.foodapp.DAO.UsersDAO;
 import com.fpoly.foodapp.DAO.CartItemDAO;
 import com.fpoly.foodapp.R;
+import com.fpoly.foodapp.Utility.NetworkChangeListener;
 import com.fpoly.foodapp.modules.CartItemModule;
 
 import java.io.IOException;
@@ -29,6 +32,8 @@ public class ShowDetailActivity extends AppCompatActivity {
     ImageView imgPlus, imgMinus;
     TextView tvDescription;
     TextView tvTotalPrices, tvAddToCart;
+
+    NetworkChangeListener networkChangeListener = new NetworkChangeListener();
 
     int quantity = 1;
     static CartItemDAO CartItemDAO;
@@ -150,5 +155,17 @@ public class ShowDetailActivity extends AppCompatActivity {
         super.onBackPressed();
         startActivity(new Intent(this, MainActivity.class));
         finishAffinity();
+    }
+    @Override
+    protected void onStart() {
+        IntentFilter intentFilter = new IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION);
+        registerReceiver(networkChangeListener, intentFilter);
+        super.onStart();
+    }
+
+    @Override
+    protected void onStop() {
+        unregisterReceiver(networkChangeListener);
+        super.onStop();
     }
 }

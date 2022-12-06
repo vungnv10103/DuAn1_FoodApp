@@ -74,6 +74,11 @@ public class UsersDAO {
         List<UsersModule> list = getData(sql, email);
         return list.get(0).address;
     }
+    public String autoFillPassWord(String email) {
+        String sql = "SELECT * FROM User WHERE email=?";
+        List<UsersModule> list = getData(sql, email);
+        return list.get(0).pass;
+    }
 
     public String getUriImg(String email) {
         String sql = "SELECT * FROM User WHERE email=?";
