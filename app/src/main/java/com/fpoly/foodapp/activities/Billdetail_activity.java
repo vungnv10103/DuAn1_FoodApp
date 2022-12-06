@@ -7,13 +7,11 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import android.annotation.SuppressLint;
 import android.os.Bundle;
-import android.view.View;
 import android.widget.Button;
 
 import com.fpoly.foodapp.R;
 import com.fpoly.foodapp.adapters.Billdetails_adapter;
 
-import com.fpoly.foodapp.modules.BilldetailModule;
 import com.fpoly.foodapp.modules.billdetailmodel;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;

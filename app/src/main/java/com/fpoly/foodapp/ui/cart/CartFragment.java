@@ -52,7 +52,7 @@ public class CartFragment extends Fragment {
     int temp2 = 0;
     public   String date;
     private String chuoi = "";
-    public ArrayList<billdetailmodel> moduleArrayList;
+    public ArrayList<billdetailmodel> moduleArrayList = new ArrayList<>();
 
 
     TextView tvToTal, tvDelivery, tvTax, tvCouponCost, tvCoupon;
@@ -101,8 +101,6 @@ public class CartFragment extends Fragment {
         Calendar calendar = Calendar.getInstance();
         SimpleDateFormat format = new SimpleDateFormat("dd-MMM-yyyy hh:mm:ss ");
         date = format.format(calendar.getTime());
-
-        moduleArrayList = new ArrayList<>();
         SharedPreferences pref = getContext().getSharedPreferences("VOUCHER", MODE_PRIVATE);
         int discount = pref.getInt("DISCOUNT", 0);
         tvCouponCost.setOnClickListener(new View.OnClickListener() {
@@ -237,12 +235,14 @@ public class CartFragment extends Fragment {
                 @Override
                 public void onClick(View v) {
                     Random random = new Random();
-                    int id_randum =-1*random.nextInt();
+                    int id_randum =random.nextInt();
+                    if(id_randum<0){
+                        id_randum = -1*id_randum;
+                    }
                     double tongtiensanpham = total();
                     double taxi = tongtiensanpham * 0.1;
                     double delivery = tongtiensanpham*0.05;
                     double total = tongtiensanpham + tongtiensanpham * 0.1 + tongtiensanpham * 0.05;
-
                     FirebaseDatabase database = FirebaseDatabase.getInstance();
                     DatabaseReference reference = database.getReference("objec_bill");
                     moduleArrayList.add(new billdetailmodel(id_randum , chuoi , "chua  thanh toan" ,date  , tongtiensanpham ,taxi , delivery ,total ));
@@ -252,7 +252,6 @@ public class CartFragment extends Fragment {
                             Toast.makeText(getContext(), "push thanh cong", Toast.LENGTH_SHORT).show();
                         }
                     });
-
                 }
             });
         }

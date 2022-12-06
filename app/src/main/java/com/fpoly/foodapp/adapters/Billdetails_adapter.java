@@ -4,25 +4,23 @@ import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.constraintlayout.widget.ConstraintLayout;
-import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.fpoly.foodapp.DAO.UsersDAO;
-
 import com.fpoly.foodapp.R;
-import com.fpoly.foodapp.modules.BilldetailModule;
 import com.fpoly.foodapp.modules.billdetailmodel;
 
 import com.fpoly.foodapp.ui.cart.CartFragment;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 
 import java.util.ArrayList;
-import java.util.List;
 
 public class Billdetails_adapter extends RecyclerView.Adapter<Billdetails_adapter.ViewHolder> {
     private ArrayList<billdetailmodel> list ;
@@ -43,13 +41,11 @@ public class Billdetails_adapter extends RecyclerView.Adapter<Billdetails_adapte
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_bill_detail , parent , false);
-
         return new ViewHolder(view);
     }
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-
         holder.txtmadonhang.setText(""+list.get(position).getMadonhang());
         holder.txttrangthai.setText(list.get(position).getTrangthai());
         holder.ngaymua.setText(list.get(position).getNgaymua());
@@ -61,14 +57,16 @@ public class Billdetails_adapter extends RecyclerView.Adapter<Billdetails_adapte
         holder.btnthnahtoan.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                holder.txttrangthai.setText("da thanhtoan");
+//                FirebaseDatabase database = FirebaseDatabase.getInstance();
+//                DatabaseReference reference = database.getReference("objec_bill");
+//                reference.setValue("đã thanh toán", new DatabaseReference.CompletionListener() {
+//                    @Override
+//                    public void onComplete(@Nullable DatabaseError error, @NonNull DatabaseReference ref) {
+//                        Toast.makeText(context, "update thành công", Toast.LENGTH_SHORT).show();
+//                    }
+//                });
             }
         });
-
-
-
-
-
 
     }
 
