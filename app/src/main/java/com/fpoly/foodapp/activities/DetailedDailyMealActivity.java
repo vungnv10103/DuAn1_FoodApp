@@ -4,10 +4,13 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.content.IntentFilter;
+import android.net.ConnectivityManager;
 import android.os.Bundle;
 import android.widget.ImageView;
 
 import com.fpoly.foodapp.R;
+import com.fpoly.foodapp.Utility.NetworkChangeListener;
 import com.fpoly.foodapp.adapters.DetailerDailyAdapter;
 import com.fpoly.foodapp.modules.DetailerDailyModule;
 
@@ -19,6 +22,8 @@ public class DetailedDailyMealActivity extends AppCompatActivity {
     List<DetailerDailyModule> detailerDailyModuleList;
     DetailerDailyAdapter dailyAdapter;
     ImageView imageView;
+
+    NetworkChangeListener networkChangeListener = new NetworkChangeListener();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -81,5 +86,17 @@ public class DetailedDailyMealActivity extends AppCompatActivity {
             detailerDailyModuleList.add(new DetailerDailyModule(R.drawable.cf3, "Coffee 5", "description", "4.7", "30", "6:00 to 21:00"));
             dailyAdapter.notifyDataSetChanged();
         }
+    }
+    @Override
+    protected void onStart() {
+        IntentFilter intentFilter = new IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION);
+        registerReceiver(networkChangeListener, intentFilter);
+        super.onStart();
+    }
+
+    @Override
+    protected void onStop() {
+        unregisterReceiver(networkChangeListener);
+        super.onStop();
     }
 }

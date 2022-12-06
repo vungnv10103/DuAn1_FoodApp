@@ -6,6 +6,7 @@ import androidx.core.app.ActivityCompat;
 import android.Manifest;
 import android.annotation.SuppressLint;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.pm.PackageManager;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
@@ -19,6 +20,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.fpoly.foodapp.R;
+import com.fpoly.foodapp.Utility.NetworkChangeListener;
 
 public class WelcomeActivity extends AppCompatActivity implements Runnable {
 
@@ -28,6 +30,8 @@ public class WelcomeActivity extends AppCompatActivity implements Runnable {
     ConnectivityManager connectivityManager; // sử dụng service
     NetworkInfo myWifi, my4G;
     WifiManager wifiManager;
+
+    NetworkChangeListener networkChangeListener = new NetworkChangeListener();
 
 
     @SuppressLint("MissingInflatedId")
@@ -93,10 +97,22 @@ public class WelcomeActivity extends AppCompatActivity implements Runnable {
     public void run() {
         Toast.makeText(this, "Vui lòng kết nối Internet để sử dụng ứng dụng !", Toast.LENGTH_LONG).show();
         try {
-            Thread.sleep(3000);
+            Thread.sleep(2000);
             finish();
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
+    }
+    @Override
+    protected void onStart() {
+        IntentFilter intentFilter = new IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION);
+        registerReceiver(networkChangeListener, intentFilter);
+        super.onStart();
+    }
+
+    @Override
+    protected void onStop() {
+        unregisterReceiver(networkChangeListener);
+        super.onStop();
     }
 }

@@ -2,10 +2,12 @@ package com.fpoly.foodapp.activities;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.net.ConnectivityManager;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
@@ -28,6 +30,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.fpoly.foodapp.DAO.CategoryDAO;
 import com.fpoly.foodapp.R;
+import com.fpoly.foodapp.Utility.NetworkChangeListener;
 import com.fpoly.foodapp.adapters.category.ItemCategory;
 
 import java.io.IOException;
@@ -44,6 +47,8 @@ public class AddItemCategoryActivity extends AppCompatActivity {
 
     static CategoryDAO categoryDAO;
     ItemCategory item;
+
+    NetworkChangeListener networkChangeListener = new NetworkChangeListener();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -247,4 +252,16 @@ public class AddItemCategoryActivity extends AppCompatActivity {
                             }
                         }
                     });
+    @Override
+    protected void onStart() {
+        IntentFilter intentFilter = new IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION);
+        registerReceiver(networkChangeListener, intentFilter);
+        super.onStart();
+    }
+
+    @Override
+    protected void onStop() {
+        unregisterReceiver(networkChangeListener);
+        super.onStop();
+    }
 }

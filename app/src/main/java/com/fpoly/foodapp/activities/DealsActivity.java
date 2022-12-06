@@ -1,5 +1,7 @@
 package com.fpoly.foodapp.activities;
 
+import android.content.IntentFilter;
+import android.net.ConnectivityManager;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -7,6 +9,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.viewpager2.widget.ViewPager2;
 
 import com.fpoly.foodapp.R;
+import com.fpoly.foodapp.Utility.NetworkChangeListener;
 import com.fpoly.foodapp.adapters.Account_ViewPageAdapter;
 import com.fpoly.foodapp.ui.account.Sub_Fragment.Fragment_NewDeals;
 import com.fpoly.foodapp.ui.account.Sub_Fragment.Fragment_YourDeals;
@@ -17,6 +20,8 @@ public class DealsActivity extends AppCompatActivity {
     TabLayout tabLayout;
     Account_ViewPageAdapter viewPageAdapter;
     ViewPager2 viewPager2;
+
+    NetworkChangeListener networkChangeListener = new NetworkChangeListener();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,5 +51,17 @@ public class DealsActivity extends AppCompatActivity {
                 }
             }
         }).attach();
+    }
+    @Override
+    protected void onStart() {
+        IntentFilter intentFilter = new IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION);
+        registerReceiver(networkChangeListener, intentFilter);
+        super.onStart();
+    }
+
+    @Override
+    protected void onStop() {
+        unregisterReceiver(networkChangeListener);
+        super.onStop();
     }
 }

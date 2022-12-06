@@ -3,7 +3,9 @@ package com.fpoly.foodapp.activities;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.SharedPreferences;
+import android.net.ConnectivityManager;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -13,6 +15,7 @@ import android.widget.Toast;
 
 import com.fpoly.foodapp.DAO.UsersDAO;
 import com.fpoly.foodapp.R;
+import com.fpoly.foodapp.Utility.NetworkChangeListener;
 import com.fpoly.foodapp.modules.UsersModule;
 import com.fpoly.foodapp.ui.account.AccountManagerFragment;
 
@@ -20,6 +23,8 @@ public class RateActivity extends AppCompatActivity {
     RatingBar ratingBar;
     Button btnSend;
     EditText txtRecommend;
+
+    NetworkChangeListener networkChangeListener = new NetworkChangeListener();
 
     static UsersDAO usersDAO;
     UsersModule item;
@@ -94,5 +99,17 @@ public class RateActivity extends AppCompatActivity {
         startActivity(new Intent(this, MainActivity.class));
         finishAffinity();
 
+    }
+    @Override
+    protected void onStart() {
+        IntentFilter intentFilter = new IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION);
+        registerReceiver(networkChangeListener, intentFilter);
+        super.onStart();
+    }
+
+    @Override
+    protected void onStop() {
+        unregisterReceiver(networkChangeListener);
+        super.onStop();
     }
 }

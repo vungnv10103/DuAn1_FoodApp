@@ -6,6 +6,8 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import android.annotation.SuppressLint;
 import android.content.Intent;
+import android.content.IntentFilter;
+import android.net.ConnectivityManager;
 import android.os.Bundle;
 import android.text.InputType;
 import android.view.View;
@@ -14,6 +16,7 @@ import android.widget.TextView;
 import com.fpoly.foodapp.Admin.AdminActivity;
 import com.fpoly.foodapp.DAO.UsersDAO;
 import com.fpoly.foodapp.R;
+import com.fpoly.foodapp.Utility.NetworkChangeListener;
 import com.fpoly.foodapp.adapters.ListUserAdapter;
 import com.fpoly.foodapp.modules.UsersModule;
 
@@ -24,6 +27,8 @@ public class ListUserActivity extends AppCompatActivity {
     ListUserAdapter listUserAdapter;
     ArrayList<UsersModule> listUser;
     static UsersDAO usersDAO;
+
+    NetworkChangeListener networkChangeListener = new NetworkChangeListener();
 
 
 
@@ -53,5 +58,17 @@ public class ListUserActivity extends AppCompatActivity {
         super.onBackPressed();
         startActivity(new Intent(getApplicationContext(), AdminActivity.class));
         finishAffinity();
+    }
+    @Override
+    protected void onStart() {
+        IntentFilter intentFilter = new IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION);
+        registerReceiver(networkChangeListener, intentFilter);
+        super.onStart();
+    }
+
+    @Override
+    protected void onStop() {
+        unregisterReceiver(networkChangeListener);
+        super.onStop();
     }
 }
