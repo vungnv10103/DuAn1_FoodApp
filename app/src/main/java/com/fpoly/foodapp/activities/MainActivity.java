@@ -48,7 +48,7 @@ public class MainActivity extends AppCompatActivity {
         navView = findViewById(R.id.nav_view);
         swipeRefreshLayout = findViewById(R.id.swipe_refresh_layout);
         swipeRefreshLayout.setEnabled(false);
-//        swipe();
+        swipe();
 
 
 //        getTitleItem();
@@ -118,6 +118,7 @@ public class MainActivity extends AppCompatActivity {
                     @Override
                     public void run() {
                         swipeRefreshLayout.setRefreshing(false);
+
                     }
                 }, 2000);
             }

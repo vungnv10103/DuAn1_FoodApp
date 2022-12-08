@@ -1,32 +1,27 @@
 package com.fpoly.foodapp.activities;
 
-import android.app.Activity;
+import androidx.activity.result.ActivityResult;
+import androidx.activity.result.ActivityResultCallback;
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
+import androidx.appcompat.app.AppCompatActivity;
+
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.net.ConnectivityManager;
 import android.net.Uri;
-import android.os.Build;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Toast;
-
-import androidx.activity.result.ActivityResult;
-import androidx.activity.result.ActivityResultCallback;
-import androidx.activity.result.ActivityResultLauncher;
-import androidx.activity.result.contract.ActivityResultContracts;
-import androidx.annotation.Nullable;
-import androidx.appcompat.app.AppCompatActivity;
 
 import com.fpoly.foodapp.DAO.CategoryDAO;
 import com.fpoly.foodapp.R;
@@ -35,7 +30,7 @@ import com.fpoly.foodapp.adapters.category.ItemCategory;
 
 import java.io.IOException;
 
-public class AddItemCategoryActivity extends AppCompatActivity {
+public class UpdateItemCategoryActivity extends AppCompatActivity {
     EditText edName;
     ImageView imgAvatar, imgDeleteNameCate;
     Button btnOpenGallery, btnSave, btnCancel;
@@ -50,8 +45,16 @@ public class AddItemCategoryActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_add_item_category);
+        setContentView(R.layout.activity_update_item_category);
+
         init();
+        SharedPreferences pref = getSharedPreferences("INFO_ITEM", MODE_PRIVATE);
+        int id = pref.getInt("ID",0);
+        String name = pref.getString("NAME", "");
+        String img = pref.getString("IMG", "");
+        edName.setText(name);
+        imgAvatar.setImageBitmap(convert(img));
+
 
         edName.addTextChangedListener(new TextWatcher() {
             @Override
@@ -94,30 +97,29 @@ public class AddItemCategoryActivity extends AppCompatActivity {
         btnSave.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String defaultAvatar = imgAvatar.getTag().toString();
 
                 if (validate() > 0) {
-                    if (defaultAvatar.equals("default_avatar")) {
-                        Toast.makeText(AddItemCategoryActivity.this, "Chưa chọn ảnh !", Toast.LENGTH_SHORT).show();
-                    } else {
-                        // code
-                        item = new ItemCategory();
-                        SharedPreferences pref = getSharedPreferences("URI_IMG", MODE_PRIVATE);
-                        String uri = pref.getString("img", "");
-                        item.setImg(uri);
-                        item.setName(edName.getText().toString().trim());
-                        if (categoryDAO.insert(item) > 0) {
-                            Toast.makeText(AddItemCategoryActivity.this, "Thêm thành công", Toast.LENGTH_SHORT).show();
-                        } else {
-                            Toast.makeText(AddItemCategoryActivity.this, "Thêm thất bại", Toast.LENGTH_SHORT).show();
-                        }
 
-                        startActivity(new Intent(AddItemCategoryActivity.this, MainActivity.class));
-                        finishAffinity();
+                    // code
+                    item = new ItemCategory();
+                    SharedPreferences pref = getSharedPreferences("URI_IMG", MODE_PRIVATE);
+                    String uri = pref.getString("img", "");
+                    SharedPreferences pref1 = v.getContext().getSharedPreferences("INFO_ITEM", MODE_PRIVATE);
+                    int id = pref1.getInt("ID", 0);
+
+                    item.setId(id);
+                    item.setImg(uri);
+                    item.setName(edName.getText().toString().trim());
+                    if (categoryDAO.updateAll(item) > 0) {
+                        Toast.makeText(UpdateItemCategoryActivity.this, "Cập nhật thành công", Toast.LENGTH_SHORT).show();
+                    } else {
+                        Toast.makeText(UpdateItemCategoryActivity.this, "Cập nhật thất bại", Toast.LENGTH_SHORT).show();
                     }
 
+                    startActivity(new Intent(UpdateItemCategoryActivity.this, MainActivity.class));
+                    finishAffinity();
                 } else {
-                    Toast.makeText(AddItemCategoryActivity.this, "Nhập tên loại sản phẩm !", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(UpdateItemCategoryActivity.this, "Nhập tên loại sản phẩm !", Toast.LENGTH_SHORT).show();
                 }
 
             }
@@ -125,25 +127,6 @@ public class AddItemCategoryActivity extends AppCompatActivity {
         btnOpenGallery.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-//                Intent intent = new Intent();
-//                intent.setType("image/*");
-//                intent.setAction(Intent.ACTION_GET_CONTENT);
-//                startActivityForResult(Intent.createChooser(intent, "Select Picture"), PICK_IMAGE);
-
-//                Intent intent;
-//
-//                if (Build.VERSION.SDK_INT < 19) {
-//                    intent = new Intent();
-//                    intent.setAction(Intent.ACTION_GET_CONTENT);
-//                    intent.setType("*/*");
-//                    startActivityForResult(intent, KITKAT_VALUE);
-//                } else {
-//                    intent = new Intent(Intent.ACTION_OPEN_DOCUMENT);
-//                    intent.addCategory(Intent.CATEGORY_OPENABLE);
-//                    intent.setType("*/*");
-//                    startActivityForResult(intent, KITKAT_VALUE);
-//                }
-
                 Intent getIntent = new Intent(Intent.ACTION_GET_CONTENT);
                 getIntent.setType("image/*");
 
@@ -161,40 +144,15 @@ public class AddItemCategoryActivity extends AppCompatActivity {
     }
 
     public void init() {
-        edName = findViewById(R.id.edNameItemCategory);
-        imgAvatar = findViewById(R.id.imgAvatarItemCate);
-        btnOpenGallery = findViewById(R.id.btnOpenCamera);
-        btnSave = findViewById(R.id.btnSaveItem);
-        btnCancel = findViewById(R.id.btnCancel);
+        edName = findViewById(R.id.edNameItemCategoryDetail);
+        imgAvatar = findViewById(R.id.imgAvatarItemCateDetail);
+        btnOpenGallery = findViewById(R.id.btnOpenCameraDetail);
+        btnSave = findViewById(R.id.btnSaveItemCateDetail);
+        btnCancel = findViewById(R.id.btnCancelCateDetail);
         categoryDAO = new CategoryDAO(getApplication());
-        imgDeleteNameCate = findViewById(R.id.imgDeleteNameCate);
+        imgDeleteNameCate = findViewById(R.id.imgDeleteNameCateDetail);
     }
 
-//    @Override
-//    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
-//        super.onActivityResult(requestCode, resultCode, data);
-//        if (requestCode == KITKAT_VALUE && resultCode == Activity.RESULT_OK) {
-//            if (data == null) {
-//                return;
-//            }
-//            Uri uri = data.getData();
-//            Bitmap bitmap = null;
-//            try {
-//                bitmap = MediaStore.Images.Media.getBitmap(getApplication().getContentResolver(), uri);
-//                imgAvatar.setImageBitmap(bitmap);
-//                imgAvatar.setTag("ok");
-//                SharedPreferences pref = getSharedPreferences("URI_IMG", MODE_PRIVATE);
-//                SharedPreferences.Editor editor = pref.edit();
-//                editor.putString("img", "" + bitmap);
-//
-//                // lưu lại
-//                editor.commit();
-//            } catch (IOException e) {
-//                e.printStackTrace();
-//            }
-//
-//        }
-//    }
 
     public int validate() {
         int check = -1;
@@ -249,6 +207,16 @@ public class AddItemCategoryActivity extends AppCompatActivity {
                             }
                         }
                     });
+    public Bitmap convert(String path) {
+        Bitmap bitmap = null;
+        try {
+            bitmap = MediaStore.Images.Media.getBitmap(getContentResolver(), Uri.parse(path));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return bitmap;
+    }
+
     @Override
     protected void onStart() {
         IntentFilter intentFilter = new IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION);

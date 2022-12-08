@@ -9,7 +9,7 @@
     android:layout_height="match_parent">
 
     <EditText
-        android:id="@+id/edNameItemCategory"
+        android:id="@+id/edNameItemCategoryDetail"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="184dp"
@@ -24,64 +24,63 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <ImageView
-        android:id="@+id/imgDeleteNameCate"
+        android:id="@+id/imgDeleteNameCateDetail"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:visibility="invisible"
         android:src="@drawable/ic_baseline_close_24"
         android:layout_marginBottom="15dp"
-        app:layout_constraintBottom_toBottomOf="@+id/edNameItemCategory"
-        app:layout_constraintEnd_toEndOf="@+id/edNameItemCategory" />
+        app:layout_constraintBottom_toBottomOf="@+id/edNameItemCategoryDetail"
+        app:layout_constraintEnd_toEndOf="@+id/edNameItemCategoryDetail" />
 
 
 
     <Button
-        android:id="@+id/btnOpenCamera"
+        android:id="@+id/btnOpenCameraDetail"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="56dp"
         android:layout_marginEnd="24dp"
         android:text="Open Gallery"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/edNameItemCategory" />
+        app:layout_constraintTop_toBottomOf="@+id/edNameItemCategoryDetail" />
 
     <de.hdodenhof.circleimageview.CircleImageView
-        android:id="@+id/imgAvatarItemCate"
+        android:id="@+id/imgAvatarItemCateDetail"
         android:layout_width="120dp"
         android:layout_height="120dp"
         android:layout_marginStart="10dp"
         android:layout_marginTop="20dp"
         android:src="@drawable/avatar_default"
-        android:tag="default_avatar"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/edNameItemCategory" />
+        app:layout_constraintTop_toBottomOf="@+id/edNameItemCategoryDetail" />
 
     <Button
-        android:id="@+id/btnSaveItem"
+        android:id="@+id/btnSaveItemCateDetail"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="32dp"
         android:layout_marginEnd="16dp"
         android:text="Save"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/btnOpenCamera" />
+        app:layout_constraintTop_toBottomOf="@+id/btnOpenCameraDetail" />
 
     <Button
-        android:id="@+id/btnCancel"
+        android:id="@+id/btnCancelCateDetail"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="32dp"
         android:layout_marginEnd="44dp"
         android:text="Cancel"
-        app:layout_constraintEnd_toStartOf="@+id/btnSaveItem"
-        app:layout_constraintTop_toBottomOf="@+id/btnOpenCamera" />
+        app:layout_constraintEnd_toStartOf="@+id/btnSaveItemCateDetail"
+        app:layout_constraintTop_toBottomOf="@+id/btnOpenCameraDetail" />
 
     <TextView
         android:id="@+id/textView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="28dp"
-        android:text="Thêm Loại Sản Phẩm"
+        android:text="Sửa Loại Sản Phẩm"
         android:textColor="#FFFFFF"
         android:textSize="30sp"
         app:layout_constraintEnd_toEndOf="parent"

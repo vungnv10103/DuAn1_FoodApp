@@ -55,9 +55,9 @@ public class Billdetails_adapter extends RecyclerView.Adapter<Billdetails_adapte
 
 
         holder.txttongtien.setText(String.format("%.2f", list.get(position).getTongtien()) + " $");
-        holder.txttiensanpham.setText("" + list.get(position).getTongtiensanpham());
-        holder.txtdeliverybill.setText("" + list.get(position).getDalivery());
-        holder.txttaxbill.setText("" + list.get(position).getTax());
+        holder.txttiensanpham.setText(String.format("%.2f", list.get(position).getTongtiensanpham()) + " $");
+        holder.txtdeliverybill.setText(String.format("%.2f", list.get(position).getDalivery()) + " $");
+        holder.txttaxbill.setText(String.format("%.2f", list.get(position).getTax()) + " $");
         holder.txttensanphamdamua.setText(list.get(position).getSoluongsanphan());
         holder.btnthnahtoan.setOnClickListener(new View.OnClickListener() {
             @Override

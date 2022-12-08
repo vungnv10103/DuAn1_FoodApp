@@ -9,79 +9,100 @@
     android:layout_height="match_parent">
 
     <EditText
-        android:id="@+id/edNameItemCategory"
+        android:id="@+id/edNameItemRecommendDetail"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="184dp"
         android:ems="10"
         android:hint="Tên Sản Phẩm"
         android:inputType="textPersonName"
         android:minHeight="48dp"
         android:textColorHint="#7E6D6D"
+        android:layout_marginTop="30dp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.497"
+        app:layout_constraintHorizontal_bias="0.502"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toBottomOf="@+id/textView" />
 
     <ImageView
-        android:id="@+id/imgDeleteNameCate"
+        android:id="@+id/imgDeleteNameRecommendDetail"
+        android:visibility="invisible"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:visibility="invisible"
         android:src="@drawable/ic_baseline_close_24"
-        android:layout_marginBottom="15dp"
-        app:layout_constraintBottom_toBottomOf="@+id/edNameItemCategory"
-        app:layout_constraintEnd_toEndOf="@+id/edNameItemCategory" />
+        android:layout_marginBottom="12dp"
+        app:layout_constraintBottom_toBottomOf="@+id/edNameItemRecommendDetail"
+        app:layout_constraintEnd_toEndOf="@+id/edNameItemRecommendDetail" />
 
+    <EditText
+        android:id="@+id/edCostItemRecommendDetail"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:ems="10"
+        android:hint="Giá($)"
+        android:inputType="numberDecimal"
+        android:minHeight="48dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.502"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/edNameItemRecommendDetail" />
 
+    <ImageView
+        android:id="@+id/imgDeleteCostDetail"
+        android:visibility="invisible"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/ic_baseline_close_24"
+        android:layout_marginBottom="12dp"
+        app:layout_constraintBottom_toBottomOf="@+id/edCostItemRecommendDetail"
+        app:layout_constraintEnd_toEndOf="@+id/edCostItemRecommendDetail" />
 
     <Button
-        android:id="@+id/btnOpenCamera"
+        android:id="@+id/btnOpenGalleryDetail"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="56dp"
         android:layout_marginEnd="24dp"
         android:text="Open Gallery"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/edNameItemCategory" />
+        app:layout_constraintTop_toBottomOf="@+id/edCostItemRecommendDetail" />
 
     <de.hdodenhof.circleimageview.CircleImageView
-        android:id="@+id/imgAvatarItemCate"
+        android:id="@+id/imgAvatarItemRecommendDetail"
         android:layout_width="120dp"
         android:layout_height="120dp"
         android:layout_marginStart="10dp"
         android:layout_marginTop="20dp"
         android:src="@drawable/avatar_default"
-        android:tag="default_avatar"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/edNameItemCategory" />
+        app:layout_constraintTop_toBottomOf="@+id/edCostItemRecommendDetail" />
 
     <Button
-        android:id="@+id/btnSaveItem"
+        android:id="@+id/btnSaveItemDetail"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="32dp"
         android:layout_marginEnd="16dp"
         android:text="Save"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/btnOpenCamera" />
+        app:layout_constraintTop_toBottomOf="@+id/btnOpenGalleryDetail" />
 
     <Button
-        android:id="@+id/btnCancel"
+        android:id="@+id/btnCancelDetail"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="32dp"
         android:layout_marginEnd="44dp"
         android:text="Cancel"
-        app:layout_constraintEnd_toStartOf="@+id/btnSaveItem"
-        app:layout_constraintTop_toBottomOf="@+id/btnOpenCamera" />
+        app:layout_constraintEnd_toStartOf="@+id/btnSaveItemDetail"
+        app:layout_constraintTop_toBottomOf="@+id/btnOpenGalleryDetail" />
 
     <TextView
         android:id="@+id/textView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="28dp"
-        android:text="Thêm Loại Sản Phẩm"
+        android:text="Sửa Thông Tin"
         android:textColor="#FFFFFF"
         android:textSize="30sp"
         app:layout_constraintEnd_toEndOf="parent"

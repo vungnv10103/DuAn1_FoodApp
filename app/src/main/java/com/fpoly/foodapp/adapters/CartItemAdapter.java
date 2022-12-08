@@ -17,6 +17,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.fpoly.foodapp.R;
 import com.fpoly.foodapp.modules.CartItemModule;
+import com.fpoly.foodapp.ui.cart.CartFragment;
 
 import java.util.List;
 
@@ -49,23 +50,14 @@ public class CartItemAdapter extends RecyclerView.Adapter<CartItemAdapter.ViewHo
             public void onClick(View v) {
                 boolean check = holder.cbCheck.isChecked();
                 if (check) {     // true
-
-                    totalPrice += list.get(position).cost;
+                    CartFragment.check = 1;
+                    notifyDataSetChanged();
+//                    totalPrice += list.get(position).cost;
 
                 } else {
-
+                    CartFragment.check = 0;
+                    notifyDataSetChanged();
                 }
-//                Toast.makeText(context, "" + totalPrice, Toast.LENGTH_SHORT).show();
-                SharedPreferences pref = v.getContext().getSharedPreferences("TOTAL_PRICE", MODE_PRIVATE);
-                SharedPreferences.Editor editor = pref.edit();
-                if (!check) {
-                    editor.clear();
-                } else {
-                    // lưu dữ liệu
-                    editor.putString("COST", String.format("%.2f", totalPrice));
-                }
-                // lưu lại
-                editor.commit();
 
             }
 

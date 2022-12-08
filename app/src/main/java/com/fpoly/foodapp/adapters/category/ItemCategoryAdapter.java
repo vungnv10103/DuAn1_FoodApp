@@ -26,6 +26,8 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.fpoly.foodapp.DAO.CategoryDAO;
 import com.fpoly.foodapp.R;
 import com.fpoly.foodapp.activities.MainActivity;
+import com.fpoly.foodapp.activities.UpdateItemCategoryActivity;
+import com.fpoly.foodapp.activities.UpdateItemRecommendActivity;
 import com.fpoly.foodapp.adapters.item_product.ItemProduct;
 import com.fpoly.foodapp.adapters.recommend.ItemRecommend;
 import com.fpoly.foodapp.adapters.recommend.RecommendAdapterNew;
@@ -141,6 +143,23 @@ public class ItemCategoryAdapter extends RecyclerView.Adapter<ItemCategoryAdapte
             img = itemView.findViewById(R.id.img_item_cate);
             imgDelete = itemView.findViewById(R.id.imgDeleteItemCategory);
             cardView = itemView.findViewById(R.id.card_view);
+
+            itemView.setOnLongClickListener(new View.OnLongClickListener() {
+                @Override
+                public boolean onLongClick(View v) {
+                    SharedPreferences pref = v.getContext().getSharedPreferences("INFO_ITEM", MODE_PRIVATE);
+                    SharedPreferences.Editor editor = pref.edit();
+                    // lưu dữ liệu
+                    editor.putInt("ID", list.get(getLayoutPosition()).getId());
+                    editor.putString("NAME", list.get(getLayoutPosition()).getName());
+                    editor.putString("IMG", list.get(getLayoutPosition()).getImg());
+
+                    // lưu lại
+                    editor.commit();
+                    v.getContext().startActivity(new Intent(context, UpdateItemCategoryActivity.class));
+                    return false;
+                }
+            });
 
         }
     }

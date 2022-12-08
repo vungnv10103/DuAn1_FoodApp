@@ -59,9 +59,7 @@ public class DealAdapter extends RecyclerView.Adapter<DealAdapter.ViewHolder> {
                 if (voucherDAO.delete(newOb.id) > 0) {
                     voucherList.remove(position);
                     notifyDataSetChanged();
-                    Toast.makeText(context, "Đã lưu !", Toast.LENGTH_SHORT).show();
-                    v.getContext().startActivity(new Intent(v.getContext(), MainActivity.class));
-
+                    Toast.makeText(context, "Đã dùng !", Toast.LENGTH_SHORT).show();
 
 
                 }
@@ -111,5 +109,6 @@ public class DealAdapter extends RecyclerView.Adapter<DealAdapter.ViewHolder> {
         // lưu lại
         editor.commit();
     }
+
 
 }
