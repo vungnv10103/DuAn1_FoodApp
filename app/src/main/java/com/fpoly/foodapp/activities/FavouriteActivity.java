@@ -53,14 +53,14 @@ public class FavouriteActivity extends AppCompatActivity {
         rcvFavourite = findViewById(R.id.rcvFavourite);
     }
 
-    @Override
-    public void onBackPressed() {
-        super.onBackPressed();
-
-            startActivity(new Intent(getApplicationContext(), AdminActivity.class));
-            finishAffinity();
-
-    }
+//    @Override
+//    public void onBackPressed() {
+//        super.onBackPressed();
+//
+//            startActivity(new Intent(getApplicationContext(), AdminActivity.class));
+//            finishAffinity();
+//
+//    }
     @Override
     protected void onStart() {
         IntentFilter intentFilter = new IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION);

@@ -9,6 +9,7 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 
 import com.fpoly.foodapp.adapters.category.ItemCategory;
+import com.fpoly.foodapp.adapters.recommend.ItemRecommend;
 import com.fpoly.foodapp.database.DbHelper;
 
 import java.util.ArrayList;
@@ -28,6 +29,13 @@ public class CategoryDAO {
         values.put("img", obj.getImg());
 
         return db.insert("Category", null, values);
+    }
+    public int updateAll(ItemCategory obj){
+        ContentValues values = new ContentValues();
+        values.put("name", obj.getName());
+        values.put("img", obj.getImg());
+
+        return db.update("Category", values, "id=?", new String[]{String.valueOf(obj.getId())} );
     }
     public String getUriImg(String name) {
         String sql = "SELECT * FROM Category WHERE name=?";

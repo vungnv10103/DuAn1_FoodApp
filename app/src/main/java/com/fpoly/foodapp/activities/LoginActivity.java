@@ -117,7 +117,6 @@ public class LoginActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 getLastLocation();
-                progressDialog.show();
 
                 list = (ArrayList<UsersModule>) usersDAO.getALL();
                 String email = autoCompleteTextViewEmail.getText().toString().trim();
@@ -131,10 +130,11 @@ public class LoginActivity extends AppCompatActivity {
                 } else {
                     FirebaseAuth auth = FirebaseAuth.getInstance();
 
-
+                    progressDialog.show();
+                    progressDialog.setTitle("Loadingggg");
                     auth.signInWithEmailAndPassword(email, pass)
                             .addOnCompleteListener(LoginActivity.this, new OnCompleteListener<AuthResult>() {
-                                @Override
+                                  @Override
                                 public void onComplete(@NonNull Task<AuthResult> task) {
                                     int temp = 0;
 
@@ -145,8 +145,35 @@ public class LoginActivity extends AppCompatActivity {
                                         if (email.equals("admin@gmail.com")) {
                                             rememberUser(email, pass, chbRemember.isChecked());
                                             progressDialog.dismiss();
-                                            Intent intent = new Intent(LoginActivity.this, AdminActivity.class);
-                                            startActivity(intent);
+                                            item = new UsersModule();
+                                            item.bitmap = "null";
+                                            item.name = "null";
+                                            item.email = email;
+                                            item.pass = pass;
+                                            item.address = mLocation;
+                                            item.phoneNumber = "null";
+                                            item.feedback = "null";
+                                            progressDialog.dismiss();
+                                            for (UsersModule item : list) {
+                                                if (email.toLowerCase(Locale.ROOT).equals(item.email.toLowerCase(Locale.ROOT))) {
+                                                    temp++;
+                                                }
+                                            }
+                                            if (temp > 0) {
+                                                Intent intent = new Intent(LoginActivity.this, AdminActivity.class);
+                                                startActivity(intent);
+                                                finishAffinity();
+                                            }else {
+                                                if (usersDAO.insert(item) > 0) {
+                                                    // thêm lần đầu
+//                                                    Toast.makeText(getApplicationContext(), "Success.", Toast.LENGTH_SHORT).show();
+                                                    Intent intent = new Intent(LoginActivity.this, AdminActivity.class);
+                                                    startActivity(intent);
+                                                    finishAffinity();
+                                                } else {
+                                                    Toast.makeText(getApplicationContext(), "Đăng nhập thất bại.", Toast.LENGTH_SHORT).show();
+                                                }
+                                            }
 
                                         } else {
                                             progressDialog.dismiss();
