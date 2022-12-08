@@ -57,14 +57,14 @@ public class Billdetails_adapter extends RecyclerView.Adapter<Billdetails_adapte
         holder.btnthnahtoan.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-//                FirebaseDatabase database = FirebaseDatabase.getInstance();
-//                DatabaseReference reference = database.getReference("objec_bill");
-//                reference.setValue("đã thanh toán", new DatabaseReference.CompletionListener() {
-//                    @Override
-//                    public void onComplete(@Nullable DatabaseError error, @NonNull DatabaseReference ref) {
-//                        Toast.makeText(context, "update thành công", Toast.LENGTH_SHORT).show();
-//                    }
-//                });
+                FirebaseDatabase database = FirebaseDatabase.getInstance();
+                DatabaseReference reference = database.getReference("objec_bill/trangthai");
+                reference.setValue("đã thanh toán", new DatabaseReference.CompletionListener() {
+                    @Override
+                    public void onComplete(@Nullable DatabaseError error, @NonNull DatabaseReference ref) {
+                        Toast.makeText(context, "update thành công", Toast.LENGTH_SHORT).show();
+                    }
+                });
             }
         });
 

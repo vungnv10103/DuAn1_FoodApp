@@ -18,14 +18,15 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.fpoly.foodapp.R;
 import com.fpoly.foodapp.modules.CartItemModule;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class CartItemAdapter extends RecyclerView.Adapter<CartItemAdapter.ViewHolder> {
-    private List<CartItemModule> list;
+    private ArrayList<CartItemModule> list;
     private Context context;
     Double totalPrice = 0.0;
 
-    public CartItemAdapter(List<CartItemModule> list, Context context) {
+    public CartItemAdapter(ArrayList<CartItemModule> list, Context context) {
         this.list = list;
         this.context = context;
     }

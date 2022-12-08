@@ -68,6 +68,13 @@ public class DbHelper extends SQLiteOpenHelper {
                 "idUser INTEGER REFERENCES User(id)," +
                 "cost REAL not null)";
         db.execSQL(createTableRecommended);
+        String creatrTableBilldetail = "create table billdetail(id integer primary key AUTOINCREMENT , " +
+                "madonhang integer , trangthai text , ngaymua date , tongtiensanpham double ," +
+                " tax doouble , delivery double , tongtien double)";
+        db.execSQL(creatrTableBilldetail);
+
+
+
 
 
 
@@ -87,6 +94,8 @@ public class DbHelper extends SQLiteOpenHelper {
         db.execSQL(dropTableProduct);
         String dropTableRecommend = "drop table if exists Recommend";
         db.execSQL(dropTableRecommend);
+        String dropTablebilldetail = "drop table if exists billdetail";
+        db.execSQL(dropTablebilldetail);
 
         onCreate(db);
 

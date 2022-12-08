@@ -29,6 +29,7 @@ import com.fpoly.foodapp.adapters.CartItemAdapter;
 import com.fpoly.foodapp.modules.CartItemModule;
 import com.fpoly.foodapp.modules.billdetailmodel;
 import com.google.android.material.snackbar.Snackbar;
+import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -52,15 +53,18 @@ public class CartFragment extends Fragment {
     int temp2 = 0;
     public   String date;
     private String chuoi = "";
-    public ArrayList<billdetailmodel> moduleArrayList = new ArrayList<>();
+
+
+    int tang = 0;
+    public ArrayList<billdetailmodel> moduleArrayList  = new ArrayList<>();
 
 
     TextView tvToTal, tvDelivery, tvTax, tvCouponCost, tvCoupon;
     TextView tvToTalPriceFinal;
     SharedPreferences sharedPreferences;
     SharedPreferences.Editor editor;
-    public static final String TOTAL_KEY = "doanhthu";
-    public static final String TOTAL_FINAL_KEY = "tongdoanhthu";
+    public static final String SHARED_PREFERENCES_NAME = "object";
+    public static final String COOUNT_KEY = "objectbill";
 
 
     public CartFragment() {
@@ -108,18 +112,10 @@ public class CartFragment extends Fragment {
             public void onClick(View v) {
                 temp2++;
                 startActivity(new Intent(getContext(), DealsActivity.class));
-
-
             }
         });
-
-
         checkItemSelected(1, discount);
-
-
         listData();
-
-
         return view;
     }
 
@@ -132,13 +128,11 @@ public class CartFragment extends Fragment {
             titleCart.setVisibility(View.INVISIBLE);
             Toast.makeText(getContext(), "Giỏ hàng trống. Quay lại mua hàng.", Toast.LENGTH_SHORT).show();
         }else {
-
-            CartItemAdapter = new CartItemAdapter(list, getContext());
+            CartItemAdapter= new CartItemAdapter(list, getContext());
             recyclerView.setAdapter(CartItemAdapter);
             recyclerView.setLayoutManager(new LinearLayoutManager(getContext(), RecyclerView.VERTICAL, false));
             recyclerView.setHasFixedSize(true);
             recyclerView.setNestedScrollingEnabled(false);
-            swipeToDelete();
             FirebaseDatabase database = FirebaseDatabase.getInstance();
             DatabaseReference reference = database.getReference("object_cart");
             reference.setValue(list, new DatabaseReference.CompletionListener() {
@@ -148,17 +142,7 @@ public class CartFragment extends Fragment {
                 }
             });
         }
-
-
-        CartItemAdapter = new CartItemAdapter(list, getContext());
-        recyclerView.setAdapter(CartItemAdapter);
-
-        recyclerView.setLayoutManager(new LinearLayoutManager(getContext(), RecyclerView.VERTICAL, false));
-        recyclerView.setHasFixedSize(true);
-        recyclerView.setNestedScrollingEnabled(false);
         swipeToDelete();
-
-
     }
 
 
@@ -190,7 +174,6 @@ public class CartFragment extends Fragment {
                 list.remove(viewHolder.getAdapterPosition());
                 CartItemAdapter.notifyItemRemoved(viewHolder.getAdapterPosition());
                 CartItemDAO.delete(delete.id);
-
                 Snackbar snackbar = Snackbar.make(recyclerView, "Deleted " + delete.name, Snackbar.LENGTH_LONG);
                 snackbar.setAction("Undo", new View.OnClickListener() {
                     @Override
@@ -201,7 +184,6 @@ public class CartFragment extends Fragment {
                         if (id == delete.id && temp == 0) {
                             CartItemDAO.insert(delete);
                             CartItemAdapter.notifyDataSetChanged();
-
                             temp++;
                         }
                     }
@@ -220,7 +202,7 @@ public class CartFragment extends Fragment {
 
 
         if (mCheck != 0 ) {
-//            Double total = Double.valueOf(pref.getString("COST", ""));
+
             CartItemDAO = new CartItemDAO(getContext());
             double totalPriceItem = total();
             tvToTal.setText(String.format("%.2f", totalPriceItem) + " $");
@@ -234,29 +216,10 @@ public class CartFragment extends Fragment {
             checkOut.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    Random random = new Random();
-                    int id_randum =random.nextInt();
-                    if(id_randum<0){
-                        id_randum = -1*id_randum;
-                    }
-                    double tongtiensanpham = total();
-                    double taxi = tongtiensanpham * 0.1;
-                    double delivery = tongtiensanpham*0.05;
-                    double total = tongtiensanpham + tongtiensanpham * 0.1 + tongtiensanpham * 0.05;
-                    FirebaseDatabase database = FirebaseDatabase.getInstance();
-                    DatabaseReference reference = database.getReference("objec_bill");
-                    moduleArrayList.add(new billdetailmodel(id_randum , chuoi , "chua  thanh toan" ,date  , tongtiensanpham ,taxi , delivery ,total ));
-                    reference.setValue(moduleArrayList, new DatabaseReference.CompletionListener() {
-                        @Override
-                        public void onComplete(@Nullable DatabaseError error, @NonNull DatabaseReference ref) {
-                            Toast.makeText(getContext(), "push thanh cong", Toast.LENGTH_SHORT).show();
-                        }
-                    });
+                    pushobjectbill();
                 }
             });
         }
-
-
         }
     public void getdata(){
         FirebaseDatabase database =FirebaseDatabase.getInstance();
@@ -277,15 +240,77 @@ public class CartFragment extends Fragment {
 
             }
         });
-    }    @Override
+    }
+    public void pushobjectbill(){
+
+        Random random = new Random();
+        int id_randum =random.nextInt();
+        if(id_randum<0){
+            id_randum = -1*id_randum;
+        }
+        double tongtiensanpham = total();
+        double taxi = tongtiensanpham * 0.1;
+        double delivery = tongtiensanpham*0.05;
+        double total = tongtiensanpham + tongtiensanpham * 0.1 + tongtiensanpham * 0.05;
+        FirebaseDatabase database = FirebaseDatabase.getInstance();
+        DatabaseReference reference = database.getReference("objec_bill");
+        moduleArrayList.add(new billdetailmodel(id_randum , chuoi , "chua  thanh toan" ,date  , tongtiensanpham ,taxi , delivery ,total ));
+        reference.setValue(moduleArrayList, new DatabaseReference.CompletionListener() {
+            @Override
+            public void onComplete(@Nullable DatabaseError error, @NonNull DatabaseReference ref) {
+                Toast.makeText(getContext(), "push thanh cong", Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+    public void getdatabilldetail(){
+        FirebaseDatabase  database = FirebaseDatabase.getInstance();
+        DatabaseReference reference = database.getReference("objec_bill");
+        reference.addChildEventListener(new ChildEventListener() {
+            @Override
+            public void onChildAdded(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
+
+            }
+
+            @Override
+            public void onChildChanged(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
+
+            }
+
+            @Override
+            public void onChildRemoved(@NonNull DataSnapshot snapshot) {
+
+            }
+
+            @Override
+            public void onChildMoved(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
+
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+    }
+    @Override
     public void onStart() {
         super.onStart();
-        getdata();
+
         for (int i = 0 ; i<list.size();i++){
             chuoi+=list.get(i).getName()+"  số lượng:"+list.get(i).getQuantities()+"-";
         }
     }
+    @Override
+    public void onStop() {
+        super.onStop();
+
+    }
+
+    @Override
+    public void onResume() {
 
 
 
+        super.onResume();
+    }
 }

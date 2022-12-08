@@ -26,7 +26,6 @@ public class Billdetail_activity extends AppCompatActivity {
 
     private RecyclerView RCL;
     ArrayList<billdetailmodel> moduleArrayList = new ArrayList<>();
-
     Billdetails_adapter adapter ;
     Button btnsukien;
 

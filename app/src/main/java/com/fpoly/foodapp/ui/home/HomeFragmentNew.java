@@ -160,19 +160,11 @@ public class HomeFragmentNew extends Fragment {
         } catch (IOException e) {
             e.printStackTrace();
         }
-
-
-
-
-
         listProductsAdapter = new ListProductsAdapter(getContext());
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext(), RecyclerView.VERTICAL, false);
         recyclerViewProduct.setLayoutManager(linearLayoutManager);
         listProductsAdapter.setData(getListProduct());
         recyclerViewProduct.setAdapter(listProductsAdapter);
-
-
-
         listSlideShow();
         listCategory();
         listRecommend();

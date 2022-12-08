@@ -19,6 +19,14 @@ public class billdetailmodel {
     public billdetailmodel() {
     }
 
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
     public billdetailmodel(int id, int madonhang, String soluongsanphan, String trangthai, String ngaymua, double tongtiensanpham, double tax, double dalivery, double tongtien) {
         this.id = id;
         this.madonhang = madonhang;
