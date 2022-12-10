@@ -1,6 +1,7 @@
 package com.fpoly.foodapp.activities;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.annotation.SuppressLint;
@@ -29,6 +30,11 @@ import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.UserInfo;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 public class RegisterActivity extends AppCompatActivity {
 
@@ -37,16 +43,13 @@ public class RegisterActivity extends AppCompatActivity {
     ImageView imgShowHidePwd, imgShowConfirmPass;
     public FirebaseAuth auth = FirebaseAuth.getInstance();
     public int dem = auth.getCurrentUser().getProviderData().size();
-    public int count = 12;
+     int count = 0;
     private ProgressDialog progressDialog;
     UsersModule item;
     static UsersDAO usersDAO;
 
     public static final String SHARED_PREFERENCES_NAME = "dem";
-
     SharedPreferences sharedPreferences;
-    SharedPreferences.Editor editor;
-    public static final String COOUNT_KEY = "count";
 
     NetworkChangeListener networkChangeListener = new NetworkChangeListener();
 
@@ -108,6 +111,7 @@ public class RegisterActivity extends AppCompatActivity {
         String confirm = edConfirmPass.getText().toString();
 
 
+
         if (validate() > 0) {
             if (confirm.equals(pass)) {
 
@@ -125,16 +129,16 @@ public class RegisterActivity extends AppCompatActivity {
                             item.phoneNumber = "null";
                             item.feedback = "null";
                             //đóng tất cả các activity trước main
-                            Toast.makeText(RegisterActivity.this, "Đăng kí thành  công !", Toast.LENGTH_SHORT).show();
+
                             if (usersDAO.insert(item) > 0) {
                                 Toast.makeText(getApplicationContext(), "Đăng nhập thành công !", Toast.LENGTH_SHORT).show();
                                 Intent intent1 = new Intent(RegisterActivity.this, MainActivity.class);
+                                Toast.makeText(RegisterActivity.this, "Đăng kí thành  công !", Toast.LENGTH_SHORT).show();
                                 startActivity(intent1);
                                 finishAffinity();
                             } else {
                                 Toast.makeText(getApplicationContext(), "Đăng nhập thất bại !", Toast.LENGTH_SHORT).show();
                             }
-
                             count++;
                             remember();
                             Toast.makeText(RegisterActivity.this, "có " + count + " tài khoản", Toast.LENGTH_LONG).show();
@@ -156,11 +160,7 @@ public class RegisterActivity extends AppCompatActivity {
 
     public void login(View view) {
 //        startActivity(new Intent(RegisterActivity.this , LoginActivity.class));
-
         Intent intent = new Intent(RegisterActivity.this, LoginActivity.class);
-        Bundle bundle = new Bundle();
-        bundle.putInt("count", count);
-        intent.putExtra("sotaikhoandangki", bundle);
         startActivity(intent);
 
     }
@@ -196,7 +196,6 @@ public class RegisterActivity extends AppCompatActivity {
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        remember();
 
     }
 
@@ -211,14 +210,31 @@ public class RegisterActivity extends AppCompatActivity {
         IntentFilter intentFilter = new IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION);
         registerReceiver(networkChangeListener, intentFilter);
         sharedPreferences = getSharedPreferences(SHARED_PREFERENCES_NAME, MODE_PRIVATE);
-        count = sharedPreferences.getInt(COOUNT_KEY, 0);
+        FirebaseDatabase database = FirebaseDatabase.getInstance();
+        DatabaseReference reference = database.getReference("soluongtaikhoan");
+        reference.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                int value = snapshot.getValue(Integer.class);
+               count = value;
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
         super.onStart();
     }
 
     public void remember() {
-        sharedPreferences = getSharedPreferences(SHARED_PREFERENCES_NAME, MODE_PRIVATE);
-        editor = sharedPreferences.edit();
-        editor.putInt(COOUNT_KEY, count);
-        editor.commit();
+        FirebaseDatabase database = FirebaseDatabase.getInstance();
+        DatabaseReference reference = database.getReference("soluongtaikhoan");
+        reference.setValue(count, new DatabaseReference.CompletionListener() {
+            @Override
+            public void onComplete(@Nullable DatabaseError error, @NonNull DatabaseReference ref) {
+                Toast.makeText(RegisterActivity.this, "push thanh cong", Toast.LENGTH_SHORT).show();
+            }
+        });
     }
 }
