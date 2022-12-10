@@ -1,5 +1,6 @@
 package com.fpoly.foodapp.Admin;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.constraintlayout.widget.ConstraintLayout;
 
@@ -12,6 +13,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.fpoly.foodapp.R;
+import com.fpoly.foodapp.activities.Bill_detail_paid;
 import com.fpoly.foodapp.activities.Billdetail_activity;
 import com.fpoly.foodapp.activities.FavouriteActivity;
 import com.fpoly.foodapp.activities.ListUserActivity;
@@ -22,6 +24,11 @@ import com.github.mikephil.charting.data.PieData;
 import com.github.mikephil.charting.data.PieDataSet;
 import com.github.mikephil.charting.data.PieEntry;
 import com.github.mikephil.charting.utils.ColorTemplate;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -34,32 +41,20 @@ public class AdminActivity extends AppCompatActivity {
     List<PieEntry> list = new ArrayList<>();
     Intent intent;
     Bundle bundle ;
+    int value;
     SharedPreferences sharedPreferences  , sharedPreferences1;
-    int x = 0;
+    int x;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_admin);
         pieChart1 = findViewById(R.id.piechartok);
-
         init();
-
-        sharedPreferences  = getSharedPreferences("dem" , MODE_PRIVATE);
-        x = sharedPreferences.getInt("count" , 0);
         intent = getIntent();
-//        bundle = intent.getBundleExtra("sotk");
-        txtsoluongtruycaptrang.setText(String.valueOf(x));
-//        x= bundle.getInt("soluong");
-        setValue();
-//       bundle = intent.getBundleExtra("tongdoanhthu");
-//       txtdoanhthucuahang.setText(String.valueOf(bundle.getDouble("doanhthu")));
-       sharedPreferences1 = getSharedPreferences("doanhthu" , MODE_PRIVATE);
-       txtdoanhthucuahang.setText(String.valueOf(sharedPreferences1.getFloat("tongdoanhthu" , 0)));
 
 
 
-        setupChart();
         imgLogout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -78,7 +73,7 @@ public class AdminActivity extends AppCompatActivity {
         constraintLayout1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(AdminActivity.this, "Đơn Hàng Đã Bán", Toast.LENGTH_SHORT).show();
+                startActivity(new Intent(AdminActivity.this , Bill_detail_paid.class));
             }
         });
         constraintLayout2.setOnClickListener(new View.OnClickListener() {
@@ -102,7 +97,6 @@ public class AdminActivity extends AppCompatActivity {
         pieDataSet.setColors(ColorTemplate.COLORFUL_COLORS);
         pieDataSet.setValueTextColor(getResources().getColor(R.color.white));
         pieData.setValueTextSize(15f);
-
         pieChart1.setCenterText("Thống Kê");
         pieChart1.getDescription().setEnabled(false);
         pieChart1.animateY(5000 , Easing.EaseInOutQuad);
@@ -110,10 +104,8 @@ public class AdminActivity extends AppCompatActivity {
         pieChart1.invalidate();
     }
     private void setValue() {
-        list.add(new PieEntry(x , "số lượt truy cập"));
-//        list.add(new PieEntry(160000, "doanh thu"));
+        list.add(new PieEntry(value, "số luong tai khoan"));
         list.add(new PieEntry(50, "đơn hàng đã bán"));
-
     }
     public void init(){
         txtsoluongtruycaptrang = findViewById(R.id.txtsoluongtruycap);
@@ -124,6 +116,26 @@ public class AdminActivity extends AppCompatActivity {
         constraintLayout2 = findViewById(R.id.constraintLayout9);
         constraintLayout3 = findViewById(R.id.constraintLayout10);
         imgLogout = findViewById(R.id.imgLogout);
+    }
+    @Override
+    protected void onStart() {
+        super.onStart();
+        FirebaseDatabase database = FirebaseDatabase.getInstance();
+        DatabaseReference reference = database.getReference("soluongtaikhoan");
+        reference.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                value = snapshot.getValue(Integer.class);
+                txtsoluongtruycaptrang.setText(String.valueOf(value));
+                setValue();
+                setupChart();
 
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
     }
 }

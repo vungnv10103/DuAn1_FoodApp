@@ -10,6 +10,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -21,6 +22,9 @@ import com.fpoly.foodapp.modules.BilldetailModule;
 import com.fpoly.foodapp.modules.billdetailmodel;
 
 import com.fpoly.foodapp.ui.cart.CartFragment;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -42,18 +46,14 @@ public class Billdetails_adapter extends RecyclerView.Adapter<Billdetails_adapte
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_bill_detail, parent, false);
-
         return new ViewHolder(view);
     }
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-
         holder.txtmadonhang.setText("" + list.get(position).getMadonhang());
         holder.txttrangthai.setText(list.get(position).getTrangthai());
         holder.ngaymua.setText(list.get(position).getNgaymua());
-
-
         holder.txttongtien.setText(String.format("%.2f", list.get(position).getTongtien()) + " $");
         holder.txttiensanpham.setText(String.format("%.2f", list.get(position).getTongtiensanpham()) + " $");
         holder.txtdeliverybill.setText(String.format("%.2f", list.get(position).getDalivery()) + " $");
@@ -64,6 +64,14 @@ public class Billdetails_adapter extends RecyclerView.Adapter<Billdetails_adapte
             public void onClick(View v) {
                 holder.txttrangthai.setText("Đã thanh toán");
                 holder.txttrangthai.setTextColor(Color.GREEN);
+                FirebaseDatabase database = FirebaseDatabase.getInstance();
+                DatabaseReference reference = database.getReference("object_bill_paid");
+                reference.setValue(list, new DatabaseReference.CompletionListener() {
+                    @Override
+                    public void onComplete(@Nullable DatabaseError error, @NonNull DatabaseReference ref) {
+                        Toast.makeText(context, "push thành công", Toast.LENGTH_SHORT).show();
+                    }
+                });
             }
         });
 
@@ -77,7 +85,6 @@ public class Billdetails_adapter extends RecyclerView.Adapter<Billdetails_adapte
 
     public class ViewHolder extends RecyclerView.ViewHolder {
         TextView txtmadonhang, ngaymua, txttongtien, txttiensanpham, txtdeliverybill, txttaxbill, txttensanphamdamua, txttrangthai;
-
         ConstraintLayout btnthnahtoan;
 
         public ViewHolder(@NonNull View itemView) {

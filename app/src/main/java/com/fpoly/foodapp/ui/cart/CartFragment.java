@@ -27,6 +27,7 @@ import com.fpoly.foodapp.DAO.UsersDAO;
 import com.fpoly.foodapp.DAO.CartItemDAO;
 import com.fpoly.foodapp.R;
 import com.fpoly.foodapp.activities.DealsActivity;
+import com.fpoly.foodapp.adapters.Billdetails_adapter;
 import com.fpoly.foodapp.adapters.CartItemAdapter;
 import com.fpoly.foodapp.modules.CartItemModule;
 import com.fpoly.foodapp.modules.OderHistoryModel;
@@ -55,6 +56,7 @@ public class CartFragment extends Fragment {
     int temp2 = 0;
     public String date;
     private String chuoi = "";
+    Billdetails_adapter adapter;
     public ArrayList<billdetailmodel> moduleArrayList;
     public static int check = 0;
 
@@ -229,8 +231,12 @@ public class CartFragment extends Fragment {
     }
 
     public void checkItemSelected(int mCheck, int discount) {
+
+        SharedPreferences pref = getContext().getSharedPreferences("TOTAL_PRICE", MODE_PRIVATE);
+=======
         SharedPreferences pref = getContext().getSharedPreferences("USER_FILE", MODE_PRIVATE);
         String email = pref.getString("EMAIL", "");
+
 
 
         if (mCheck != 0) {
@@ -251,11 +257,25 @@ public class CartFragment extends Fragment {
                     listOder = new ArrayList<>();
                     itemOder = new OderHistoryModel();
                     Random random = new Random();
-                    int id_randum = -1 * random.nextInt();
+                    int id_randum =random.nextInt();
+                    if(id_randum<0){
+                        id_randum*=-1;
+                    }
                     double tongtiensanpham = total();
                     double tax = tongtiensanpham * 0.1;
                     double delivery = tongtiensanpham * 0.05;
                     double total = tongtiensanpham + tongtiensanpham * 0.1 + tongtiensanpham * 0.05 - coupon;
+
+                    FirebaseDatabase database = FirebaseDatabase.getInstance();
+                    DatabaseReference reference = database.getReference("objec_bill");
+                    moduleArrayList.add(new billdetailmodel(id_randum, chuoi, "Chưa thanh toán", date, tongtiensanpham, taxi, delivery, total));
+                    reference.setValue(moduleArrayList, new DatabaseReference.CompletionListener() {
+                        @Override
+                        public void onComplete(@Nullable DatabaseError error, @NonNull DatabaseReference ref) {
+                            Toast.makeText(getContext(), "push thanh cong", Toast.LENGTH_SHORT).show();
+                        }
+                    });
+=======
 
                     itemOder.setMadonhang(id_randum);
                     itemOder.setSoluongsanphan(chuoi);
@@ -302,7 +322,6 @@ public class CartFragment extends Fragment {
                 }
                 CartItemAdapter.notifyDataSetChanged();
             }
-
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
 
@@ -317,6 +336,21 @@ public class CartFragment extends Fragment {
         for (int i = 0; i < list.size(); i++) {
             chuoi += "● " + list.get(i).name + "   --   SL: " + list.get(i).quantities + "\n";
         }
+        FirebaseDatabase database = FirebaseDatabase.getInstance();
+        DatabaseReference reference = database.getReference("objec_bill");
+        reference.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                for(DataSnapshot snapshot1 : snapshot.getChildren()){
+                    billdetailmodel billdetailmodel1 = snapshot1.getValue(billdetailmodel.class);
+                    moduleArrayList.add(billdetailmodel1);
+                }
+            }
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
     }
 
 
