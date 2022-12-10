@@ -5,15 +5,11 @@ import androidx.activity.result.ActivityResultCallback;
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 
 import android.Manifest;
-import android.annotation.SuppressLint;
-import android.app.Activity;
-import android.app.Dialog;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.SharedPreferences;
@@ -29,7 +25,6 @@ import android.os.Bundle;
 import android.provider.MediaStore;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -40,9 +35,7 @@ import com.fpoly.foodapp.DAO.RecommendDAO;
 import com.fpoly.foodapp.DAO.UsersDAO;
 import com.fpoly.foodapp.R;
 import com.fpoly.foodapp.Utility.NetworkChangeListener;
-import com.fpoly.foodapp.adapters.category.ItemCategory;
 import com.fpoly.foodapp.adapters.recommend.ItemRecommend;
-import com.fpoly.foodapp.modules.RecommendedModule;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -51,8 +44,8 @@ import java.io.IOException;
 import java.util.List;
 import java.util.Locale;
 
-public class AddItemRecommendActivity extends AppCompatActivity {
-    EditText edName, edCost;
+public class UpdateItemRecommendActivity extends AppCompatActivity {
+    EditText edNameDetail, edCostDetail;
     ImageView imgAvatar, imgDeleteNameRecommend, imgDeleteCost;
     Button btnOpenGallery, btnSave, btnCancel;
     public static final int PICK_IMAGE = 1;
@@ -69,15 +62,18 @@ public class AddItemRecommendActivity extends AppCompatActivity {
 
     NetworkChangeListener networkChangeListener = new NetworkChangeListener();
 
-
-    @SuppressLint("MissingInflatedId")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_add_item_recommend);
+        setContentView(R.layout.activity_update_item_recommend);
 
         init();
-        edName.addTextChangedListener(new TextWatcher() {
+        SharedPreferences pref = getSharedPreferences("INFO_ITEM", MODE_PRIVATE);
+        int id = pref.getInt("ID", 0);
+        edNameDetail.setText(pref.getString("NAME", ""));
+        edCostDetail.setText(pref.getString("PRICE", ""));
+        imgAvatar.setImageBitmap(convert(pref.getString("IMG", "")));
+        edNameDetail.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
 
@@ -90,12 +86,12 @@ public class AddItemRecommendActivity extends AppCompatActivity {
 
             @Override
             public void afterTextChanged(Editable s) {
-                if (!edName.getText().toString().trim().isEmpty()) {
+                if (!edNameDetail.getText().toString().trim().isEmpty()) {
                     imgDeleteNameRecommend.setVisibility(View.VISIBLE);
                     imgDeleteNameRecommend.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
-                            edName.setText("");
+                            edNameDetail.setText("");
                         }
                     });
                 } else {
@@ -104,7 +100,7 @@ public class AddItemRecommendActivity extends AppCompatActivity {
 
             }
         });
-        edCost.addTextChangedListener(new TextWatcher() {
+        edCostDetail.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
 
@@ -117,12 +113,12 @@ public class AddItemRecommendActivity extends AppCompatActivity {
 
             @Override
             public void afterTextChanged(Editable s) {
-                if (!edCost.getText().toString().trim().isEmpty()) {
+                if (!edCostDetail.getText().toString().trim().isEmpty()) {
                     imgDeleteCost.setVisibility(View.VISIBLE);
                     imgDeleteCost.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
-                            edCost.setText("");
+                            edCostDetail.setText("");
                         }
                     });
                 } else {
@@ -145,41 +141,37 @@ public class AddItemRecommendActivity extends AppCompatActivity {
         btnSave.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String defaultAvatar = imgAvatar.getTag().toString();
 
                 if (validate() > 0) {
-                    if (defaultAvatar.equals("default_avatar")) {
-                        Toast.makeText(AddItemRecommendActivity.this, "Chưa chọn ảnh !", Toast.LENGTH_SHORT).show();
+
+                    // code
+                    item = new ItemRecommend();
+                    SharedPreferences pref = getSharedPreferences("URI_IMG", MODE_PRIVATE);
+                    String uri = pref.getString("img", "");
+                    SharedPreferences pref1 = getSharedPreferences("USER_FILE", MODE_PRIVATE);
+                    String email = pref1.getString("EMAIL", "");
+                    int idUser = usersDAO.getIDUser(email);
+                    getLastLocation();
+
+                    item.id = id;
+                    item.idUser = idUser;
+                    item.img_resource = uri;
+                    item.title = edNameDetail.getText().toString().trim();
+                    item.price = Double.parseDouble(edCostDetail.getText().toString().trim());
+                    item.favourite = 0;
+                    item.location = mLocation;
+                    if (recommendDAO.updateAll(item) > 0) {
+                        Toast.makeText(UpdateItemRecommendActivity.this, "Cập nhật thành công !", Toast.LENGTH_SHORT).show();
                     } else {
-                        // code
-                        item = new ItemRecommend();
-                        SharedPreferences pref = getSharedPreferences("URI_IMG", MODE_PRIVATE);
-                        String uri = pref.getString("img", "");
-                        SharedPreferences pref1 = getSharedPreferences("USER_FILE", MODE_PRIVATE);
-                        String email = pref1.getString("EMAIL", "");
-                        int idUser = usersDAO.getIDUser(email);
-                        getLastLocation();
-
-                        item.idUser = idUser;
-                        item.img_resource = uri;
-                        item.title = edName.getText().toString().trim();
-                        item.price = Double.parseDouble(edCost.getText().toString().trim());
-                        item.favourite = 0;
-                        item.location = mLocation;
-                        if (recommendDAO.insert(item) > 0) {
-                            Toast.makeText(AddItemRecommendActivity.this, "Thêm thành công !", Toast.LENGTH_SHORT).show();
-                        } else {
-                            Toast.makeText(AddItemRecommendActivity.this, "Thêm thất bại !", Toast.LENGTH_SHORT).show();
-                        }
-                        startActivity(new Intent(AddItemRecommendActivity.this, MainActivity.class));
-                        finishAffinity();
+                        Toast.makeText(UpdateItemRecommendActivity.this, "Cập nhật thất bại !", Toast.LENGTH_SHORT).show();
                     }
-
+                    startActivity(new Intent(UpdateItemRecommendActivity.this, MainActivity.class));
+                    finishAffinity();
                 } else {
-                    Toast.makeText(AddItemRecommendActivity.this, "Nhập đủ thông tin !", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(UpdateItemRecommendActivity.this, "Nhập đủ thông tin !", Toast.LENGTH_SHORT).show();
                 }
-
             }
+
         });
         btnOpenGallery.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -199,49 +191,23 @@ public class AddItemRecommendActivity extends AppCompatActivity {
     }
 
     public void init() {
-        edName = findViewById(R.id.edNameItemRecommend);
-        edCost = findViewById(R.id.edCostItemRecommend);
-        imgAvatar = findViewById(R.id.imgAvatarItemRecommend);
-        btnOpenGallery = findViewById(R.id.btnOpenCamera);
-        btnSave = findViewById(R.id.btnSaveItem);
-        btnCancel = findViewById(R.id.btnCancel);
+        edNameDetail = findViewById(R.id.edNameItemRecommendDetail);
+        edCostDetail = findViewById(R.id.edCostItemRecommendDetail);
+        imgAvatar = findViewById(R.id.imgAvatarItemRecommendDetail);
+        btnOpenGallery = findViewById(R.id.btnOpenGalleryDetail);
+        btnSave = findViewById(R.id.btnSaveItemDetail);
+        btnCancel = findViewById(R.id.btnCancelDetail);
         recommendDAO = new RecommendDAO(getApplication());
-        imgDeleteNameRecommend = findViewById(R.id.imgDeleteNameRecommend);
-        imgDeleteCost = findViewById(R.id.imgDeleteCost);
+        imgDeleteNameRecommend = findViewById(R.id.imgDeleteNameRecommendDetail);
+        imgDeleteCost = findViewById(R.id.imgDeleteCostDetail);
         usersDAO = new UsersDAO(getApplication());
         fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(this);
     }
 
-    //    @Override
-//    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
-//        super.onActivityResult(requestCode, resultCode, data);
-//        if (requestCode == PICK_IMAGE && resultCode == Activity.RESULT_OK) {
-//            if (data == null) {
-//                //Display an error
-//                return;
-//            }
-//            Uri uri = data.getData();
-//            Bitmap bitmap = null;
-//            try {
-//                bitmap = MediaStore.Images.Media.getBitmap(getApplication().getContentResolver(), uri);
-//                imgAvatar.setImageBitmap(bitmap);
-//                imgAvatar.setTag("ok");
-//                SharedPreferences pref = getSharedPreferences("URI_IMG", MODE_PRIVATE);
-//                SharedPreferences.Editor editor = pref.edit();
-//                editor.putString("img", "" + bitmap);
-//
-//                // lưu lại
-//                editor.commit();
-//            } catch (IOException e) {
-//                e.printStackTrace();
-//            }
-//
-//        }
-//    }
     public int validate() {
         int check = -1;
-        String name = edName.getText().toString().trim();
-        String cost = edCost.getText().toString().trim();
+        String name = edNameDetail.getText().toString().trim();
+        String cost = edCostDetail.getText().toString().trim();
         if (name.isEmpty() || cost.isEmpty()) {
             check = -1;
         } else {
@@ -301,7 +267,7 @@ public class AddItemRecommendActivity extends AppCompatActivity {
                         @Override
                         public void onSuccess(Location location) {
                             if (location != null) {
-                                Geocoder geocoder = new Geocoder(AddItemRecommendActivity.this, Locale.getDefault());
+                                Geocoder geocoder = new Geocoder(UpdateItemRecommendActivity.this, Locale.getDefault());
                                 List<Address> addresses = null;
                                 try {
                                     addresses = geocoder.getFromLocation(location.getLatitude(), location.getLongitude(), 1);
@@ -326,8 +292,18 @@ public class AddItemRecommendActivity extends AppCompatActivity {
         }
     }
 
+    public Bitmap convert(String path) {
+        Bitmap bitmap = null;
+        try {
+            bitmap = MediaStore.Images.Media.getBitmap(getContentResolver(), Uri.parse(path));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return bitmap;
+    }
+
     private void askPermission() {
-        ActivityCompat.requestPermissions(AddItemRecommendActivity.this, new String[]
+        ActivityCompat.requestPermissions(UpdateItemRecommendActivity.this, new String[]
                 {Manifest.permission.ACCESS_FINE_LOCATION}, REQUEST_CODE);
     }
 
@@ -344,6 +320,7 @@ public class AddItemRecommendActivity extends AppCompatActivity {
 
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
     }
+
     @Override
     protected void onStart() {
         IntentFilter intentFilter = new IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION);

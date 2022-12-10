@@ -70,6 +70,19 @@ public class DbHelper extends SQLiteOpenHelper {
                 "cost REAL not null)";
         db.execSQL(createTableRecommended);
 
+        String createTableOder = "create table Oder(" +
+                "id INTEGER PRIMARY KEY AUTOINCREMENT," +
+                "code TEXT not null," +
+                "listProduct TEXT not null," +
+                "status TEXT not null," +
+                "time TEXT not null," +
+                "idUser INTEGER REFERENCES User(id)," +
+                "totalPrice REAL not null," +
+                "tax REAL not null," +
+                "delivery REAL not null," +
+                "totalOder REAL not null)";
+        db.execSQL(createTableOder);
+
 
 
     }
@@ -88,6 +101,8 @@ public class DbHelper extends SQLiteOpenHelper {
         db.execSQL(dropTableProduct);
         String dropTableRecommend = "drop table if exists Recommend";
         db.execSQL(dropTableRecommend);
+        String dropTableOder = "drop table if exists Oder";
+        db.execSQL(dropTableOder);
 
         onCreate(db);
 

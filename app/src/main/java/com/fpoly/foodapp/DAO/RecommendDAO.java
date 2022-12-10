@@ -38,6 +38,17 @@ public class RecommendDAO {
 
         return db.insert("Recommend", null, values);
     }
+    public int updateAll(ItemRecommend obj){
+        ContentValues values = new ContentValues();
+        values.put("img", obj.img_resource);
+        values.put("name", obj.title);
+        values.put("cost", obj.price);
+        values.put("idUser", obj.idUser);
+        values.put("favourite", obj.favourite);
+        values.put("location", obj.location);
+
+        return db.update("Recommend", values, "id=?", new String[]{String.valueOf(obj.id)} );
+    }
     public int updateFavourite(ItemRecommend obj){
         ContentValues values = new ContentValues();
         values.put("favourite", obj.favourite);

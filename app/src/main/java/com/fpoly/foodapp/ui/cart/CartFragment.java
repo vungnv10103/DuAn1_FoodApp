@@ -11,6 +11,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -21,6 +22,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.fpoly.foodapp.DAO.OderDAO;
 import com.fpoly.foodapp.DAO.UsersDAO;
 import com.fpoly.foodapp.DAO.CartItemDAO;
 import com.fpoly.foodapp.R;
@@ -28,6 +30,7 @@ import com.fpoly.foodapp.activities.DealsActivity;
 import com.fpoly.foodapp.adapters.Billdetails_adapter;
 import com.fpoly.foodapp.adapters.CartItemAdapter;
 import com.fpoly.foodapp.modules.CartItemModule;
+import com.fpoly.foodapp.modules.OderHistoryModel;
 import com.fpoly.foodapp.modules.billdetailmodel;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.database.DataSnapshot;
@@ -55,6 +58,11 @@ public class CartFragment extends Fragment {
     private String chuoi = "";
     Billdetails_adapter adapter;
     public ArrayList<billdetailmodel> moduleArrayList;
+    public static int check = 0;
+
+    static OderDAO oderDAO;
+    ArrayList<OderHistoryModel> listOder;
+    OderHistoryModel itemOder;
 
 
     TextView tvToTal, tvDelivery, tvTax, tvCouponCost, tvCoupon;
@@ -87,6 +95,9 @@ public class CartFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_cart, container, false);
+
+
+        oderDAO = new OderDAO(getContext());
         CartItemDAO = new CartItemDAO(getContext());
         usersDAO = new UsersDAO(getContext());
         titleCart = view.findViewById(R.id.title_cart);
@@ -105,23 +116,23 @@ public class CartFragment extends Fragment {
         date = format.format(calendar.getTime());
 
         moduleArrayList = new ArrayList<>();
-        SharedPreferences pref = getContext().getSharedPreferences("VOUCHER", MODE_PRIVATE);
-        int discount = pref.getInt("DISCOUNT", 0);
+        SharedPreferences pref1 = getContext().getSharedPreferences("VOUCHER", MODE_PRIVATE);
+        SharedPreferences.Editor editor = pref1.edit();
+        editor.clear();
+
         tvCouponCost.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 temp2++;
                 startActivity(new Intent(getContext(), DealsActivity.class));
+                getFragmentManager().beginTransaction().detach(CartFragment.this).attach(CartFragment.this).commit();
 
 
             }
         });
-
-
-        checkItemSelected(1, discount);
-
-
         listData();
+        int discount = pref1.getInt("DISCOUNT", 0);
+        checkItemSelected(check, discount);
 
 
         return view;
@@ -148,7 +159,7 @@ public class CartFragment extends Fragment {
             reference.setValue(list, new DatabaseReference.CompletionListener() {
                 @Override
                 public void onComplete(@Nullable DatabaseError error, @NonNull DatabaseReference ref) {
-                    Toast.makeText(getContext(), "Thàng công", Toast.LENGTH_SHORT).show();
+//                    Toast.makeText(getContext(), "Thàng công", Toast.LENGTH_SHORT).show();
                 }
             });
         }
@@ -220,7 +231,14 @@ public class CartFragment extends Fragment {
     }
 
     public void checkItemSelected(int mCheck, int discount) {
+
         SharedPreferences pref = getContext().getSharedPreferences("TOTAL_PRICE", MODE_PRIVATE);
+=======
+        SharedPreferences pref = getContext().getSharedPreferences("USER_FILE", MODE_PRIVATE);
+        String email = pref.getString("EMAIL", "");
+
+
+
         if (mCheck != 0) {
 //            Double total = Double.valueOf(pref.getString("COST", ""));
             CartItemDAO = new CartItemDAO(getContext());
@@ -236,15 +254,18 @@ public class CartFragment extends Fragment {
             checkOut.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
+                    listOder = new ArrayList<>();
+                    itemOder = new OderHistoryModel();
                     Random random = new Random();
                     int id_randum =random.nextInt();
                     if(id_randum<0){
                         id_randum*=-1;
                     }
                     double tongtiensanpham = total();
-                    double taxi = tongtiensanpham * 0.1;
+                    double tax = tongtiensanpham * 0.1;
                     double delivery = tongtiensanpham * 0.05;
                     double total = tongtiensanpham + tongtiensanpham * 0.1 + tongtiensanpham * 0.05 - coupon;
+
                     FirebaseDatabase database = FirebaseDatabase.getInstance();
                     DatabaseReference reference = database.getReference("objec_bill");
                     moduleArrayList.add(new billdetailmodel(id_randum, chuoi, "Chưa thanh toán", date, tongtiensanpham, taxi, delivery, total));
@@ -254,6 +275,33 @@ public class CartFragment extends Fragment {
                             Toast.makeText(getContext(), "push thanh cong", Toast.LENGTH_SHORT).show();
                         }
                     });
+=======
+
+                    itemOder.setMadonhang(id_randum);
+                    itemOder.setSoluongsanphan(chuoi);
+                    itemOder.setTrangthai("Chưa thanh toán");
+                    itemOder.setIdUser(usersDAO.getIDUser(email));
+                    itemOder.setNgaymua(date);
+                    itemOder.setTongtien(total);
+                    itemOder.setTongtiensanpham(tongtiensanpham);
+                    itemOder.setTax(tax);
+                    itemOder.setDalivery(delivery);
+                    if (oderDAO.insert(itemOder) > 0) {
+                        Toast.makeText(getContext(), "Lưu thành công", Toast.LENGTH_SHORT).show();
+                    }
+                    if (oderDAO.getALL().size() > 0) {
+                        FirebaseDatabase database = FirebaseDatabase.getInstance();
+                        DatabaseReference reference = database.getReference("objec_bill");
+                        listOder = (ArrayList<OderHistoryModel>) oderDAO.getALL();
+//                    moduleArrayList.add(new billdetailmodel(id_randum, chuoi, "Chưa thanh toán", date, tongtiensanpham, tax, delivery, total));
+                        reference.setValue(listOder, new DatabaseReference.CompletionListener() {
+                            @Override
+                            public void onComplete(@Nullable DatabaseError error, @NonNull DatabaseReference ref) {
+                                Toast.makeText(getContext(), "Đặt hàng thành công !", Toast.LENGTH_SHORT).show();
+                            }
+                        });
+                    }
+
 
                 }
             });
@@ -286,7 +334,7 @@ public class CartFragment extends Fragment {
         super.onStart();
 //        getdata();
         for (int i = 0; i < list.size(); i++) {
-            chuoi += "● " +list.get(i).name + "   --   SL: " + list.get(i).quantities + "\n";
+            chuoi += "● " + list.get(i).name + "   --   SL: " + list.get(i).quantities + "\n";
         }
         FirebaseDatabase database = FirebaseDatabase.getInstance();
         DatabaseReference reference = database.getReference("objec_bill");
