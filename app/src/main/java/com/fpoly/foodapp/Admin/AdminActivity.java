@@ -1,6 +1,7 @@
 package com.fpoly.foodapp.Admin;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.constraintlayout.widget.ConstraintLayout;
 
@@ -26,6 +27,7 @@ import com.github.mikephil.charting.data.PieData;
 import com.github.mikephil.charting.data.PieDataSet;
 import com.github.mikephil.charting.data.PieEntry;
 import com.github.mikephil.charting.utils.ColorTemplate;
+import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -41,13 +43,14 @@ public class AdminActivity extends AppCompatActivity {
     ImageView imgLogout;
     PieChart pieChart1 ;
     List<PieEntry> list = new ArrayList<>();
+    List<PieEntry> list2 = new ArrayList<>();
     Intent intent;
     Bundle bundle ;
     ArrayList<billdetail_paid_model> list1 = new ArrayList<>();
     Billdetail_paid_Adapter adapter = new Billdetail_paid_Adapter(list1 , this);
     int value;
     SharedPreferences sharedPreferences  , sharedPreferences1;
-    int x;
+ double doanhthu ;
     int i = 0 ;
 
     @Override
@@ -95,6 +98,27 @@ public class AdminActivity extends AppCompatActivity {
 
         init();
         intent = getIntent();
+        FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();
+        DatabaseReference databaseReference = firebaseDatabase.getReference("object_bill_paid");
+        databaseReference.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                for(DataSnapshot snapshot1 : snapshot.getChildren()){
+                    billdetail_paid_model model = snapshot1.getValue(billdetail_paid_model.class);
+                    list1.add(model);
+                }
+                for(int k = 0 ; k <=list1.size()-1;k++){
+                    doanhthu +=list1.get(k).getTongtien();
+                }
+                txtdoanhthucuahang.setText(String.valueOf(doanhthu));
+
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
 
 
 
@@ -125,6 +149,7 @@ public class AdminActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 startActivity(new Intent(AdminActivity.this , Billdetail_activity.class));
+                finishAffinity();
             }
         });
         constraintLayout3.setOnClickListener(new View.OnClickListener() {

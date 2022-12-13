@@ -54,7 +54,81 @@ public class Bill_detail_paid extends AppCompatActivity {
                     billdetail_paid_model billdetailmodel1 = snapshot1.getValue(billdetail_paid_model.class);
                     list.add(billdetailmodel1 );
                 }
-              adapter.notifyDataSetChanged();
+                adapter.notifyDataSetChanged();
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+
+
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        FirebaseDatabase database = FirebaseDatabase.getInstance();
+        DatabaseReference reference = database.getReference("object_bill_paid");
+        reference.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                if(list!=null){
+                    list.clear();
+                }
+                for(DataSnapshot snapshot1 :snapshot.getChildren()){
+                    billdetail_paid_model billdetailmodel1 = snapshot1.getValue(billdetail_paid_model.class);
+                    list.add(billdetailmodel1 );
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+
+
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        FirebaseDatabase database = FirebaseDatabase.getInstance();
+        DatabaseReference reference = database.getReference("object_bill_paid");
+        reference.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                if(list!=null){
+                    list.clear();
+                }
+                for(DataSnapshot snapshot1 :snapshot.getChildren()){
+                    billdetail_paid_model billdetailmodel1 = snapshot1.getValue(billdetail_paid_model.class);
+                    list.add(billdetailmodel1 );
+                }
+
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        FirebaseDatabase database = FirebaseDatabase.getInstance();
+        DatabaseReference reference = database.getReference("object_bill_paid");
+        reference.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                for(DataSnapshot snapshot1 :snapshot.getChildren()){
+                    billdetail_paid_model billdetailmodel1 = snapshot1.getValue(billdetail_paid_model.class);
+                    list.add(billdetailmodel1 );
+                }
             }
 
             @Override
@@ -66,9 +140,25 @@ public class Bill_detail_paid extends AppCompatActivity {
     }
 
     @Override
-    protected void onStart() {
-        super.onStart();
+    protected void onRestart() {
+        super.onRestart();
+        FirebaseDatabase database = FirebaseDatabase.getInstance();
+        DatabaseReference reference = database.getReference("object_bill_paid");
+        reference.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
 
+                for(DataSnapshot snapshot1 :snapshot.getChildren()){
+                    billdetail_paid_model billdetailmodel1 = snapshot1.getValue(billdetail_paid_model.class);
+                    list.add(billdetailmodel1 );
+                }
+
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
     }
-
 }
