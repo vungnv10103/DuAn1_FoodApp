@@ -26,7 +26,7 @@ public class LoadingActivity extends AppCompatActivity {
                 startActivity(new Intent(getApplicationContext(),WelcomeActivity.class));
                 finish();
             }
-        }, 5000);
+        }, 1000);
     }
     public void prog(){
         pb= findViewById(R.id.progess);

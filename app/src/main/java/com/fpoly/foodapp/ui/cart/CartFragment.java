@@ -139,7 +139,6 @@ public class CartFragment extends Fragment {
         checkItemSelected(check, discount);
         Toast.makeText(getContext(), "check: " + check, Toast.LENGTH_SHORT).show();
 
-
         return view;
     }
 
@@ -255,6 +254,7 @@ public class CartFragment extends Fragment {
             checkOut.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
+
                     if (checkInfo() > 0){
                         listOder = new ArrayList<>();
                         itemOder = new OderHistoryModel();
@@ -277,6 +277,18 @@ public class CartFragment extends Fragment {
 //                            Toast.makeText(getContext(), "push thanh cong", Toast.LENGTH_SHORT).show();
                             }
                         });
+
+                    FirebaseDatabase database = FirebaseDatabase.getInstance();
+                    DatabaseReference reference = database.getReference("objec_bill");
+                    moduleArrayList.add(new billdetailmodel(id_randum, chuoi, "Chưa thanh toán", date, tongtiensanpham, tax, delivery, total));
+                    reference.setValue(moduleArrayList, new DatabaseReference.CompletionListener() {
+                        @Override
+                        public void onComplete(@Nullable DatabaseError error, @NonNull DatabaseReference ref) {
+                            Toast.makeText(getContext(), "push thanh cong", Toast.LENGTH_SHORT).show();
+                        }
+                    });
+
+
 
                         itemOder.setMadonhang(id_randum);
                         itemOder.setSoluongsanphan(chuoi);
@@ -308,6 +320,7 @@ public class CartFragment extends Fragment {
                 }
 
             });
+
         }
 
 
@@ -361,21 +374,24 @@ public class CartFragment extends Fragment {
         for (int i = 0; i < listCartItem.size(); i++) {
             chuoi += "● " + listCartItem.get(i).name + "   --   SL: " + listCartItem.get(i).quantities + "\n";
         }
-//        FirebaseDatabase database = FirebaseDatabase.getInstance();
-//        DatabaseReference reference = database.getReference("objec_bill");
-//        reference.addValueEventListener(new ValueEventListener() {
-//            @Override
-//            public void onDataChange(@NonNull DataSnapshot snapshot) {
-//                for(DataSnapshot snapshot1 : snapshot.getChildren()){
-//                    billdetailmodel billdetailmodel1 = snapshot1.getValue(billdetailmodel.class);
-//                    moduleArrayList.add(billdetailmodel1);
-//                }
-//            }
-//            @Override
-//            public void onCancelled(@NonNull DatabaseError error) {
-//
-//            }
-//        });
+        FirebaseDatabase database = FirebaseDatabase.getInstance();
+        DatabaseReference reference = database.getReference("objec_bill");
+        reference.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                if(moduleArrayList!=null){
+                    moduleArrayList.clear();
+                }
+                for(DataSnapshot snapshot1 : snapshot.getChildren()){
+                    billdetailmodel billdetailmodel1 = snapshot1.getValue(billdetailmodel.class);
+                    moduleArrayList.add(billdetailmodel1);
+                }
+            }
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
     }
 
 

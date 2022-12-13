@@ -43,7 +43,7 @@ public class RegisterActivity extends AppCompatActivity {
     ImageView imgShowHidePwd, imgShowConfirmPass;
     public FirebaseAuth auth = FirebaseAuth.getInstance();
     public int dem = auth.getCurrentUser().getProviderData().size();
-     int count = 0;
+     int count = 24;
     private ProgressDialog progressDialog;
     UsersModule item;
     static UsersDAO usersDAO;
@@ -216,7 +216,7 @@ public class RegisterActivity extends AppCompatActivity {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 int value = snapshot.getValue(Integer.class);
-               count = value;
+                count = value;
             }
 
             @Override
