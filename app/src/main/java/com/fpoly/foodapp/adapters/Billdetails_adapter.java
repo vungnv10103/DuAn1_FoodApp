@@ -81,23 +81,35 @@ public class Billdetails_adapter extends RecyclerView.Adapter<Billdetails_adapte
                 });
                 FirebaseDatabase database = FirebaseDatabase.getInstance();
                 DatabaseReference reference = database.getReference("object_bill_paid");
+                reference.addValueEventListener(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot snapshot) {
+                        if(arrayList!=null){
+                            arrayList.clear();
+                        }
+                        for(DataSnapshot snapshot1 :snapshot.getChildren()){
+                            billdetail_paid_model billdetailmodel1 = snapshot1.getValue(billdetail_paid_model.class);
+                            arrayList.add(billdetailmodel1 );
+                        }
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError error) {
+
+                    }
+                });
+                FirebaseDatabase database2 = FirebaseDatabase.getInstance();
+                DatabaseReference reference2 = database2.getReference("object_bill_paid");
                 arrayList.add(new billdetail_paid_model(list.get(position).getMadonhang(),list.get(position).getSoluongsanphan(),"Đã thanh toán",
                         list.get(position).getNgaymua(),list.get(position).getTongtiensanpham(),list.get(position).getTax(),list.get(position).getDalivery(),
                         list.get(position).getTongtien()));
-                reference.setValue(arrayList, new DatabaseReference.CompletionListener() {
+                reference2.setValue(arrayList, new DatabaseReference.CompletionListener() {
                     @Override
                     public void onComplete(@Nullable DatabaseError error, @NonNull DatabaseReference ref) {
                         Toast.makeText(context , "thành công", Toast.LENGTH_SHORT).show();
                     }
                 });
-                FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();
-                DatabaseReference databaseReference = firebaseDatabase.getReference("soluongdondaban");
-                databaseReference.setValue(arrayList.size(), new DatabaseReference.CompletionListener() {
-                    @Override
-                    public void onComplete(@Nullable DatabaseError error, @NonNull DatabaseReference ref) {
-                        Toast.makeText(context, "arraylist.size", Toast.LENGTH_SHORT).show();
-                    }
-                });
+
 
 //                    FirebaseDatabase database3 = FirebaseDatabase.getInstance();
 //                    DatabaseReference reference3 = database3.getReference("objec_bill");
@@ -141,11 +153,37 @@ public class Billdetails_adapter extends RecyclerView.Adapter<Billdetails_adapte
 
             }
         });
+        FirebaseDatabase database2 = FirebaseDatabase.getInstance();
+        DatabaseReference reference2 = database2.getReference("object_bill_paid");
+        reference2.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                if(arrayList!=null){
+                    arrayList.clear();
+                }
+                for(DataSnapshot snapshot1 :snapshot.getChildren()){
+                    billdetail_paid_model model = snapshot1.getValue(billdetail_paid_model.class);
+                    arrayList.add(model);
+                }
+            }
 
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
 
+            }
+        });
         if(list.get(position).getTrangthai().equalsIgnoreCase("Đã thanh toán")){
             holder.btnthnahtoan.setVisibility(View.GONE);
             holder.txttrangthai.setTextColor(Color.GREEN);
+
+            FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();
+            DatabaseReference databaseReference = firebaseDatabase.getReference("soluongdondaban");
+            databaseReference.setValue(arrayList.size(), new DatabaseReference.CompletionListener() {
+                @Override
+                public void onComplete(@Nullable DatabaseError error, @NonNull DatabaseReference ref) {
+                    Toast.makeText(context, "arraylist.size", Toast.LENGTH_SHORT).show();
+                }
+            });
         }else {
             holder.txttrangthai.setTextColor(Color.RED);
             holder.btnthnahtoan.setVisibility(View.VISIBLE);
