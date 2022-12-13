@@ -4,42 +4,57 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
-    android:gravity="center"
     android:background="@color/mediumGray"
+    android:gravity="center"
+    android:orientation="vertical"
     tools:context=".activities.RateActivity">
 
     <RatingBar
         android:id="@+id/ratingFoodApp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginBottom="30dp"
         android:numStars="5"
-        android:stepSize="1"
         android:progressBackgroundTint="@color/white"
         android:progressTint="#D8DD34"
-        android:layout_marginBottom="30dp"/>
+        android:stepSize="1" />
 
     <TextView
         android:layout_width="292dp"
         android:layout_height="wrap_content"
-        android:text="Bạn có thể đóng góp cho mình một chút ý kiến được khum?"
+        android:layout_marginBottom="15dp"
         android:gravity="center"
+        android:text="Bạn có thể đóng góp cho mình một chút ý kiến được khum?"
         android:textColor="@color/white"
-        android:textSize="18dp"
-        android:layout_marginBottom="15dp"/>
+        android:textSize="18dp" />
 
     <EditText
         android:id="@+id/rate_Recommend"
         android:layout_width="294dp"
         android:layout_height="179dp"
-        android:textColor="@color/white"
         android:background="@drawable/rcm_rate_frame"
-        android:gravity="top|left"/>
+        android:gravity="top|left"
+        android:textColor="@color/white" />
 
-    <Button
-        android:layout_width="wrap_content"
+    <LinearLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Okay"
-        android:id="@+id/btn_Rating_send"
-        android:layout_marginTop="50dp"/>
+        android:layout_marginTop="50dp"
+        android:gravity="center"
+        android:orientation="horizontal">
+
+        <Button
+            android:id="@+id/btn_Cancel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+           android:layout_marginEnd="20dp"
+            android:text="Huỷ" />
+
+        <Button
+            android:id="@+id/btn_Rating_send"
+            android:layout_width="wrap_content"
+            android:layout_marginStart="20dp"
+            android:layout_height="wrap_content"
+            android:text="Okay" />
+    </LinearLayout>
 </LinearLayout>

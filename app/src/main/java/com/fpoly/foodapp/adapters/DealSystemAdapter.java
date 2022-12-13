@@ -4,7 +4,6 @@ import static android.content.Context.MODE_PRIVATE;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
-import android.content.Intent;
 import android.content.SharedPreferences;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -18,36 +17,41 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.fpoly.foodapp.DAO.VoucherDAO;
+import com.fpoly.foodapp.DAO.VoucherSystemDAO;
 import com.fpoly.foodapp.R;
-import com.fpoly.foodapp.activities.MainActivity;
 import com.fpoly.foodapp.modules.VoucherModule;
+import com.fpoly.foodapp.modules.VoucherSystemModule;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 
-public class DealAdapter extends RecyclerView.Adapter<DealAdapter.ViewHolder> {
+public class DealSystemAdapter extends RecyclerView.Adapter<DealSystemAdapter.ViewHolder> {
     private Context context;
-    private List<VoucherModule> voucherList;
+    private static List<VoucherSystemModule> voucherSystemList;
+    static VoucherSystemDAO voucherSystemDAO;
     static VoucherDAO voucherDAO;
+    VoucherModule item;
 
-    public DealAdapter(Context context, List<VoucherModule> voucherList) {
+
+    public DealSystemAdapter(Context context, List<VoucherSystemModule> voucherSystemList) {
         this.context = context;
-        this.voucherList = voucherList;
+        this.voucherSystemList = voucherSystemList;
     }
 
     @NonNull
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(context).inflate(R.layout.voucher_item, null);
+        View view = LayoutInflater.from(context).inflate(R.layout.voucher_item_system, null);
         return new ViewHolder(view);
     }
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, @SuppressLint("RecyclerView") int position) {
+        voucherSystemDAO = new VoucherSystemDAO(context.getApplicationContext());
         voucherDAO = new VoucherDAO(context.getApplicationContext());
-        VoucherModule newOb = voucherList.get(position);
+        VoucherSystemModule newOb = voucherSystemList.get(position);
 
         holder.imgVoucher.setImageResource(newOb.img);
         holder.tvID.setText("ID: " + newOb.id);
@@ -58,24 +62,20 @@ public class DealAdapter extends RecyclerView.Adapter<DealAdapter.ViewHolder> {
         holder.btnSave.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Date dateCurrent = new Date();
-                try {
-                    Date date = new SimpleDateFormat("yyyy-MM-dd").parse(newOb.voucherDeadline);
-                    if (date.after(dateCurrent)) {
-                        rememberVoucher(newOb.id, newOb.discount, newOb.voucherDeadline);
-                        if (voucherDAO.delete(newOb.id) > 0) {
-                            voucherList.remove(position);
-                            notifyDataSetChanged();
-                            Toast.makeText(context, "Đã dùng !", Toast.LENGTH_SHORT).show();
-                        }
-                    }
-                    else {
-                        Toast.makeText(context, "Voucher đã hết hạn !", Toast.LENGTH_SHORT).show();
-                    }
-                } catch (ParseException e) {
-                    e.printStackTrace();
+                String deadLine = voucherSystemDAO.getDeadLineVoucher(newOb.id);
+                int discount = voucherSystemDAO.getDiscount(newOb.id);
+                item = new VoucherModule();
+                item.discount = discount;
+                item.voucherDeadline = deadLine;
+                item.img = R.drawable.coupon;
+                if (voucherDAO.insert(item) > 0){
+                    Toast.makeText(context, "Đã Lưu !", Toast.LENGTH_SHORT).show();
+                    notifyDataSetChanged();
                 }
-
+                if (voucherSystemDAO.delete(newOb.id) > 0) {
+                    voucherSystemList.remove(position);
+                    notifyDataSetChanged();
+                }
 
             }
         });
@@ -84,7 +84,7 @@ public class DealAdapter extends RecyclerView.Adapter<DealAdapter.ViewHolder> {
 
     @Override
     public int getItemCount() {
-        return voucherList.size();
+        return voucherSystemList.size();
     }
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
@@ -104,7 +104,7 @@ public class DealAdapter extends RecyclerView.Adapter<DealAdapter.ViewHolder> {
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-
+                    Toast.makeText(v.getContext(), voucherSystemList.get(getLayoutPosition()).voucherDeadline, Toast.LENGTH_SHORT).show();
                 }
             });
         }

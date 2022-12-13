@@ -12,7 +12,7 @@
         android:id="@+id/edNameItemRecommend"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="184dp"
+        android:layout_marginTop="100dp"
         android:ems="10"
         android:hint="Tên Sản Phẩm"
         android:inputType="textPersonName"
@@ -45,6 +45,44 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/edNameItemRecommend" />
+    <EditText
+        android:id="@+id/edDescription"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:ems="10"
+        android:hint="Mô tả"
+        android:inputType="textPersonName"
+        android:minHeight="48dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/edCostItemRecommend" />
+    <EditText
+        android:id="@+id/edTimeDelay"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:ems="10"
+        android:hint="Thời gian chờ(phút)"
+        android:minHeight="48dp"
+        android:inputType="number"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.502"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/edDescription" />
+    <EditText
+        android:id="@+id/edCalo"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:ems="10"
+        android:hint="Calo"
+        android:inputType="numberDecimal"
+        android:minHeight="48dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.502"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/edTimeDelay" />
 
     <ImageView
         android:id="@+id/imgDeleteCost"
@@ -64,7 +102,7 @@
         android:layout_marginEnd="24dp"
         android:text="Open Gallery"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/edCostItemRecommend" />
+        app:layout_constraintTop_toBottomOf="@+id/edCalo" />
 
     <de.hdodenhof.circleimageview.CircleImageView
         android:id="@+id/imgAvatarItemRecommend"
@@ -75,7 +113,7 @@
         android:src="@drawable/avatar_default"
         android:tag="default_avatar"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/edCostItemRecommend" />
+        app:layout_constraintTop_toBottomOf="@+id/edCalo" />
 
     <Button
         android:id="@+id/btnSaveItem"

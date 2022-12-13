@@ -49,19 +49,28 @@ public class ShowDetailActivity extends AppCompatActivity {
         init();
         Intent intent = getIntent();
         Bundle bundle = intent.getBundleExtra("data");
+
+
         checkImg();
         CartItemDAO = new CartItemDAO(getApplicationContext());
         usersDAO = new UsersDAO(getApplicationContext());
 
         tvQuantity.setText(String.valueOf(quantity));
 
-
+        int idProduct = bundle.getInt("id");
         String title = bundle.getString("title");
-        tvTitle.setText(title);
         double price = bundle.getDouble("price");
+        double rate = bundle.getDouble("rate");
+        String timeDelay = bundle.getString("time_delay");
+        String description = bundle.getString("description");
+        double calo = bundle.getDouble("calo");
+
+        tvTitle.setText(title);
         tvPrice.setText(String.format("$ %s", price));
-
-
+        tvRate.setText(rate + "");
+        tvTime.setText(timeDelay + " min");
+        tvCalo.setText(calo + " calories");
+        tvDescription.setText(description);
         tvTotalPrices.setText("$ " + String.format("%.2f", price));
 
         imgPlus.setOnClickListener(new View.OnClickListener() {
@@ -88,7 +97,7 @@ public class ShowDetailActivity extends AppCompatActivity {
             }
         });
 
-        tvDescription.setText("Description...................");
+
 
         tvAddToCart.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -100,6 +109,7 @@ public class ShowDetailActivity extends AppCompatActivity {
                 double cost_total = price * quanti;
 
                 item.idUser = usersDAO.getIDUser(email);
+                item.idRecommend = idProduct;
                 item.check = 0;
                 item.name = title;
                 item.cost = cost_total;

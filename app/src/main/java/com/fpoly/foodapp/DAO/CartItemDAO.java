@@ -25,6 +25,7 @@ public class CartItemDAO {
         values.put("mCheck", obj.check );
         values.put("name", obj.name);
         values.put("cost", obj.cost);
+        values.put("idRecommend", obj.idRecommend);
         values.put("quantities", obj.quantities);
 
         return db.insert("ItemCart",null,values);
@@ -48,7 +49,6 @@ public class CartItemDAO {
         return getData(sql, String.valueOf(idUser));
     }
 
-
     @SuppressLint("Range")
     private List<CartItemModule> getData(String sql, String...selectionArgs){
         List<CartItemModule> list = new ArrayList<>();
@@ -57,6 +57,7 @@ public class CartItemDAO {
             CartItemModule obj = new CartItemModule();
             obj.id = Integer.parseInt(cursor.getString(cursor.getColumnIndex("id")));
             obj.idUser = Integer.parseInt(cursor.getString(cursor.getColumnIndex("idUser")));
+            obj.idRecommend = Integer.parseInt(cursor.getString(cursor.getColumnIndex("idRecommend")));
             obj.check = Integer.parseInt(cursor.getString(cursor.getColumnIndex("mCheck")));
             obj.name = cursor.getString(cursor.getColumnIndex("name"));
             obj.cost = Double.valueOf(cursor.getString(cursor.getColumnIndex("cost")));

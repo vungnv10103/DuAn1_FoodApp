@@ -30,14 +30,14 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Billdetails_adapter extends RecyclerView.Adapter<Billdetails_adapter.ViewHolder> {
-    private ArrayList<billdetailmodel> list;
+    private List<billdetailmodel> list;
     private Context context;
 
 
     CartFragment cartFragment = new CartFragment();
 
 
-    public Billdetails_adapter(ArrayList<billdetailmodel> list, Context context) {
+    public Billdetails_adapter(List<billdetailmodel> list, Context context) {
         this.list = list;
         this.context = context;
     }

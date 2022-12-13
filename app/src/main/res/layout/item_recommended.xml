@@ -49,16 +49,6 @@
         app:layout_constraintTop_toTopOf="parent"
         app:srcCompat="@drawable/burger" />
 
-    <ImageView
-        android:id="@+id/imgDeleteItemRecommend"
-        android:visibility="invisible"
-        android:layout_width="20dp"
-        android:layout_height="20dp"
-        android:layout_marginStart="12dp"
-        android:layout_marginTop="124dp"
-        android:src="@drawable/ic_baseline_delete_24"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
 
     <ImageView
         android:id="@+id/imgFavourite"

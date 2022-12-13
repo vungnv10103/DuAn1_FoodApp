@@ -132,6 +132,7 @@ public class LoginActivity extends AppCompatActivity {
 
                     progressDialog.show();
                     progressDialog.setTitle("Loadingggg");
+                    progressDialog.setCancelable(false);
                     auth.signInWithEmailAndPassword(email, pass)
                             .addOnCompleteListener(LoginActivity.this, new OnCompleteListener<AuthResult>() {
                                   @Override

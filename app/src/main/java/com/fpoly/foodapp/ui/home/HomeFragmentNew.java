@@ -4,6 +4,7 @@ import static android.content.Context.MODE_PRIVATE;
 
 import android.Manifest;
 import android.annotation.SuppressLint;
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
@@ -14,6 +15,7 @@ import android.location.Location;
 import android.net.Uri;
 import android.os.Bundle;
 
+import androidx.annotation.Nullable;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
@@ -26,6 +28,7 @@ import android.os.Handler;
 import android.provider.MediaStore;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -36,11 +39,12 @@ import android.widget.TextView;
 import com.fpoly.foodapp.DAO.CategoryDAO;
 //import com.fpoly.foodapp.DAO.ProductDAO;
 import com.fpoly.foodapp.DAO.RecommendDAO;
+import com.fpoly.foodapp.DAO.StatisticalDAO;
 import com.fpoly.foodapp.DAO.UsersDAO;
 import com.fpoly.foodapp.R;
 import com.fpoly.foodapp.activities.AddItemCategoryActivity;
 import com.fpoly.foodapp.activities.AddItemProductActivity;
-import com.fpoly.foodapp.activities.AddItemRecommendActivity;
+import com.fpoly.foodapp.activities.FilterActivity;
 import com.fpoly.foodapp.adapters.SlideShowAdapter;
 import com.fpoly.foodapp.adapters.category.AddCategoryItemAdapter;
 import com.fpoly.foodapp.adapters.category.ItemCategory;
@@ -51,10 +55,10 @@ import com.fpoly.foodapp.adapters.product.ListProduct;
 import com.fpoly.foodapp.adapters.product.ListProductsAdapter;
 import com.fpoly.foodapp.adapters.recommend.AddRecommendedItemAdapter;
 import com.fpoly.foodapp.adapters.recommend.ItemRecommend;
+import com.fpoly.foodapp.adapters.recommend.ItemStatisticalRecommend;
 import com.fpoly.foodapp.adapters.recommend.RecommendAdapterNew;
 import com.fpoly.foodapp.modules.AddCategoryModule;
 import com.fpoly.foodapp.modules.AddRecommendModule;
-import com.fpoly.foodapp.modules.CategoryModule;
 import com.fpoly.foodapp.modules.photo;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;
@@ -63,6 +67,7 @@ import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Locale;
 
@@ -71,8 +76,8 @@ import me.relex.circleindicator.CircleIndicator3;
 
 public class HomeFragmentNew extends Fragment {
 
-
-    RecyclerView recyclerCategory, recyclerViewRecommend, recyclerViewProduct;
+    ProgressDialog progressDialog;
+    RecyclerView recyclerCategory, recyclerViewRecommend, recyclerViewProduct, recyclerViewRecommendMain;
     ListProductsAdapter listProductsAdapter;
 
     ItemCategoryAdapter categoryAdapter;
@@ -85,7 +90,12 @@ public class HomeFragmentNew extends Fragment {
 
     RecommendAdapterNew recommendAdapterNew;
     ArrayList<ItemRecommend> listRecommend;
+    ArrayList<ItemRecommend> listRecommendOld;
+    ArrayList<ItemRecommend> listRecommendNew;
     static RecommendDAO recommendDAO;
+
+    static StatisticalDAO statisticalDAO;
+    ArrayList<ItemStatisticalRecommend> listItemStatis;
 
     AddRecommendedItemAdapter addRecommendedItemAdapter;
     List<AddRecommendModule> addRecommend;
@@ -95,7 +105,7 @@ public class HomeFragmentNew extends Fragment {
 
 
     EditText edSearch;
-    TextView tvUserName;
+    TextView tvUserName, tvSeeMore;
     ImageView imgAvatar, imgDeleteSearch;
     static UsersDAO usersDAO;
 
@@ -132,6 +142,9 @@ public class HomeFragmentNew extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_home_new, container, false);
+        if (progressDialog.isShowing()) {
+            progressDialog.dismiss();
+        }
         categoryDAO = new CategoryDAO(getContext());
         edSearch = view.findViewById(R.id.edSearchHome);
         imgDeleteSearch = view.findViewById(R.id.imgDeleteSearch);
@@ -141,9 +154,11 @@ public class HomeFragmentNew extends Fragment {
         recyclerViewRecommend = view.findViewById(R.id.rcvRecommend);
         recyclerCategory = view.findViewById(R.id.rcvCategory);
         recyclerViewProduct = view.findViewById(R.id.rcvProduct);
+        recyclerViewRecommendMain = view.findViewById(R.id.rcvRecommendMain);
         addCategory = new ArrayList<>();
         addRecommend = new ArrayList<>();
         recommendDAO = new RecommendDAO(getContext());
+        statisticalDAO = new StatisticalDAO(getContext());
         usersDAO = new UsersDAO(getActivity());
         imgAvatar = view.findViewById(R.id.imgAvatar);
         imgAvatar.setOnClickListener(new View.OnClickListener() {
@@ -192,6 +207,14 @@ public class HomeFragmentNew extends Fragment {
         listSlideShow();
         listCategory();
         listRecommend();
+        listRecommendMain();
+        tvSeeMore = view.findViewById(R.id.tvSeeMore);
+        tvSeeMore.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startActivity(new Intent(getContext(), FilterActivity.class));
+            }
+        });
         int begin_index = email.indexOf("@");
         int end_index = email.indexOf(".");
         String domain_name = email.substring(begin_index + 1, end_index);
@@ -322,6 +345,7 @@ public class HomeFragmentNew extends Fragment {
             item.title = "Pizza 1";
             item.price = 15.7;
             item.favourite = 0;
+            item.description = "Pizza abc";
             item.location = mLocation;
 
             recommendDAO.insert(item);
@@ -333,6 +357,22 @@ public class HomeFragmentNew extends Fragment {
         recyclerViewRecommend.setLayoutManager(new LinearLayoutManager(getContext(), RecyclerView.HORIZONTAL, false));
         recyclerViewRecommend.setHasFixedSize(true);
         recyclerViewRecommend.setNestedScrollingEnabled(false);
+
+    }
+
+    private void listRecommendMain() {
+        listRecommendNew = new ArrayList<>();
+        listItemStatis = (ArrayList<ItemStatisticalRecommend>) statisticalDAO.getTop();
+        for (int i = 0; i < listItemStatis.size(); i++) {
+            listRecommendOld = (ArrayList<ItemRecommend>) recommendDAO.getALLByID(listItemStatis.get(i).idRecommend);
+            listRecommendNew.addAll(listRecommendOld);
+
+        }
+//        Log.d("size", listRecommendNew.size() + "");
+        recommendAdapterNew = new RecommendAdapterNew(getContext(), listRecommendNew);
+        recyclerViewRecommendMain.setAdapter(recommendAdapterNew);
+        recyclerViewRecommendMain.setLayoutManager(new LinearLayoutManager(getContext(), RecyclerView.HORIZONTAL, false));
+
 
     }
 
@@ -356,10 +396,12 @@ public class HomeFragmentNew extends Fragment {
         ConcatAdapter concatAdapter = new ConcatAdapter(recommendAdapterNew, addRecommendedItemAdapter);
         recyclerViewRecommend.setAdapter(concatAdapter);
     }
+
     private void askPermission() {
         ActivityCompat.requestPermissions(getActivity(), new String[]
                 {Manifest.permission.ACCESS_FINE_LOCATION}, REQUEST_CODE);
     }
+
     private void getLastLocation() {
         if (ContextCompat.checkSelfPermission(getContext(), Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
 
@@ -393,5 +435,11 @@ public class HomeFragmentNew extends Fragment {
         }
     }
 
-
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        progressDialog = new ProgressDialog(getContext());
+        progressDialog.show();
+        progressDialog.setCancelable(false);
+    }
 }

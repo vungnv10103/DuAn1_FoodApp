@@ -97,7 +97,7 @@ public class AddItemProductActivity extends AppCompatActivity {
 //                        item.setMoney(Double.parseDouble(edCost.getText().toString().trim()));
 //                        item.setLocation(edLocation.getText().toString().trim());
 //                        item.setType(edType.getText().toString().trim());
-
+                        
 //                        if (productDAO.insert(item) > 0) {
 //                            Toast.makeText(AddItemProductActivity.this, "Thêm thành công", Toast.LENGTH_SHORT).show();
 //                        } else {

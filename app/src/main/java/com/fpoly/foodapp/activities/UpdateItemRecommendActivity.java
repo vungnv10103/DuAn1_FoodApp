@@ -5,11 +5,13 @@ import androidx.activity.result.ActivityResultCallback;
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 
 import android.Manifest;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.SharedPreferences;
@@ -45,9 +47,9 @@ import java.util.List;
 import java.util.Locale;
 
 public class UpdateItemRecommendActivity extends AppCompatActivity {
-    EditText edNameDetail, edCostDetail;
+    EditText edNameDetail, edCostDetail, edDescription, edTimeDelay, edCalo;
     ImageView imgAvatar, imgDeleteNameRecommend, imgDeleteCost;
-    Button btnOpenGallery, btnSave, btnCancel;
+    Button btnOpenGallery, btnSave, btnCancel, btnDelete;
     public static final int PICK_IMAGE = 1;
     String realPath = "";
     String mLocation = "";
@@ -70,9 +72,13 @@ public class UpdateItemRecommendActivity extends AppCompatActivity {
         init();
         SharedPreferences pref = getSharedPreferences("INFO_ITEM", MODE_PRIVATE);
         int id = pref.getInt("ID", 0);
-        edNameDetail.setText(pref.getString("NAME", ""));
+        String name = pref.getString("NAME", "");
+        edNameDetail.setText(name);
         edCostDetail.setText(pref.getString("PRICE", ""));
         imgAvatar.setImageBitmap(convert(pref.getString("IMG", "")));
+        edDescription.setText(pref.getString("DESCRIPTION", ""));
+        edTimeDelay.setText(pref.getString("TIMEDELAY", ""));
+        edCalo.setText(pref.getString("CALO", ""));
         edNameDetail.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
@@ -159,6 +165,9 @@ public class UpdateItemRecommendActivity extends AppCompatActivity {
                     item.title = edNameDetail.getText().toString().trim();
                     item.price = Double.parseDouble(edCostDetail.getText().toString().trim());
                     item.favourite = 0;
+                    item.description = edDescription.getText().toString().trim();
+                    item.timeDelay = edTimeDelay.getText().toString().trim();
+                    item.calo = Double.valueOf(edCalo.getText().toString().trim());
                     item.location = mLocation;
                     if (recommendDAO.updateAll(item) > 0) {
                         Toast.makeText(UpdateItemRecommendActivity.this, "Cập nhật thành công !", Toast.LENGTH_SHORT).show();
@@ -188,15 +197,41 @@ public class UpdateItemRecommendActivity extends AppCompatActivity {
                 intentActivityResultLauncher.launch(pickIntent);
             }
         });
+        btnDelete.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                new AlertDialog.Builder(UpdateItemRecommendActivity.this)
+                        .setTitle("Warning")
+                        .setMessage("Do you really want to delete ?")
+                        .setIcon(R.drawable.ic_baseline_warning_24)
+                        .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+
+                            public void onClick(DialogInterface dialog, int whichButton) {
+                                recommendDAO.delete(name);
+                                Toast.makeText(UpdateItemRecommendActivity.this, "Đã xoá " + name, Toast.LENGTH_SHORT).show();
+                                startActivity(new Intent(UpdateItemRecommendActivity.this, MainActivity.class));
+                                finishAffinity();
+                            }
+                        })
+                        .setNegativeButton(android.R.string.no, null)
+                        .setCancelable(false)
+                        .show();
+
+            }
+        });
     }
 
     public void init() {
         edNameDetail = findViewById(R.id.edNameItemRecommendDetail);
         edCostDetail = findViewById(R.id.edCostItemRecommendDetail);
+        edDescription = findViewById(R.id.edDescriptionDetail);
+        edTimeDelay = findViewById(R.id.edTimeDelayDetail);
+        edCalo = findViewById(R.id.edCaloDetail);
         imgAvatar = findViewById(R.id.imgAvatarItemRecommendDetail);
         btnOpenGallery = findViewById(R.id.btnOpenGalleryDetail);
         btnSave = findViewById(R.id.btnSaveItemDetail);
         btnCancel = findViewById(R.id.btnCancelDetail);
+        btnDelete = findViewById(R.id.btnDeleteItemRecommend);
         recommendDAO = new RecommendDAO(getApplication());
         imgDeleteNameRecommend = findViewById(R.id.imgDeleteNameRecommendDetail);
         imgDeleteCost = findViewById(R.id.imgDeleteCostDetail);
@@ -208,7 +243,10 @@ public class UpdateItemRecommendActivity extends AppCompatActivity {
         int check = -1;
         String name = edNameDetail.getText().toString().trim();
         String cost = edCostDetail.getText().toString().trim();
-        if (name.isEmpty() || cost.isEmpty()) {
+        String description = edDescription.getText().toString().trim();
+        String time = edTimeDelay.getText().toString().trim();
+        String calo = edCalo.getText().toString().trim();
+        if (name.isEmpty() || cost.isEmpty() || description.isEmpty() || time.isEmpty() || calo.isEmpty()) {
             check = -1;
         } else {
             check = 1;

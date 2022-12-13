@@ -52,7 +52,7 @@ import java.util.List;
 import java.util.Locale;
 
 public class AddItemRecommendActivity extends AppCompatActivity {
-    EditText edName, edCost;
+    EditText edName, edCost, edDescription, edTimeDelay, edCalo;
     ImageView imgAvatar, imgDeleteNameRecommend, imgDeleteCost;
     Button btnOpenGallery, btnSave, btnCancel;
     public static final int PICK_IMAGE = 1;
@@ -165,6 +165,11 @@ public class AddItemRecommendActivity extends AppCompatActivity {
                         item.title = edName.getText().toString().trim();
                         item.price = Double.parseDouble(edCost.getText().toString().trim());
                         item.favourite = 0;
+                        item.description = edDescription.getText().toString().trim();
+                        item.timeDelay = edTimeDelay.getText().toString().trim();
+                        item.calo = Double.valueOf(edCalo.getText().toString().trim());
+                        item.quantity_sold = 0;
+                        item.rate = 0.0;
                         item.location = mLocation;
                         if (recommendDAO.insert(item) > 0) {
                             Toast.makeText(AddItemRecommendActivity.this, "Thêm thành công !", Toast.LENGTH_SHORT).show();
@@ -196,15 +201,20 @@ public class AddItemRecommendActivity extends AppCompatActivity {
                 intentActivityResultLauncher.launch(pickIntent);
             }
         });
+
     }
 
     public void init() {
         edName = findViewById(R.id.edNameItemRecommend);
         edCost = findViewById(R.id.edCostItemRecommend);
+        edDescription = findViewById(R.id.edDescription);
+        edTimeDelay = findViewById(R.id.edTimeDelay);
+        edCalo = findViewById(R.id.edCalo);
         imgAvatar = findViewById(R.id.imgAvatarItemRecommend);
         btnOpenGallery = findViewById(R.id.btnOpenCamera);
         btnSave = findViewById(R.id.btnSaveItem);
         btnCancel = findViewById(R.id.btnCancel);
+
         recommendDAO = new RecommendDAO(getApplication());
         imgDeleteNameRecommend = findViewById(R.id.imgDeleteNameRecommend);
         imgDeleteCost = findViewById(R.id.imgDeleteCost);
@@ -242,7 +252,10 @@ public class AddItemRecommendActivity extends AppCompatActivity {
         int check = -1;
         String name = edName.getText().toString().trim();
         String cost = edCost.getText().toString().trim();
-        if (name.isEmpty() || cost.isEmpty()) {
+        String description = edDescription.getText().toString().trim();
+        String time = edTimeDelay.getText().toString().trim();
+        String calo = edCalo.getText().toString().trim();
+        if (name.isEmpty() || cost.isEmpty() || description.isEmpty() || time.isEmpty() || calo.isEmpty()) {
             check = -1;
         } else {
             check = 1;

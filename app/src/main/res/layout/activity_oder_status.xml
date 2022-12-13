@@ -5,18 +5,27 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context=".activities.DealsActivity">
+    tools:context=".activities.StatusOderActivity">
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Trạng Thái Đơn Hàng"
+        android:textStyle="bold"
+        android:textSize="26sp"
+        android:layout_margin="10dp"
+        android:fontFamily="@font/amarante"
+        android:textAlignment="center"/>
 
     <com.google.android.material.tabs.TabLayout
-        android:id="@+id/acc_TabLayout"
+        android:id="@+id/oder_TabLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="#FF5722"
         app:tabSelectedTextColor="@color/white"
-        app:tabTextColor="#A3FFFFFF" />
+        app:tabTextColor="#A3D5CBCB" />
 
     <androidx.viewpager2.widget.ViewPager2
-        android:id="@+id/acc_ViewPager"
+        android:id="@+id/oder_ViewPager"
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
 </LinearLayout>

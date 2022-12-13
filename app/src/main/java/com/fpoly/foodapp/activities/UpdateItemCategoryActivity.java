@@ -4,8 +4,10 @@ import androidx.activity.result.ActivityResult;
 import androidx.activity.result.ActivityResultCallback;
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.SharedPreferences;
@@ -33,7 +35,7 @@ import java.io.IOException;
 public class UpdateItemCategoryActivity extends AppCompatActivity {
     EditText edName;
     ImageView imgAvatar, imgDeleteNameCate;
-    Button btnOpenGallery, btnSave, btnCancel;
+    Button btnOpenGallery, btnSave, btnCancel, btnDelete;
     public static final int PICK_IMAGE = 1;
     String realPath = "";
 
@@ -141,6 +143,28 @@ public class UpdateItemCategoryActivity extends AppCompatActivity {
 
             }
         });
+        btnDelete.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                new AlertDialog.Builder(UpdateItemCategoryActivity.this)
+                        .setTitle("Warning")
+                        .setMessage("Do you really want to delete ?")
+                        .setIcon(R.drawable.ic_baseline_warning_24)
+                        .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+
+                            public void onClick(DialogInterface dialog, int whichButton) {
+                                categoryDAO.delete(name);
+                                Toast.makeText(UpdateItemCategoryActivity.this, "Đã xoá " + name  + "", Toast.LENGTH_SHORT).show();
+                                startActivity(new Intent(UpdateItemCategoryActivity.this, MainActivity.class));
+                                finishAffinity();
+                            }
+                        })
+                        .setNegativeButton(android.R.string.no, null)
+                        .setCancelable(false)
+                        .show();
+
+            }
+        });
     }
 
     public void init() {
@@ -148,6 +172,7 @@ public class UpdateItemCategoryActivity extends AppCompatActivity {
         imgAvatar = findViewById(R.id.imgAvatarItemCateDetail);
         btnOpenGallery = findViewById(R.id.btnOpenCameraDetail);
         btnSave = findViewById(R.id.btnSaveItemCateDetail);
+        btnDelete = findViewById(R.id.btnDeleteItemCategory);
         btnCancel = findViewById(R.id.btnCancelCateDetail);
         categoryDAO = new CategoryDAO(getApplication());
         imgDeleteNameCate = findViewById(R.id.imgDeleteNameCateDetail);

@@ -33,6 +33,11 @@ public class RecommendDAO {
         values.put("cost", obj.price);
         values.put("idUser", obj.idUser);
         values.put("favourite", obj.favourite);
+        values.put("description", obj.description);
+        values.put("timeDelay", obj.timeDelay);
+        values.put("rate", obj.rate);
+        values.put("calo", obj.calo);
+        values.put("quantity_sold", obj.quantity_sold);
         values.put("location", obj.location);
 
 
@@ -45,6 +50,9 @@ public class RecommendDAO {
         values.put("cost", obj.price);
         values.put("idUser", obj.idUser);
         values.put("favourite", obj.favourite);
+        values.put("description", obj.description);
+        values.put("timeDelay", obj.timeDelay);
+        values.put("calo", obj.calo);
         values.put("location", obj.location);
 
         return db.update("Recommend", values, "id=?", new String[]{String.valueOf(obj.id)} );
@@ -80,6 +88,10 @@ public class RecommendDAO {
         String sql = "SELECT * FROM Recommend WHERE favourite=?";
         return getData(sql, String.valueOf(favourite));
     }
+    public List<ItemRecommend> getALLByID(int id){
+        String sql = "SELECT * FROM Recommend WHERE id=?";
+        return getData(sql, String.valueOf(id));
+    }
 
 
     @SuppressLint("Range")
@@ -94,6 +106,11 @@ public class RecommendDAO {
             obj.title = cursor.getString(cursor.getColumnIndex("name"));
             obj.price = Double.parseDouble(cursor.getString(cursor.getColumnIndex("cost")));
             obj.favourite = Integer.parseInt(cursor.getString(cursor.getColumnIndex("favourite")));
+            obj.description = cursor.getString(cursor.getColumnIndex("description"));
+            obj.rate = Double.parseDouble(cursor.getString(cursor.getColumnIndex("rate")));
+            obj.calo = Double.parseDouble(cursor.getString(cursor.getColumnIndex("calo")));
+            obj.timeDelay = cursor.getString(cursor.getColumnIndex("timeDelay"));
+            obj.quantity_sold = Integer.parseInt(cursor.getString(cursor.getColumnIndex("quantity_sold")));
             obj.location = cursor.getString(cursor.getColumnIndex("location"));
             list.add(obj);
 

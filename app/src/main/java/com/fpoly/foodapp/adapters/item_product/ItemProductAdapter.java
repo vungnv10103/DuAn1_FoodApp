@@ -133,6 +133,10 @@ public class ItemProductAdapter extends RecyclerView.Adapter<ItemProductAdapter.
                 bundle.putInt("image", list.get(position).getImg());
                 bundle.putDouble("price", list.get(position).getMoney());
                 bundle.putString("title", list.get(position).getTitle());
+                bundle.putString("time_delay", "15");
+                bundle.putDouble("calo", 65.8);
+                bundle.putDouble("rate", 4.8);
+                bundle.putString("description", "Mô tả sản phẩm");
                 intent1.putExtra("data", bundle);
                 v.getContext().startActivity(intent1);
             }

@@ -24,7 +24,6 @@ import java.util.ArrayList;
 
 public class OrderHistoryActivity extends AppCompatActivity {
     private RecyclerView rcvOder;
-
     static OderDAO oderDAO;
     static UsersDAO usersDAO;
     OderHistoryAdapter oderHistoryAdapter;
