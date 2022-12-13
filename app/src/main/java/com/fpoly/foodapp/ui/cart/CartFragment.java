@@ -132,7 +132,7 @@ public class CartFragment extends Fragment {
         });
         listData();
         int discount = pref1.getInt("DISCOUNT", 0);
-        checkItemSelected(check, discount);
+        checkItemSelected(1, discount);
 
 
         return view;
@@ -232,8 +232,7 @@ public class CartFragment extends Fragment {
 
     public void checkItemSelected(int mCheck, int discount) {
 
-        SharedPreferences pref = getContext().getSharedPreferences("TOTAL_PRICE", MODE_PRIVATE);
-=======
+
         SharedPreferences pref = getContext().getSharedPreferences("USER_FILE", MODE_PRIVATE);
         String email = pref.getString("EMAIL", "");
 
@@ -268,43 +267,44 @@ public class CartFragment extends Fragment {
 
                     FirebaseDatabase database = FirebaseDatabase.getInstance();
                     DatabaseReference reference = database.getReference("objec_bill");
-                    moduleArrayList.add(new billdetailmodel(id_randum, chuoi, "Chưa thanh toán", date, tongtiensanpham, taxi, delivery, total));
+                    moduleArrayList.add(new billdetailmodel(id_randum, chuoi, "Chưa thanh toán", date, tongtiensanpham, tax, delivery, total));
                     reference.setValue(moduleArrayList, new DatabaseReference.CompletionListener() {
                         @Override
                         public void onComplete(@Nullable DatabaseError error, @NonNull DatabaseReference ref) {
                             Toast.makeText(getContext(), "push thanh cong", Toast.LENGTH_SHORT).show();
                         }
                     });
-=======
 
-                    itemOder.setMadonhang(id_randum);
-                    itemOder.setSoluongsanphan(chuoi);
-                    itemOder.setTrangthai("Chưa thanh toán");
-                    itemOder.setIdUser(usersDAO.getIDUser(email));
-                    itemOder.setNgaymua(date);
-                    itemOder.setTongtien(total);
-                    itemOder.setTongtiensanpham(tongtiensanpham);
-                    itemOder.setTax(tax);
-                    itemOder.setDalivery(delivery);
-                    if (oderDAO.insert(itemOder) > 0) {
-                        Toast.makeText(getContext(), "Lưu thành công", Toast.LENGTH_SHORT).show();
-                    }
-                    if (oderDAO.getALL().size() > 0) {
-                        FirebaseDatabase database = FirebaseDatabase.getInstance();
-                        DatabaseReference reference = database.getReference("objec_bill");
-                        listOder = (ArrayList<OderHistoryModel>) oderDAO.getALL();
-//                    moduleArrayList.add(new billdetailmodel(id_randum, chuoi, "Chưa thanh toán", date, tongtiensanpham, tax, delivery, total));
-                        reference.setValue(listOder, new DatabaseReference.CompletionListener() {
-                            @Override
-                            public void onComplete(@Nullable DatabaseError error, @NonNull DatabaseReference ref) {
-                                Toast.makeText(getContext(), "Đặt hàng thành công !", Toast.LENGTH_SHORT).show();
-                            }
-                        });
-                    }
+
+//                    itemOder.setMadonhang(id_randum);
+//                    itemOder.setSoluongsanphan(chuoi);
+//                    itemOder.setTrangthai("Chưa thanh toán");
+//                    itemOder.setIdUser(usersDAO.getIDUser(email));
+//                    itemOder.setNgaymua(date);
+//                    itemOder.setTongtien(total);
+//                    itemOder.setTongtiensanpham(tongtiensanpham);
+//                    itemOder.setTax(tax);
+//                    itemOder.setDalivery(delivery);
+//                    if (oderDAO.insert(itemOder) > 0) {
+//                        Toast.makeText(getContext(), "Lưu thành công", Toast.LENGTH_SHORT).show();
+//                    }
+//                    if (oderDAO.getALL().size() > 0) {
+//                        FirebaseDatabase database1 = FirebaseDatabase.getInstance();
+//                        DatabaseReference reference1 = database.getReference("objec_bill");
+//                        listOder = (ArrayList<OderHistoryModel>) oderDAO.getALL();
+////                    moduleArrayList.add(new billdetailmodel(id_randum, chuoi, "Chưa thanh toán", date, tongtiensanpham, tax, delivery, total));
+//                        reference1.setValue(listOder, new DatabaseReference.CompletionListener() {
+//                            @Override
+//                            public void onComplete(@Nullable DatabaseError error, @NonNull DatabaseReference ref) {
+//                                Toast.makeText(getContext(), "Đặt hàng thành công !", Toast.LENGTH_SHORT).show();
+//                            }
+//                        });
+//                    }
 
 
                 }
             });
+
         }
 
 
@@ -341,6 +341,9 @@ public class CartFragment extends Fragment {
         reference.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
+                if(moduleArrayList!=null){
+                    moduleArrayList.clear();
+                }
                 for(DataSnapshot snapshot1 : snapshot.getChildren()){
                     billdetailmodel billdetailmodel1 = snapshot1.getValue(billdetailmodel.class);
                     moduleArrayList.add(billdetailmodel1);

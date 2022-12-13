@@ -18,6 +18,8 @@ import com.fpoly.foodapp.activities.Billdetail_activity;
 import com.fpoly.foodapp.activities.FavouriteActivity;
 import com.fpoly.foodapp.activities.ListUserActivity;
 import com.fpoly.foodapp.activities.LoginActivity;
+import com.fpoly.foodapp.adapters.Billdetail_paid_Adapter;
+import com.fpoly.foodapp.modules.billdetail_paid_model;
 import com.github.mikephil.charting.animation.Easing;
 import com.github.mikephil.charting.charts.PieChart;
 import com.github.mikephil.charting.data.PieData;
@@ -41,17 +43,60 @@ public class AdminActivity extends AppCompatActivity {
     List<PieEntry> list = new ArrayList<>();
     Intent intent;
     Bundle bundle ;
+    ArrayList<billdetail_paid_model> list1 = new ArrayList<>();
+    Billdetail_paid_Adapter adapter = new Billdetail_paid_Adapter(list1 , this);
     int value;
     SharedPreferences sharedPreferences  , sharedPreferences1;
     int x;
+    int i = 0 ;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_admin);
         pieChart1 = findViewById(R.id.piechartok);
+        FirebaseDatabase database = FirebaseDatabase.getInstance();
+
+        DatabaseReference reference = database.getReference("soluongtaikhoan");
+        reference.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                value = snapshot.getValue(Integer.class);
+                txtsoluongtruycaptrang.setText(String.valueOf(value));
+                list.add(new PieEntry(value, "số luong tai khoan"));
+                setupChart();
+            }
+
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+        FirebaseDatabase database1 = FirebaseDatabase.getInstance();
+        DatabaseReference reference1 = database1.getReference("soluongdondaban");
+        reference1.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                i = snapshot.getValue(Integer.class);
+                txtsoluongdonhangdaban.setText(String.valueOf(i));
+                list.add(new PieEntry(i, "đơn hàng đã bán"));
+                setupChart();
+            }
+
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+
+
+
         init();
         intent = getIntent();
+
+
 
 
 
@@ -104,8 +149,8 @@ public class AdminActivity extends AppCompatActivity {
         pieChart1.invalidate();
     }
     private void setValue() {
-        list.add(new PieEntry(value, "số luong tai khoan"));
-        list.add(new PieEntry(50, "đơn hàng đã bán"));
+
+
     }
     public void init(){
         txtsoluongtruycaptrang = findViewById(R.id.txtsoluongtruycap);
@@ -120,22 +165,21 @@ public class AdminActivity extends AppCompatActivity {
     @Override
     protected void onStart() {
         super.onStart();
-        FirebaseDatabase database = FirebaseDatabase.getInstance();
-        DatabaseReference reference = database.getReference("soluongtaikhoan");
-        reference.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot snapshot) {
-                value = snapshot.getValue(Integer.class);
-                txtsoluongtruycaptrang.setText(String.valueOf(value));
-                setValue();
-                setupChart();
 
-            }
 
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {
 
-            }
-        });
+
+
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+
     }
 }

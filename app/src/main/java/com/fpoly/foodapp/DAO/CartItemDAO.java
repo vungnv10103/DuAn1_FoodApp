@@ -41,7 +41,11 @@ public class CartItemDAO {
 //    public int quant(){
 //
 //    }
-
+public ArrayList<CartItemModule> deleteall(){
+        String sql = "delete from ItemCart";
+        db.execSQL(sql);
+    return new ArrayList<>();
+}
 
     public List<CartItemModule> getALL(int idUser){
         String sql = "SELECT * FROM ItemCart WHERE idUser=?";
