@@ -42,6 +42,16 @@ public class UsersDAO {
 
         return db.update("User", values, "email=?", new String[]{obj.email});
     }
+    public int updateAll( UsersModule obj) {
+        ContentValues values = new ContentValues();
+        values.put("img", obj.bitmap);
+        values.put("name", obj.name);
+        values.put("pass", obj.pass);
+        values.put("phoneNumber", obj.phoneNumber);
+        values.put("address", obj.address);
+
+        return db.update("User", values, "email=?", new String[]{obj.email});
+    }
 
     public int updateImg(UsersModule obj) {
         ContentValues values = new ContentValues();

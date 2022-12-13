@@ -33,6 +33,7 @@ import com.fpoly.foodapp.DAO.UsersDAO;
 import com.fpoly.foodapp.R;
 import com.fpoly.foodapp.activities.MainActivity;
 import com.fpoly.foodapp.activities.ShowDetailActivity;
+import com.fpoly.foodapp.activities.UpdateInfoUserByAdminActivity;
 import com.fpoly.foodapp.adapters.recommend.ItemRecommend;
 import com.fpoly.foodapp.modules.UsersModule;
 
@@ -72,6 +73,14 @@ public class ListUserAdapter extends RecyclerView.Adapter<ListUserAdapter.viewHo
         if (!path.equals("null")) {
             holder.img.setImageBitmap(convert(path));
         }
+        String email = list.get(position).email;
+        int begin_index = email.indexOf("@");
+        int end_index = email.indexOf(".");
+        String domain_name = email.substring(begin_index + 1, end_index);
+        if (domain_name.equals("admin") || email.equals("admin@gmail.com")){
+
+        }
+
 
 
         holder.img.setOnClickListener(new View.OnClickListener() {
@@ -100,13 +109,14 @@ public class ListUserAdapter extends RecyclerView.Adapter<ListUserAdapter.viewHo
         } catch (IOException e) {
             e.printStackTrace();
         }
+        if (list.get(position).name.equals("null")){
+            holder.tvName.setText("Username");
+        }
+        else {
+            holder.tvName.setText(list.get(position).name);
+        }
 
-        holder.tvName.setText(list.get(position).name);
         holder.tvEmail.setText(list.get(position).email);
-        holder.tvPass.setText(list.get(position).pass);
-        holder.tvPhoneNumber.setText(list.get(position).phoneNumber);
-        holder.tvAddress.setText(list.get(position).address);
-        holder.tvFeedback.setText(list.get(position).feedback);
 
 
 //        SharedPreferences pref = context.getSharedPreferences("USER_FILE", MODE_PRIVATE);
@@ -117,27 +127,8 @@ public class ListUserAdapter extends RecyclerView.Adapter<ListUserAdapter.viewHo
 //        if (domain_name.toLowerCase(Locale.ROOT).equals("merchant")){
 //            holder.imgDelete.setVisibility(View.VISIBLE);
 //        }
-        holder.tvPass.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (holder.tvPass.getTag().equals("default")) {
-                    holder.tvPass.setInputType(InputType.TYPE_CLASS_TEXT);
-                    holder.tvPass.setTag("oke");
-                } else {
-                    holder.tvPass.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_PASSWORD);
-                    holder.tvPass.setTag("default");
-                }
-            }
-        });
-        holder.imgDelete.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Toast.makeText(context, "Deleted: " + list.get(position).name, Toast.LENGTH_SHORT).show();
-                usersDAO.delete(list.get(position).id);
-                list.remove(position);
-                notifyItemChanged(position);
-            }
-        });
+
+
 
 
     }
@@ -153,19 +144,30 @@ public class ListUserAdapter extends RecyclerView.Adapter<ListUserAdapter.viewHo
 
     public class viewHolder extends RecyclerView.ViewHolder {
 
-        TextView tvName, tvEmail, tvPass, tvPhoneNumber, tvAddress, tvFeedback;
-        ImageView img, imgDelete;
+        TextView tvName, tvEmail;
+        ImageView img;
 
         public viewHolder(@NonNull View itemView) {
             super(itemView);
             tvName = itemView.findViewById(R.id.tvItemNameUser);
             tvEmail = itemView.findViewById(R.id.tvEmailUser);
-            tvPass = itemView.findViewById(R.id.tvPass);
-            tvPhoneNumber = itemView.findViewById(R.id.tvPhoneNumber);
-            tvAddress = itemView.findViewById(R.id.tvAddress);
-            tvFeedback = itemView.findViewById(R.id.tvFeedback);
             img = itemView.findViewById(R.id.imgAvatarUser);
-            imgDelete = itemView.findViewById(R.id.imgDeleteUser);
+
+            itemView.setOnLongClickListener(new View.OnLongClickListener() {
+                @Override
+                public boolean onLongClick(View view) {
+                    SharedPreferences pref = view.getContext().getSharedPreferences("INFO_USER", MODE_PRIVATE);
+                    SharedPreferences.Editor editor = pref.edit();
+                    // lưu dữ liệu
+                    editor.putInt("ID", list.get(getLayoutPosition()).id);
+                    editor.putString("EMAIL", list.get(getLayoutPosition()).email);
+                    // lưu lại
+                    editor.commit();
+                    view.getContext().startActivity(new Intent(context, UpdateInfoUserByAdminActivity.class));
+                    return false;
+                }
+            });
+
 
 
         }
