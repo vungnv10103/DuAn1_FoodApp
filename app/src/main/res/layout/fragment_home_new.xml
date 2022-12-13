@@ -159,7 +159,7 @@
                             app:layout_constraintTop_toBottomOf="@+id/constraintLayout" />
 
                         <TextView
-                            android:id="@+id/textView14"
+                            android:id="@+id/tvSeeMore"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginEnd="25dp"
@@ -185,10 +185,27 @@
                             app:layout_constraintTop_toBottomOf="@+id/edSearchHome" />
 
                         <androidx.recyclerview.widget.RecyclerView
-                            android:id="@+id/rcvRecommend"
+                            android:id="@+id/rcvRecommendMain"
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
                             app:layout_constraintTop_toBottomOf="@+id/textView7"
+                            tools:layout_editor_absoluteX="0dp" />
+                        <TextView
+                            android:id="@+id/textView8"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="16dp"
+                            android:text="Được thêm gần đây"
+                            android:textColor="#000000"
+                            android:textSize="18dp"
+                            android:textStyle="bold"
+                            app:layout_constraintStart_toStartOf="@+id/textView7"
+                            app:layout_constraintTop_toBottomOf="@+id/rcvRecommendMain" />
+                        <androidx.recyclerview.widget.RecyclerView
+                            android:id="@+id/rcvRecommend"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            app:layout_constraintTop_toBottomOf="@+id/textView8"
                             tools:layout_editor_absoluteX="0dp" />
 
                         <androidx.recyclerview.widget.RecyclerView

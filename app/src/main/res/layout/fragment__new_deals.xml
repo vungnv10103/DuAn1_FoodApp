@@ -7,20 +7,23 @@
     android:orientation="vertical"
     android:background="@drawable/background_intro"
     tools:context=".ui.account.Sub_Fragment.Fragment_NewDeals">
+    <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+        android:id="@+id/swipe_refresh_layout_voucher"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/deals_List_NewDeals"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:paddingTop="4dp"
-        android:paddingBottom="2dp"/>
+       />
+    </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/btnAddVoucher"
         android:visibility="invisible"
+        android:layout_margin="10dp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="bottom|end"
         android:src="@drawable/ic_baseline_add_24"/>
-
-
 
 </FrameLayout>

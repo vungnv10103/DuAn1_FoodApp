@@ -132,22 +132,6 @@ public class RecommendAdapterNew extends RecyclerView.Adapter<RecommendAdapterNe
 
         holder.tvTitle.setText(list.get(position).title);
         holder.tvPrice.setText(String.valueOf(list.get(position).price));
-        SharedPreferences pref = context.getSharedPreferences("USER_FILE", MODE_PRIVATE);
-        String email = pref.getString("EMAIL", "");
-        int begin_index = email.indexOf("@");
-        int end_index = email.indexOf(".");
-        String domain_name = email.substring(begin_index + 1, end_index);
-        if (domain_name.toLowerCase(Locale.ROOT).equals("merchant")) {
-            holder.imgDelete.setVisibility(View.VISIBLE);
-        }
-        holder.imgDelete.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Toast.makeText(context, "Deleted: " + list.get(position).title, Toast.LENGTH_SHORT).show();
-                recommendDAO.delete(list.get(position).title);
-                v.getContext().startActivity(new Intent(v.getContext(), MainActivity.class));
-            }
-        });
         holder.imgFavourite.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -177,9 +161,14 @@ public class RecommendAdapterNew extends RecyclerView.Adapter<RecommendAdapterNe
                 context.startActivity(intent);
                 Intent intent1 = new Intent(context, ShowDetailActivity.class);
                 Bundle bundle = new Bundle();
+                bundle.putInt("id", list.get(position).id);
                 bundle.putString("image_resource", list.get(position).img_resource);
                 bundle.putDouble("price", list.get(position).price);
                 bundle.putString("title", list.get(position).title);
+                bundle.putString("description", list.get(position).description);
+                bundle.putString("time_delay", list.get(position).timeDelay);
+                bundle.putDouble("calo", list.get(position).calo);
+                bundle.putDouble("rate", list.get(position).rate);
                 intent1.putExtra("data", bundle);
                 context.startActivity(intent1);
             }
@@ -207,27 +196,41 @@ public class RecommendAdapterNew extends RecyclerView.Adapter<RecommendAdapterNe
             tvPrice = itemView.findViewById(R.id.tvPrice);
             img = itemView.findViewById(R.id.imgRecommended);
             imgAdd = itemView.findViewById(R.id.imgAdd);
-            imgDelete = itemView.findViewById(R.id.imgDeleteItemRecommend);
             imgFavourite = itemView.findViewById(R.id.imgFavourite);
 
-            itemView.setOnLongClickListener(new View.OnLongClickListener() {
-                @Override
-                public boolean onLongClick(View v) {
-                    SharedPreferences pref = v.getContext().getSharedPreferences("INFO_ITEM", MODE_PRIVATE);
-                    SharedPreferences.Editor editor = pref.edit();
-                    // lưu dữ liệu
-                    editor.putInt("ID", list.get(getLayoutPosition()).id);
-                    editor.putString("NAME", list.get(getLayoutPosition()).title);
-                    editor.putString("PRICE", list.get(getLayoutPosition()).price + "");
-                    editor.putString("IMG", list.get(getLayoutPosition()).img_resource);
+            SharedPreferences pref = context.getSharedPreferences("USER_FILE", MODE_PRIVATE);
+            String email = pref.getString("EMAIL", "");
+            int begin_index = email.indexOf("@");
+            int end_index = email.indexOf(".");
+            String domain_name = email.substring(begin_index + 1, end_index);
+            if (domain_name.equals("merchant")){
+                itemView.setOnLongClickListener(new View.OnLongClickListener() {
+                    @Override
+                    public boolean onLongClick(View v) {
+                        SharedPreferences pref = v.getContext().getSharedPreferences("INFO_ITEM", MODE_PRIVATE);
+                        SharedPreferences.Editor editor = pref.edit();
+                        // lưu dữ liệu
+                        editor.putInt("ID", list.get(getLayoutPosition()).id);
+                        editor.putString("NAME", list.get(getLayoutPosition()).title);
+                        editor.putString("PRICE", list.get(getLayoutPosition()).price + "");
+                        editor.putString("IMG", list.get(getLayoutPosition()).img_resource);
+                        editor.putString("DESCRIPTION", list.get(getLayoutPosition()).description);
+                        editor.putString("TIMEDELAY", list.get(getLayoutPosition()).timeDelay);
+                        editor.putString("CALO", list.get(getLayoutPosition()).calo + "");
 
-                    // lưu lại
-                    editor.commit();
-                    v.getContext().startActivity(new Intent(context, UpdateItemRecommendActivity.class));
-                    return false;
+                        // lưu lại
+                        editor.commit();
+                        v.getContext().startActivity(new Intent(context, UpdateItemRecommendActivity.class));
+                        return false;
 
-                }
-            });
+                    }
+                });
+            }
+            else {
+                itemView.setOnLongClickListener(null);
+            }
+
+
 
 
         }

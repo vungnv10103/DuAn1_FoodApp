@@ -21,7 +21,7 @@ import com.fpoly.foodapp.ui.account.AccountManagerFragment;
 
 public class RateActivity extends AppCompatActivity {
     RatingBar ratingBar;
-    Button btnSend;
+    Button btnSend, btnCancel;
     EditText txtRecommend;
 
     NetworkChangeListener networkChangeListener = new NetworkChangeListener();
@@ -35,9 +35,16 @@ public class RateActivity extends AppCompatActivity {
 
         ratingBar = findViewById(R.id.ratingFoodApp);
         btnSend = findViewById(R.id.btn_Rating_send);
+        btnCancel = findViewById(R.id.btn_Cancel);
         txtRecommend = findViewById(R.id.rate_Recommend);
         usersDAO = new UsersDAO(getApplicationContext());
 
+        btnCancel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                onBackPressed();
+            }
+        });
 
         btnSend.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -53,14 +60,17 @@ public class RateActivity extends AppCompatActivity {
         String inRecommend = txtRecommend.getText().toString();
 
         setDiscuss(starCount, inRecommend);
-        SharedPreferences pref = getSharedPreferences("USER_FILE", MODE_PRIVATE);
-        String email = pref.getString("EMAIL", "");
-        item = new UsersModule();
-        item.email = email;
-        item.feedback = starCount + "-" + inRecommend;
-        if (usersDAO.updateFeedBack(item) > 0){
-            Toast.makeText(this, "Đã lưu phản hồi !", Toast.LENGTH_SHORT).show();
+        if (validate()>0){
+            SharedPreferences pref = getSharedPreferences("USER_FILE", MODE_PRIVATE);
+            String email = pref.getString("EMAIL", "");
+            item = new UsersModule();
+            item.email = email;
+            item.feedback = starCount + "-" + inRecommend;
+            if (usersDAO.updateFeedBack(item) > 0){
+                Toast.makeText(this, "Đã gửi phản hồi !", Toast.LENGTH_SHORT).show();
+            }
         }
+
 
     }
     
@@ -99,6 +109,16 @@ public class RateActivity extends AppCompatActivity {
         startActivity(new Intent(this, MainActivity.class));
         finishAffinity();
 
+    }
+    private int validate(){
+        int check = -1;
+        if (ratingBar.getRating() ==0 || txtRecommend.getText().toString().trim().isEmpty()){
+            check = -1;
+        }
+        else {
+            check = 1;
+        }
+        return check;
     }
     @Override
     protected void onStart() {

@@ -1,16 +1,29 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:gravity="center"
     android:orientation="vertical"
-    tools:context=".ui.account.Sub_Fragment.Fragment_YourDeals">
-
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/deals_List_YourDeals"
+    android:background="@drawable/background_intro"
+    tools:context=".ui.account.Sub_Fragment.Fragment_NewDeals">
+    <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+        android:id="@+id/swipe_refresh_layout_voucher_system"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:paddingTop="4dp"
-        android:paddingBottom="2dp"
-        />
-</LinearLayout>
+        android:layout_height="match_parent">
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/deals_List_YourDeals"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            />
+    </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/btnAddVoucherSystem"
+        android:visibility="invisible"
+        android:layout_margin="10dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom|end"
+        android:src="@drawable/ic_baseline_add_24"/>
+
+</FrameLayout>

@@ -74,6 +74,11 @@ public class UsersDAO {
         List<UsersModule> list = getData(sql, email);
         return list.get(0).address;
     }
+    public String getFeedback(String email) {
+        String sql = "SELECT * FROM User WHERE email=?";
+        List<UsersModule> list = getData(sql, email);
+        return list.get(0).feedback;
+    }
     public String autoFillPassWord(String email) {
         String sql = "SELECT * FROM User WHERE email=?";
         List<UsersModule> list = getData(sql, email);
@@ -107,6 +112,10 @@ public class UsersDAO {
     public List<UsersModule> getALL() {
         String sql = "SELECT * FROM User";
         return getData(sql);
+    }
+    public List<UsersModule> getALLByEmail(String email) {
+        String sql = "SELECT * FROM User WHERE email=?";
+        return getData(sql, email);
     }
 
 

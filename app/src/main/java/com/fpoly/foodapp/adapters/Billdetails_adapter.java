@@ -36,11 +36,12 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Billdetails_adapter extends RecyclerView.Adapter<Billdetails_adapter.ViewHolder> {
-    private ArrayList<billdetailmodel> list;
+    private List<billdetailmodel> list;
     private Context context;
     private ArrayList<billdetail_paid_model> arrayList = new ArrayList<>();
     Billdetail_paid_Adapter adapter;
     CartFragment cartFragment = new CartFragment();
+
 
 
 

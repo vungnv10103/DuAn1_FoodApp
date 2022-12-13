@@ -45,6 +45,10 @@ public class ItemCategoryAdapter extends RecyclerView.Adapter<ItemCategoryAdapte
     CategoryDAO categoryDAO;
     ProgressDialog progressDialog;
 
+    boolean check = true;
+    boolean selected = true;
+    int row_index = -1;
+
 
     public ItemCategoryAdapter(Context context, List<ItemCategory> list) {
         this.context = context;
@@ -74,38 +78,7 @@ public class ItemCategoryAdapter extends RecyclerView.Adapter<ItemCategoryAdapte
 
 //        String[] listPath = {"content://media/external_primary/images/media/1000002401", "content://media/external_primary/images/media/1000002403", "content://media/external_primary/images/media/1000002405", "content://media/external_primary/images/media/1000002402", "content://media/external_primary/images/media/1000002404", "content://media/external_primary/images/media/1000002414"};
 
-        SharedPreferences pref = context.getSharedPreferences("USER_FILE", MODE_PRIVATE);
-        String email = pref.getString("EMAIL", "");
-        int begin_index = email.indexOf("@");
-        int end_index = email.indexOf(".");
-        String domain_name = email.substring(begin_index + 1, end_index);
-        if (domain_name.toLowerCase(Locale.ROOT).equals("merchant")) {
-            holder.imgDelete.setVisibility(View.VISIBLE);
-        }
-
         holder.tvName.setText(nameCategory);
-        holder.imgDelete.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                progressDialog.show();
-                progressDialog.setTitle("Deleted " + nameCategory);
-
-                android.os.Handler handler = new Handler();
-                handler.postDelayed(new Runnable() {
-                    @Override
-                    public void run() {
-                        categoryDAO.delete(nameCategory);
-
-                        v.getContext().startActivity(new Intent(v.getContext(), MainActivity.class));
-                        progressDialog.dismiss();
-                    }
-                }, 500);
-
-//                Toast.makeText(context, "Deleted " + nameCategory, Toast.LENGTH_SHORT).show();
-
-
-            }
-        });
         holder.cardView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -113,7 +86,8 @@ public class ItemCategoryAdapter extends RecyclerView.Adapter<ItemCategoryAdapte
 //                Toast.makeText(context, ""+ item.getImg(), Toast.LENGTH_SHORT).show();
 
                 // filter
-
+                holder.cardView.setBackgroundResource(R.drawable.change_bg);
+                selected = false;
 
 
 
@@ -141,25 +115,35 @@ public class ItemCategoryAdapter extends RecyclerView.Adapter<ItemCategoryAdapte
             super(itemView);
             tvName = itemView.findViewById(R.id.tvNameItem);
             img = itemView.findViewById(R.id.img_item_cate);
-            imgDelete = itemView.findViewById(R.id.imgDeleteItemCategory);
             cardView = itemView.findViewById(R.id.card_view);
+            SharedPreferences pref = context.getSharedPreferences("USER_FILE", MODE_PRIVATE);
+            String email = pref.getString("EMAIL", "");
+            int begin_index = email.indexOf("@");
+            int end_index = email.indexOf(".");
+            String domain_name = email.substring(begin_index + 1, end_index);
+            if (domain_name.equals("merchant")){
+                itemView.setOnLongClickListener(new View.OnLongClickListener() {
+                    @Override
+                    public boolean onLongClick(View v) {
+                        SharedPreferences pref = v.getContext().getSharedPreferences("INFO_ITEM", MODE_PRIVATE);
+                        SharedPreferences.Editor editor = pref.edit();
+                        // lưu dữ liệu
+                        editor.putInt("ID", list.get(getLayoutPosition()).getId());
+                        editor.putString("NAME", list.get(getLayoutPosition()).getName());
+                        editor.putString("IMG", list.get(getLayoutPosition()).getImg());
 
-            itemView.setOnLongClickListener(new View.OnLongClickListener() {
-                @Override
-                public boolean onLongClick(View v) {
-                    SharedPreferences pref = v.getContext().getSharedPreferences("INFO_ITEM", MODE_PRIVATE);
-                    SharedPreferences.Editor editor = pref.edit();
-                    // lưu dữ liệu
-                    editor.putInt("ID", list.get(getLayoutPosition()).getId());
-                    editor.putString("NAME", list.get(getLayoutPosition()).getName());
-                    editor.putString("IMG", list.get(getLayoutPosition()).getImg());
+                        // lưu lại
+                        editor.commit();
+                        v.getContext().startActivity(new Intent(context, UpdateItemCategoryActivity.class));
+                        return false;
+                    }
+                });
+            }
+            else {
+                itemView.setOnLongClickListener(null);
+            }
 
-                    // lưu lại
-                    editor.commit();
-                    v.getContext().startActivity(new Intent(context, UpdateItemCategoryActivity.class));
-                    return false;
-                }
-            });
+
 
         }
     }

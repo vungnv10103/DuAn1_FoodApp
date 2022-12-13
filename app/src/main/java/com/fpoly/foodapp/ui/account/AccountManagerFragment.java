@@ -43,6 +43,7 @@ import com.fpoly.foodapp.activities.OrderHistoryActivity;
 import com.fpoly.foodapp.activities.RateActivity;
 import com.fpoly.foodapp.activities.SettingActivity;
 
+import com.fpoly.foodapp.activities.StatusOderActivity;
 import com.fpoly.foodapp.modules.UsersModule;
 
 
@@ -154,7 +155,8 @@ public class AccountManagerFragment extends Fragment {
         orderHistory.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(getContext(), OrderHistoryActivity.class));
+              //  startActivity(new Intent(getContext(), OrderHistoryActivity.class));
+               startActivity(new Intent(getContext(), StatusOderActivity.class));
             }
         });
         getSetOtherData(email);

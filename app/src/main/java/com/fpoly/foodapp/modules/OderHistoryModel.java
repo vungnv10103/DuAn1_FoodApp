@@ -5,6 +5,7 @@ public class OderHistoryModel {
 
     private int madonhang ;
     private int idUser;
+    private int checkStatus;
     private String soluongsanphan;
     private String trangthai;
     private String ngaymua;
@@ -19,8 +20,9 @@ public class OderHistoryModel {
     public OderHistoryModel() {
     }
 
-    public OderHistoryModel(int id, int idUser,int madonhang, String soluongsanphan, String trangthai, String ngaymua, double tongtiensanpham, double tax, double dalivery, double tongtien) {
+    public OderHistoryModel(int id,int checkStatus, int idUser,int madonhang, String soluongsanphan, String trangthai, String ngaymua, double tongtiensanpham, double tax, double dalivery, double tongtien) {
         this.id = id;
+        this.checkStatus = checkStatus;
         this.idUser = idUser;
         this.madonhang = madonhang;
         this.soluongsanphan = soluongsanphan;
@@ -79,6 +81,14 @@ public class OderHistoryModel {
         this.tongtiensanpham = tongtiensanpham;
     }
 
+    public int getCheckStatus() {
+        return checkStatus;
+    }
+
+    public void setCheckStatus(int checkStatus) {
+        this.checkStatus = checkStatus;
+    }
+
     public double getTax() {
         return tax;
     }
@@ -103,8 +113,9 @@ public class OderHistoryModel {
         this.tongtien = tongtien;
     }
 
-    public OderHistoryModel(int madonhang,int idUser, String soluongsanphan, String trangthai, String ngaymua, double tongtiensanpham, double tax, double dalivery, double tongtien) {
+    public OderHistoryModel(int madonhang,int checkStatus,int idUser, String soluongsanphan, String trangthai, String ngaymua, double tongtiensanpham, double tax, double dalivery, double tongtien) {
         this.madonhang = madonhang;
+        this.checkStatus = checkStatus;
         this.idUser = idUser;
         this.soluongsanphan = soluongsanphan;
         this.trangthai = trangthai;

@@ -25,6 +25,7 @@ public class OderDAO {
         ContentValues values = new ContentValues();
         values.put("code", obj.getMadonhang());
         values.put("listProduct", obj.getSoluongsanphan());
+        values.put("checkStatus", obj.getCheckStatus());
         values.put("status", obj.getTrangthai());
         values.put("idUser", obj.getIdUser());
         values.put("time", obj.getNgaymua());
@@ -57,6 +58,10 @@ public class OderDAO {
         String sql = "SELECT * FROM Oder WHERE idUser=?";
         return getData(sql, String.valueOf(idUser));
     }
+    public List<OderHistoryModel> getAllByStatus(int idUser, int status){
+        String sql = "SELECT * FROM Oder WHERE idUser=? AND checkStatus=?";
+        return getData(sql, new String[]{String.valueOf(idUser), String.valueOf(status)});
+    }
 
 
     @SuppressLint("Range")
@@ -68,6 +73,7 @@ public class OderDAO {
             obj.id = Integer.parseInt(cursor.getString(cursor.getColumnIndex("id")));
             obj.setMadonhang(Integer.parseInt(cursor.getString(cursor.getColumnIndex("code"))));
             obj.setSoluongsanphan(cursor.getString(cursor.getColumnIndex("listProduct")));
+            obj.setCheckStatus(Integer.parseInt(cursor.getString(cursor.getColumnIndex("checkStatus"))));
             obj.setTrangthai(cursor.getString(cursor.getColumnIndex("status")));
             obj.setIdUser(Integer.parseInt(cursor.getString(cursor.getColumnIndex("idUser"))));
             obj.setNgaymua(cursor.getString(cursor.getColumnIndex("time")));

@@ -46,6 +46,45 @@
         app:layout_constraintHorizontal_bias="0.502"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/edNameItemRecommendDetail" />
+    <EditText
+        android:id="@+id/edDescriptionDetail"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:ems="10"
+        android:hint="Mô tả"
+        android:inputType="textPersonName"
+        android:minHeight="48dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.502"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/edCostItemRecommendDetail" />
+    <EditText
+        android:id="@+id/edTimeDelayDetail"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:ems="10"
+        android:hint="Thời gian chờ"
+        android:minHeight="48dp"
+        android:inputType="number"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.502"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/edDescriptionDetail" />
+    <EditText
+        android:id="@+id/edCaloDetail"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:ems="10"
+        android:hint="Calo"
+        android:inputType="numberDecimal"
+        android:minHeight="48dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.502"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/edTimeDelayDetail" />
 
     <ImageView
         android:id="@+id/imgDeleteCostDetail"
@@ -65,7 +104,7 @@
         android:layout_marginEnd="24dp"
         android:text="Open Gallery"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/edCostItemRecommendDetail" />
+        app:layout_constraintTop_toBottomOf="@+id/edCaloDetail" />
 
     <de.hdodenhof.circleimageview.CircleImageView
         android:id="@+id/imgAvatarItemRecommendDetail"
@@ -75,7 +114,7 @@
         android:layout_marginTop="20dp"
         android:src="@drawable/avatar_default"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/edCostItemRecommendDetail" />
+        app:layout_constraintTop_toBottomOf="@+id/edCaloDetail" />
 
     <Button
         android:id="@+id/btnSaveItemDetail"
@@ -109,5 +148,16 @@
         app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
+
+    <Button
+        android:id="@+id/btnDeleteItemRecommend"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="30dp"
+        android:text="Xoá"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.498"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/btnCancelDetail" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

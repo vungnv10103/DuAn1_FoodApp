@@ -7,6 +7,11 @@ public class ItemRecommend {
     public Double price;
     public String img_resource;
     public int favourite;
+    public String description;
+    public String timeDelay;
+    public Double calo;
+    public Double rate;
+    public int quantity_sold;
     public String location;
 
     public ItemRecommend() {

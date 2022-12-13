@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <item android:title="Content">
+        <menu>
+            <item
+                android:id="@+id/a"
+                android:icon="@android:drawable/ic_menu_send"
+                android:title="Loại a"
+                />
+            <item
+                android:id="@+id/b"
+                android:icon="@android:drawable/ic_menu_send"
+                android:title="Loại b"
+                />
+            <item
+                android:id="@+id/c"
+                android:icon="@android:drawable/ic_menu_send"
+                android:title="Loại c"
+                />
+        </menu>
+    </item>
+
+    <item android:title="Options">
+        <menu>
+            <item
+                android:id="@+id/info"
+                android:title="Giới thiệu"
+                android:icon="@android:drawable/ic_dialog_info"/>
+        </menu>
+    </item>
+    <item
+        android:id="@+id/backHome"
+        android:title="Home"
+        android:icon="@drawable/ic_home_black_24dp"/>
+
+
+
+
+</menu>

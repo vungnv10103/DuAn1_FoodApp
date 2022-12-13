@@ -23,6 +23,7 @@ public class DbHelper extends SQLiteOpenHelper {
                 "name TEXT not null," +
                 "cost REAL not null," +
                 "idUser INTEGER REFERENCES User(id)," +
+                "idRecommend INTEGER REFERENCES Recommend(id)," +
                 "quantities INTEGER not null)";
         db.execSQL(createTableItemCart);
 
@@ -43,6 +44,13 @@ public class DbHelper extends SQLiteOpenHelper {
                 "voucherTitle TEXT not null," +
                 "voucherDeadline TEXT not null)";
         db.execSQL(createTableVoucher);
+
+        String createTableVoucherSystem = "create table VoucherSystem(" +
+                "id INTEGER PRIMARY KEY AUTOINCREMENT," +
+                "img INTEGER not null," +
+                "voucherTitle TEXT not null," +
+                "voucherDeadline TEXT not null)";
+        db.execSQL(createTableVoucherSystem);
 
         String createTableCategory = "create table Category(" +
                 "id INTEGER PRIMARY KEY AUTOINCREMENT," +
@@ -67,6 +75,11 @@ public class DbHelper extends SQLiteOpenHelper {
                 "name TEXT not null," +
                 "idUser INTEGER REFERENCES User(id)," +
                 "location TEXT not null," +
+                "description TEXT not null," +
+                "timeDelay TEXT not null," +
+                "calo REAL not null," +
+                "rate REAL not null," +
+                "quantity_sold INTEGER not null," +
                 "cost REAL not null)";
         db.execSQL(createTableRecommended);
 
@@ -77,6 +90,7 @@ public class DbHelper extends SQLiteOpenHelper {
                 "status TEXT not null," +
                 "time TEXT not null," +
                 "idUser INTEGER REFERENCES User(id)," +
+                "checkStatus INTEGER not null," +
                 "totalPrice REAL not null," +
                 "tax REAL not null," +
                 "delivery REAL not null," +
@@ -95,6 +109,8 @@ public class DbHelper extends SQLiteOpenHelper {
         db.execSQL(dropTableUser);
         String dropTableVoucher = "drop table if exists Voucher";
         db.execSQL(dropTableVoucher);
+        String dropTableVoucherSystem = "drop table if exists VoucherSystem";
+        db.execSQL(dropTableVoucherSystem);
         String dropTableCategory = "drop table if exists Category";
         db.execSQL(dropTableCategory);
         String dropTableProduct = "drop table if exists Product";

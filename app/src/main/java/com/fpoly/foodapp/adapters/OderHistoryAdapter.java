@@ -1,17 +1,24 @@
 package com.fpoly.foodapp.adapters;
 
+import static android.content.Context.MODE_PRIVATE;
+
+import android.annotation.SuppressLint;
 import android.content.Context;
+import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.fpoly.foodapp.R;
+import com.fpoly.foodapp.activities.UpdateItemRecommendActivity;
 import com.fpoly.foodapp.modules.OderHistoryModel;
 import com.fpoly.foodapp.modules.billdetailmodel;
 import com.fpoly.foodapp.ui.cart.CartFragment;
@@ -23,8 +30,6 @@ public class OderHistoryAdapter extends RecyclerView.Adapter<OderHistoryAdapter.
     List<OderHistoryModel> list;
     Context context;
 
-
-    CartFragment cartFragment = new CartFragment();
 
 
     public OderHistoryAdapter(List<OderHistoryModel> list, Context context) {
@@ -41,7 +46,7 @@ public class OderHistoryAdapter extends RecyclerView.Adapter<OderHistoryAdapter.
     }
 
     @Override
-    public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull ViewHolder holder, @SuppressLint("RecyclerView") int position) {
 
         holder.tvCodeOder.setText("" + list.get(position).getMadonhang());
         holder.tvStatus.setText(list.get(position).getTrangthai());
@@ -75,6 +80,14 @@ public class OderHistoryAdapter extends RecyclerView.Adapter<OderHistoryAdapter.
             tvTax = itemView.findViewById(R.id.tax_bill);
             tvListItemProduct = itemView.findViewById(R.id.tvListItemProduct);
             tvStatus = itemView.findViewById(R.id.tvStatus);
+            itemView.setOnLongClickListener(new View.OnLongClickListener() {
+                @Override
+                public boolean onLongClick(View v) {
+                    Toast.makeText(context, "" + list.get(getLayoutPosition()).getCheckStatus(), Toast.LENGTH_SHORT).show();
+                    return false;
+
+                }
+            });
 
 
         }
