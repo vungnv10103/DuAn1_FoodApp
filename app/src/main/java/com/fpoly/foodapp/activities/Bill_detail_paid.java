@@ -7,9 +7,12 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import android.annotation.SuppressLint;
 import android.os.Bundle;
+import android.widget.Toast;
 
 import com.fpoly.foodapp.R;
+import com.fpoly.foodapp.adapters.Billdetail_paid_Adapter;
 import com.fpoly.foodapp.adapters.Billdetails_adapter;
+import com.fpoly.foodapp.modules.billdetail_paid_model;
 import com.fpoly.foodapp.modules.billdetailmodel;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -20,10 +23,12 @@ import com.google.firebase.database.ValueEventListener;
 import java.util.ArrayList;
 
 public class Bill_detail_paid extends AppCompatActivity {
-    RecyclerView recyclerView;
-    ArrayList<billdetailmodel> moduleArrayList_bill_paid = new ArrayList<>();
 
-    Billdetails_adapter adapter;
+    RecyclerView recyclerView;
+    ArrayList<billdetail_paid_model> list  = new ArrayList<>();
+    Billdetail_paid_Adapter adapter;
+    double doanhthu ;
+    int i = 0 ;
     @SuppressLint("MissingInflatedId")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -32,25 +37,24 @@ public class Bill_detail_paid extends AppCompatActivity {
         recyclerView = findViewById(R.id.rclbillpaid);
         LinearLayoutManager manager = new LinearLayoutManager(this);
         recyclerView.setLayoutManager(manager);
-        adapter = new Billdetails_adapter(moduleArrayList_bill_paid, this);
+        adapter = new Billdetail_paid_Adapter(list, this);
         recyclerView.setAdapter(adapter);
         recyclerView.setHasFixedSize(true);
-        recyclerView.setNestedScrollingEnabled(false);
-    }
 
-    @Override
-    protected void onStart() {
-        super.onStart();
+        recyclerView.setNestedScrollingEnabled(false);
         FirebaseDatabase database = FirebaseDatabase.getInstance();
         DatabaseReference reference = database.getReference("object_bill_paid");
         reference.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
-                for(DataSnapshot snapshot1 :snapshot.getChildren()){
-                    billdetailmodel billdetailmodel1 = snapshot1.getValue(billdetailmodel.class);
-                    moduleArrayList_bill_paid.add(billdetailmodel1);
+                if(list!=null){
+                    list.clear();
                 }
-                adapter.notifyDataSetChanged();
+                for(DataSnapshot snapshot1 :snapshot.getChildren()){
+                    billdetail_paid_model billdetailmodel1 = snapshot1.getValue(billdetail_paid_model.class);
+                    list.add(billdetailmodel1 );
+                }
+              adapter.notifyDataSetChanged();
             }
 
             @Override
@@ -58,5 +62,13 @@ public class Bill_detail_paid extends AppCompatActivity {
 
             }
         });
+
     }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+
+    }
+
 }

@@ -1,6 +1,6 @@
 package com.fpoly.foodapp.modules;
 
-public class billdetailmodel {
+public class billdetail_paid_model {
     private int id ;
 
     private int madonhang ;
@@ -16,10 +16,10 @@ public class billdetailmodel {
         return madonhang;
     }
 
-    public billdetailmodel() {
+    public billdetail_paid_model() {
     }
 
-    public billdetailmodel(int id, int madonhang, String soluongsanphan, String trangthai, String ngaymua, double tongtiensanpham, double tax, double dalivery, double tongtien) {
+    public billdetail_paid_model(int id, int madonhang, String soluongsanphan, String trangthai, String ngaymua, double tongtiensanpham, double tax, double dalivery, double tongtien) {
         this.id = id;
         this.madonhang = madonhang;
         this.soluongsanphan = soluongsanphan;
@@ -66,6 +66,7 @@ public class billdetailmodel {
     public void setTongtiensanpham(double tongtiensanpham) {
         this.tongtiensanpham = tongtiensanpham;
     }
+
     public double getTax() {
         return tax;
     }
@@ -90,7 +91,7 @@ public class billdetailmodel {
         this.tongtien = tongtien;
     }
 
-    public billdetailmodel(int madonhang, String soluongsanphan, String trangthai, String ngaymua, double tongtiensanpham, double tax, double dalivery, double tongtien) {
+    public billdetail_paid_model(int madonhang, String soluongsanphan, String trangthai, String ngaymua, double tongtiensanpham, double tax, double dalivery, double tongtien) {
         this.madonhang = madonhang;
         this.soluongsanphan = soluongsanphan;
         this.trangthai = trangthai;
