@@ -50,7 +50,7 @@ public class Billdetail_activity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_billdetail);
         RCL = findViewById(R.id.rclbill);
-        LinearLayoutManager manager = new LinearLayoutManager(this, RecyclerView.VERTICAL, false);
+        LinearLayoutManager manager = new LinearLayoutManager(this, RecyclerView.HORIZONTAL, false);
         RCL.setLayoutManager(manager);
         getdata();
 
@@ -76,6 +76,8 @@ public class Billdetail_activity extends AppCompatActivity {
                 for(DataSnapshot snapshot1 :snapshot.getChildren()){
                     billdetail_paid_model billdetailmodel1 = snapshot1.getValue(billdetail_paid_model.class);
                     arrayList.add(billdetailmodel1 );
+                    Collections.reverse(moduleArrayList);
+
                 }
             }
 
@@ -168,6 +170,7 @@ public class Billdetail_activity extends AppCompatActivity {
                 for(DataSnapshot snapshot1 :snapshot.getChildren()){
                     billdetail_paid_model billdetailmodel1 = snapshot1.getValue(billdetail_paid_model.class);
                     arrayList.add(billdetailmodel1 );
+                    Collections.reverse(moduleArrayList);
                 }
             }
 

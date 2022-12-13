@@ -39,8 +39,6 @@ public class Billdetails_adapter extends RecyclerView.Adapter<Billdetails_adapte
     private List<billdetailmodel> list;
     private Context context;
     private ArrayList<billdetail_paid_model> arrayList = new ArrayList<>();
-    Billdetail_paid_Adapter adapter;
-    CartFragment cartFragment = new CartFragment();
 
 
 
@@ -173,7 +171,7 @@ public class Billdetails_adapter extends RecyclerView.Adapter<Billdetails_adapte
 
             }
         });
-        if(list.get(position).getTrangthai().equalsIgnoreCase("Đã thanh toán")){
+        if(list.get(position).getTrangthai().equals("Đã thanh toán")){
             holder.btnthnahtoan.setVisibility(View.GONE);
             holder.txttrangthai.setTextColor(Color.GREEN);
 

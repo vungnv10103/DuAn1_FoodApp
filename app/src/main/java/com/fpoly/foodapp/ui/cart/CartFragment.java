@@ -278,18 +278,6 @@ public class CartFragment extends Fragment {
                             }
                         });
 
-                    FirebaseDatabase database = FirebaseDatabase.getInstance();
-                    DatabaseReference reference = database.getReference("objec_bill");
-                    moduleArrayList.add(new billdetailmodel(id_randum, chuoi, "Chưa thanh toán", date, tongtiensanpham, tax, delivery, total));
-                    reference.setValue(moduleArrayList, new DatabaseReference.CompletionListener() {
-                        @Override
-                        public void onComplete(@Nullable DatabaseError error, @NonNull DatabaseReference ref) {
-                            Toast.makeText(getContext(), "push thanh cong", Toast.LENGTH_SHORT).show();
-                        }
-                    });
-
-
-
                         itemOder.setMadonhang(id_randum);
                         itemOder.setSoluongsanphan(chuoi);
                         itemOder.setCheckStatus(0);

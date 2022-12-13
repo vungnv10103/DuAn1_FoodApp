@@ -187,7 +187,7 @@ public class Fragment_YourDeals extends Fragment {
         voucherSystemDAO = new VoucherSystemDAO(getContext());
         voucherSystemList = (ArrayList<VoucherSystemModule>) voucherSystemDAO.getALL();
         if (voucherSystemList.size() == 0) {
-            Toast.makeText(getContext(), "Voucher tạm hết. Vui lòng quay lại sau !.", Toast.LENGTH_SHORT).show();
+           // Toast.makeText(getContext(), "Voucher tạm hết. Vui lòng quay lại sau !.", Toast.LENGTH_SHORT).show();
         }
 
         dealSystemAdapter = new DealSystemAdapter(getContext(), voucherSystemList);
