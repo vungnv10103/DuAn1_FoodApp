@@ -65,7 +65,9 @@ public class UpdateInfoUserByAdminActivity extends AppCompatActivity {
         int id = pref.getInt("ID",0);
         listUser = (ArrayList<UsersModule>) usersDAO.getALLByEmail(email);
         item = listUser.get(0);
-        imgAvatar.setImageBitmap(convert(item.bitmap));
+        if (!item.bitmap.equals("null")){
+            imgAvatar.setImageBitmap(convert(item.bitmap));
+        }
         edEmail.setText(email);
         edEmail.setEnabled(false);
         edPass.setText(item.pass);
