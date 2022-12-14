@@ -30,8 +30,6 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
 
 public class Billdetail_activity extends AppCompatActivity {
     NetworkChangeListener networkChangeListener = new NetworkChangeListener();
@@ -50,11 +48,10 @@ public class Billdetail_activity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_billdetail);
         RCL = findViewById(R.id.rclbill);
-        LinearLayoutManager manager = new LinearLayoutManager(this, RecyclerView.HORIZONTAL, false);
+        LinearLayoutManager manager = new LinearLayoutManager(this, RecyclerView.VERTICAL, false);
         RCL.setLayoutManager(manager);
-        getdata();
-
         adapter = new Billdetails_adapter(moduleArrayList, this);
+        getdata();
         RCL.setAdapter(adapter);
         RCL.setHasFixedSize(true);
         RCL.setNestedScrollingEnabled(false);
@@ -76,8 +73,6 @@ public class Billdetail_activity extends AppCompatActivity {
                 for(DataSnapshot snapshot1 :snapshot.getChildren()){
                     billdetail_paid_model billdetailmodel1 = snapshot1.getValue(billdetail_paid_model.class);
                     arrayList.add(billdetailmodel1 );
-                    Collections.reverse(moduleArrayList);
-
                 }
             }
 
@@ -107,8 +102,6 @@ public class Billdetail_activity extends AppCompatActivity {
                 for (DataSnapshot snapshot1 : snapshot.getChildren()) {
                     billdetailmodel item = snapshot1.getValue(billdetailmodel.class);
                     moduleArrayList.add(item);
-                    // Đảo thứ tự : mới nhất lên đầu
-                    Collections.reverse(moduleArrayList);
                 }
 
 
@@ -170,7 +163,6 @@ public class Billdetail_activity extends AppCompatActivity {
                 for(DataSnapshot snapshot1 :snapshot.getChildren()){
                     billdetail_paid_model billdetailmodel1 = snapshot1.getValue(billdetail_paid_model.class);
                     arrayList.add(billdetailmodel1 );
-                    Collections.reverse(moduleArrayList);
                 }
             }
 
