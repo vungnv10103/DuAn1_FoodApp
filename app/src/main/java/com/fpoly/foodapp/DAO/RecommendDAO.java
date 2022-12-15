@@ -32,6 +32,7 @@ public class RecommendDAO {
         values.put("name", obj.title);
         values.put("cost", obj.price);
         values.put("idUser", obj.idUser);
+        values.put("mCheck", obj.check);
         values.put("favourite", obj.favourite);
         values.put("description", obj.description);
         values.put("timeDelay", obj.timeDelay);
@@ -73,6 +74,11 @@ public class RecommendDAO {
         List<ItemRecommend> list = getData(sql, name);
         return list.get(0).favourite;
     }
+    public int updateStatus(ItemRecommend obj) {
+        ContentValues values = new ContentValues();
+        values.put("mCheck", obj.check);
+        return db.update("Recommend", values, "id=?", new String[]{String.valueOf(obj.id)});
+    }
 
 
     public int delete(String name) {
@@ -80,17 +86,17 @@ public class RecommendDAO {
     }
 
 
-    public List<ItemRecommend> getALL() {
-        String sql = "SELECT * FROM Recommend";
-        return getData(sql);
+    public List<ItemRecommend> getALL(int check) {
+        String sql = "SELECT * FROM Recommend WHERE mCheck=?";
+        return getData(sql, new String[]{String.valueOf(check)});
     }
     public List<ItemRecommend> getALLFavourite(int favourite){
         String sql = "SELECT * FROM Recommend WHERE favourite=?";
         return getData(sql, String.valueOf(favourite));
     }
-    public List<ItemRecommend> getALLByID(int id){
-        String sql = "SELECT * FROM Recommend WHERE id=?";
-        return getData(sql, String.valueOf(id));
+    public List<ItemRecommend> getALLByID(int id, int check){
+        String sql = "SELECT * FROM Recommend WHERE id=? AND mCheck=?";
+        return getData(sql, new String[]{String.valueOf(id), String.valueOf(check)});
     }
 
 
@@ -102,6 +108,7 @@ public class RecommendDAO {
             ItemRecommend obj = new ItemRecommend();
             obj.id = Integer.parseInt(cursor.getString(cursor.getColumnIndex("id")));
             obj.idUser = Integer.parseInt(cursor.getString(cursor.getColumnIndex("idUser")));
+            obj.check = Integer.parseInt(cursor.getString(cursor.getColumnIndex("mCheck")));
             obj.img_resource = cursor.getString(cursor.getColumnIndex("img"));
             obj.title = cursor.getString(cursor.getColumnIndex("name"));
             obj.price = Double.parseDouble(cursor.getString(cursor.getColumnIndex("cost")));

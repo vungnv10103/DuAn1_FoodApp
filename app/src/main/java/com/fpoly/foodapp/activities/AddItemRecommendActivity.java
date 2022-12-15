@@ -162,6 +162,7 @@ public class AddItemRecommendActivity extends AppCompatActivity {
 
                         item.idUser = idUser;
                         item.img_resource = uri;
+                        item.check = 0;
                         item.title = edName.getText().toString().trim();
                         item.price = Double.parseDouble(edCost.getText().toString().trim());
                         item.favourite = 0;

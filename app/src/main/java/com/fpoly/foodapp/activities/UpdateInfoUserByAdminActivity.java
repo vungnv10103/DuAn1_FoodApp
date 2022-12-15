@@ -47,6 +47,7 @@ public class UpdateInfoUserByAdminActivity extends AppCompatActivity {
     private Button btnSave, btnCancel;
     private TextView tvDelete;
     private ImageView imgAvatar;
+    private String uri_main = "";
 
     String realPath = "";
 
@@ -62,27 +63,37 @@ public class UpdateInfoUserByAdminActivity extends AppCompatActivity {
 
         SharedPreferences pref = getSharedPreferences("INFO_USER", MODE_PRIVATE);
         String email = pref.getString("EMAIL", "");
-        int id = pref.getInt("ID",0);
+
+        int id = pref.getInt("ID", 0);
         listUser = (ArrayList<UsersModule>) usersDAO.getALLByEmail(email);
+//        String feedBack = usersDAO.getFeedback(email);
         item = listUser.get(0);
         imgAvatar.setImageBitmap(convert(item.bitmap));
         edEmail.setText(email);
         edEmail.setEnabled(false);
         edPass.setText(item.pass);
-        if (item.name.equals("null")){
+        if (item.bitmap.equals("null")){
+            imgAvatar.setImageResource(R.drawable.user);
+        }
+        if (item.name.equals("null")) {
             edName.setText("");
-        }else {
+        } else {
             edName.setText(item.name);
         }
-        if (item.phoneNumber.equals("null")){
+        if (item.phoneNumber.equals("null")) {
             edPhone.setText("");
-        }
-        else {
+        } else {
             edPhone.setText(item.phoneNumber);
         }
-
+        if (item.address.equals("null")){
+            edAddress.setText("");
+        }
         edAddress.setText(item.address);
-        edFeedback.setText(item.feedback);
+        if (!(item.feedback.equals("null") || item.feedback.isEmpty())){
+            edFeedback.setText(item.feedback);
+        }
+
+
 
 
         imgAvatar.setOnClickListener(new View.OnClickListener() {
@@ -106,14 +117,13 @@ public class UpdateInfoUserByAdminActivity extends AppCompatActivity {
 
                 if (validate() > 0) {
                     item = new UsersModule();
-                    SharedPreferences pref = getSharedPreferences("URI_IMG", MODE_PRIVATE);
-                    String uri = pref.getString("img", "");
-
-                    if (uri.isEmpty()) {
-                        item.bitmap = listUser.get(0).bitmap;
-                    } else {
-                        item.bitmap = uri;
+                    if (! uri_main.equals("")){
+                        item.bitmap = uri_main;
                     }
+                    else {
+                        item.bitmap = "null";
+                    }
+
                     item.email = edEmail.getText().toString().trim();
                     item.name = edName.getText().toString().trim();
                     item.pass = edPass.getText().toString().trim();
@@ -152,12 +162,12 @@ public class UpdateInfoUserByAdminActivity extends AppCompatActivity {
 
                             public void onClick(DialogInterface dialog, int whichButton) {
                                 item = new UsersModule();
-                                if (usersDAO.delete(id) > 0);{
+                                if (usersDAO.delete(id) > 0) ;
+                                {
                                     Toast.makeText(UpdateInfoUserByAdminActivity.this, "Đã xoá " + edName.getText().toString(), Toast.LENGTH_SHORT).show();
                                     startActivity(new Intent(UpdateInfoUserByAdminActivity.this, ListUserActivity.class));
                                     finishAffinity();
                                 }
-
 
 
                             }
@@ -225,16 +235,13 @@ public class UpdateInfoUserByAdminActivity extends AppCompatActivity {
                                     return;
                                 }
                                 Uri uri = intent.getData();
+                                uri_main = uri +"";
                                 realPath = getRealPathFromURI(uri);
                                 Bitmap bitmap = null;
                                 try {
                                     item = new UsersModule();
                                     bitmap = MediaStore.Images.Media.getBitmap(getApplication().getContentResolver(), uri);
                                     imgAvatar.setImageBitmap(bitmap);
-                                    SharedPreferences pref = getSharedPreferences("URI_IMG", MODE_PRIVATE);
-                                    SharedPreferences.Editor editor = pref.edit();
-                                    editor.putString("img", "" + uri);
-                                    editor.commit();
 
                                 } catch (IOException e) {
                                     e.printStackTrace();

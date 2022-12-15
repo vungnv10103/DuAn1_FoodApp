@@ -105,7 +105,7 @@ public class HomeFragmentNew extends Fragment {
 
 
     EditText edSearch;
-    TextView tvUserName, tvSeeMore;
+    TextView tvUserName, tvSeeMore, tvContent;
     ImageView imgAvatar, imgDeleteSearch;
     static UsersDAO usersDAO;
 
@@ -160,12 +160,19 @@ public class HomeFragmentNew extends Fragment {
         recommendDAO = new RecommendDAO(getContext());
         statisticalDAO = new StatisticalDAO(getContext());
         usersDAO = new UsersDAO(getActivity());
+        tvContent = view.findViewById(R.id.tvContent);
+        tvContent.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+            }
+        });
         imgAvatar = view.findViewById(R.id.imgAvatar);
         imgAvatar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 // code
-                v.getContext().startActivity(new Intent(getContext(), AddItemCategoryActivity.class));
+//                v.getContext().startActivity(new Intent(getContext(), AddItemCategoryActivity.class));
             }
         });
 
@@ -324,7 +331,6 @@ public class HomeFragmentNew extends Fragment {
         }
         categoryAdapter = new ItemCategoryAdapter(getContext(), listCate);
         recyclerCategory.setAdapter(categoryAdapter);
-
         recyclerCategory.setLayoutManager(new LinearLayoutManager(getContext(), RecyclerView.HORIZONTAL, false));
         recyclerCategory.setHasFixedSize(true);
         recyclerCategory.setNestedScrollingEnabled(false);
@@ -334,7 +340,7 @@ public class HomeFragmentNew extends Fragment {
 
     public void listRecommend() {
         ItemRecommend item = new ItemRecommend();
-        listRecommend = (ArrayList<ItemRecommend>) recommendDAO.getALL();
+        listRecommend = (ArrayList<ItemRecommend>) recommendDAO.getALL(0);
         if (listRecommend.size() == 0) {
             SharedPreferences pref1 = getContext().getSharedPreferences("USER_FILE", MODE_PRIVATE);
             String email = pref1.getString("EMAIL", "");
@@ -345,11 +351,12 @@ public class HomeFragmentNew extends Fragment {
             item.title = "Pizza 1";
             item.price = 15.7;
             item.favourite = 0;
+            item.check = 0;
             item.description = "Pizza abc";
             item.location = mLocation;
 
             recommendDAO.insert(item);
-            listRecommend = (ArrayList<ItemRecommend>) recommendDAO.getALL();
+            listRecommend = (ArrayList<ItemRecommend>) recommendDAO.getALL(0);
         }
         recommendAdapterNew = new RecommendAdapterNew(getContext(), listRecommend);
         recyclerViewRecommend.setAdapter(recommendAdapterNew);
@@ -363,15 +370,18 @@ public class HomeFragmentNew extends Fragment {
     private void listRecommendMain() {
         listRecommendNew = new ArrayList<>();
         listItemStatis = (ArrayList<ItemStatisticalRecommend>) statisticalDAO.getTop();
-        for (int i = 0; i < listItemStatis.size(); i++) {
-            listRecommendOld = (ArrayList<ItemRecommend>) recommendDAO.getALLByID(listItemStatis.get(i).idRecommend);
-            listRecommendNew.addAll(listRecommendOld);
+        if (listItemStatis.size() !=0 && listItemStatis !=null){
+            for (int i = 0; i < listItemStatis.size(); i++) {
+                listRecommendOld = (ArrayList<ItemRecommend>) recommendDAO.getALLByID(listItemStatis.get(i).idRecommend, 0);
+                listRecommendNew.addAll(listRecommendOld);
 
-        }
+            }
 //        Log.d("size", listRecommendNew.size() + "");
-        recommendAdapterNew = new RecommendAdapterNew(getContext(), listRecommendNew);
-        recyclerViewRecommendMain.setAdapter(recommendAdapterNew);
-        recyclerViewRecommendMain.setLayoutManager(new LinearLayoutManager(getContext(), RecyclerView.HORIZONTAL, false));
+            recommendAdapterNew = new RecommendAdapterNew(getContext(), listRecommendNew);
+            recyclerViewRecommendMain.setAdapter(recommendAdapterNew);
+            recyclerViewRecommendMain.setLayoutManager(new LinearLayoutManager(getContext(), RecyclerView.HORIZONTAL, false));
+        }
+
 
 
     }
@@ -388,7 +398,7 @@ public class HomeFragmentNew extends Fragment {
     }
 
     private void showMenuAddItemRecommend() {
-        listRecommend = (ArrayList<ItemRecommend>) recommendDAO.getALL();
+        listRecommend = (ArrayList<ItemRecommend>) recommendDAO.getALL(0);
         recommendAdapterNew = new RecommendAdapterNew(getContext(), listRecommend);
         addRecommend.add(new AddRecommendModule(R.drawable.plus_circle));
         addRecommendedItemAdapter = new AddRecommendedItemAdapter(getContext(), addRecommend);

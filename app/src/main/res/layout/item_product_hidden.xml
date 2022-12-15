@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="wrap_content"
+    android:elevation="3dp"
+    android:layout_marginStart="25dp"
+    android:layout_marginTop="8dp"
+    android:layout_height="200dp"
+    android:background="@drawable/recommended_btg">
+
+    <TextView
+        android:id="@+id/tvPrice"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text=" 0.0"
+        android:textColor="#373b54"
+        android:textSize="18dp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="@+id/tvIcon"
+        app:layout_constraintEnd_toStartOf="@+id/tvIcon"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="@+id/imgRecommended"
+        app:layout_constraintTop_toTopOf="@+id/tvIcon" />
+
+    <TextView
+        android:id="@+id/tvIcon"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="8dp"
+        android:text="$"
+        android:textColor="#373b54"
+        android:textSize="18sp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toStartOf="@+id/imgAdd"
+        app:layout_constraintTop_toBottomOf="@+id/tvTitleRecommended" />
+
+    <de.hdodenhof.circleimageview.CircleImageView
+
+        android:id="@+id/imgRecommended"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="16dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/burger" />
+
+
+    <ImageView
+        android:id="@+id/imgFavourite"
+        android:tag="default"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="4dp"
+        android:layout_marginBottom="8dp"
+        android:src="@drawable/ic_baseline_favorite_border_24"
+        app:layout_constraintBottom_toTopOf="@+id/imgAdd"
+        app:layout_constraintEnd_toEndOf="parent" />
+
+    <TextView
+        android:id="@+id/tvTitleRecommended"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Title"
+        android:layout_marginTop="8dp"
+        android:textColor="#373b54"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="@+id/imgRecommended"
+        app:layout_constraintStart_toStartOf="@+id/imgRecommended"
+        app:layout_constraintTop_toBottomOf="@+id/imgRecommended" />
+
+    <ImageView
+        android:id="@+id/imgAdd"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="12dp"
+        app:layout_constraintEnd_toEndOf="@+id/imgRecommended"
+        app:layout_constraintTop_toBottomOf="@+id/tvTitleRecommended"
+        app:srcCompat="@drawable/plus_circle" />
+</androidx.constraintlayout.widget.ConstraintLayout>

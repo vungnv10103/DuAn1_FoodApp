@@ -1,12 +1,12 @@
 package com.fpoly.foodapp.activities;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 
 import android.Manifest;
-import android.app.ProgressDialog;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.SharedPreferences;
@@ -45,20 +45,22 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
+import dmax.dialog.SpotsDialog;
+
 public class LoginActivity extends AppCompatActivity {
     EditText edPass;
     TextView tvTitleApp;
     Button btnLogin;
     //    ImageView imgShowHidePwd, imgDropDownAcc;
     private CheckBox chbRemember;
-    private ProgressDialog progressDialog;
+
     static UsersDAO usersDAO;
     UsersModule item;
     ArrayList<UsersModule> list;
 
     NetworkChangeListener networkChangeListener = new NetworkChangeListener();
     boolean doubleBackToExitPressedOnce = false;
-
+    SpotsDialog progressDialog;
     FusedLocationProviderClient fusedLocationProviderClient;
     private final static int REQUEST_CODE = 100;
     String mLocation = "";
@@ -73,9 +75,11 @@ public class LoginActivity extends AppCompatActivity {
         setContentView(R.layout.activity_login);
 
         init();
+        progressDialog = new SpotsDialog(LoginActivity.this, R.style.Custom);
+
+
         usersDAO = new UsersDAO(getApplicationContext());
         list = (ArrayList<UsersModule>) usersDAO.getALL();
-
 
 
         String[] listUser = new String[list.size()];
@@ -131,11 +135,10 @@ public class LoginActivity extends AppCompatActivity {
                     FirebaseAuth auth = FirebaseAuth.getInstance();
 
                     progressDialog.show();
-                    progressDialog.setTitle("Loadingggg");
                     progressDialog.setCancelable(false);
                     auth.signInWithEmailAndPassword(email, pass)
                             .addOnCompleteListener(LoginActivity.this, new OnCompleteListener<AuthResult>() {
-                                  @Override
+                                @Override
                                 public void onComplete(@NonNull Task<AuthResult> task) {
                                     int temp = 0;
 
@@ -164,7 +167,7 @@ public class LoginActivity extends AppCompatActivity {
                                                 Intent intent = new Intent(LoginActivity.this, AdminActivity.class);
                                                 startActivity(intent);
                                                 finishAffinity();
-                                            }else {
+                                            } else {
                                                 if (usersDAO.insert(item) > 0) {
                                                     // thêm lần đầu
 //                                                    Toast.makeText(getApplicationContext(), "Success.", Toast.LENGTH_SHORT).show();
@@ -249,7 +252,6 @@ public class LoginActivity extends AppCompatActivity {
         edPass = findViewById(R.id.edPass);
         btnLogin = findViewById(R.id.btnSignIn);
 //        imgShowHidePwd = findViewById(R.id.img_show_hide_pwd);
-        progressDialog = new ProgressDialog(this);
         fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(this);
     }
 

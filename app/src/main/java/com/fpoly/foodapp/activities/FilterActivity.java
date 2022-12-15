@@ -50,7 +50,7 @@ public class FilterActivity extends AppCompatActivity implements NavigationView.
         toggle.syncState();
         recommendDAO = new RecommendDAO(this);
 
-        list = recommendDAO.getALL();
+        list = recommendDAO.getALL(0);
         recommendAdapterNew = new RecommendAdapterNew(this , list);
         edtSeach = findViewById(R.id.edFilter);
         imgDelete = findViewById(R.id.imgDeleteFilter);
@@ -130,7 +130,7 @@ public class FilterActivity extends AppCompatActivity implements NavigationView.
     }
     public void listRecommend() {
         ItemRecommend item = new ItemRecommend();
-        list = (ArrayList<ItemRecommend>) recommendDAO.getALL();
+        list = (ArrayList<ItemRecommend>) recommendDAO.getALL(0);
         recommendAdapterNew = new RecommendAdapterNew(FilterActivity.this, list);
         recyclerViewRecommend.setAdapter(recommendAdapterNew);
 

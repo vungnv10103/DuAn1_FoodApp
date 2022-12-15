@@ -153,11 +153,21 @@
         android:id="@+id/btnDeleteItemRecommend"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="30dp"
+        android:layout_marginTop="36dp"
         android:text="Xoá"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.498"
+        app:layout_constraintHorizontal_bias="0.934"
         app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/btnCancelDetail" />
+
+    <Button
+        android:id="@+id/btnHide"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="36dp"
+        android:layout_marginEnd="44dp"
+        android:text="Ẩn khỏi gian hàng"
+        app:layout_constraintEnd_toStartOf="@+id/btnDeleteItemRecommend"
         app:layout_constraintTop_toBottomOf="@+id/btnCancelDetail" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

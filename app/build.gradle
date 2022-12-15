@@ -7,6 +7,10 @@ android {
     namespace 'com.fpoly.foodapp'
     compileSdk 32
 
+    repositories {
+        jcenter()
+    }
+
     defaultConfig {
         applicationId "com.fpoly.foodapp"
         minSdk 21
@@ -22,6 +26,7 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
     }
+
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
@@ -33,6 +38,9 @@ android {
 
 
 dependencies {
+
+    // custom progress dialog
+    implementation 'com.github.d-max:spots-dialog:0.7@aar'
 
     implementation 'com.google.android.gms:play-services-location:19.0.1'
 

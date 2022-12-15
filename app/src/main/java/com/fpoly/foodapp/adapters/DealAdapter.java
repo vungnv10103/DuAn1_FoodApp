@@ -6,6 +6,7 @@ import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -20,6 +21,8 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.fpoly.foodapp.DAO.VoucherDAO;
 import com.fpoly.foodapp.R;
 import com.fpoly.foodapp.activities.MainActivity;
+import com.fpoly.foodapp.activities.PaymentActivity;
+import com.fpoly.foodapp.activities.ShowDetailActivity;
 import com.fpoly.foodapp.modules.VoucherModule;
 
 import java.text.ParseException;
@@ -31,6 +34,7 @@ public class DealAdapter extends RecyclerView.Adapter<DealAdapter.ViewHolder> {
     private Context context;
     private List<VoucherModule> voucherList;
     static VoucherDAO voucherDAO;
+    PaymentActivity paymentActivity;
 
     public DealAdapter(Context context, List<VoucherModule> voucherList) {
         this.context = context;
@@ -64,9 +68,19 @@ public class DealAdapter extends RecyclerView.Adapter<DealAdapter.ViewHolder> {
                     if (date.after(dateCurrent)) {
                         rememberVoucher(newOb.id, newOb.discount, newOb.voucherDeadline);
                         if (voucherDAO.delete(newOb.id) > 0) {
+                            paymentActivity = new PaymentActivity();
                             voucherList.remove(position);
                             notifyDataSetChanged();
                             Toast.makeText(context, "Đã dùng !", Toast.LENGTH_SHORT).show();
+                            Intent intent = new Intent(context, PaymentActivity.class);
+                            context.startActivity(intent);
+                            Intent intent1 = new Intent(context, PaymentActivity.class);
+                            Bundle bundle = new Bundle();
+                            bundle.putInt("value", newOb.discount);
+                            intent1.putExtra("discount", bundle);
+                            paymentActivity.check = 1;
+                            context.startActivity(intent1);
+
                         }
                     }
                     else {

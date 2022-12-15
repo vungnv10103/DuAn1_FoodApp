@@ -34,7 +34,6 @@ public class SettingActivity extends AppCompatActivity {
     TextView btnChangePass, setting_Edit_Profile;
     static UsersDAO usersDAO;
     UsersModule item;
-    ProgressDialog progressDialog;
 
     NetworkChangeListener networkChangeListener = new NetworkChangeListener();
 
@@ -47,7 +46,6 @@ public class SettingActivity extends AppCompatActivity {
 
         SharedPreferences pref = getApplication().getSharedPreferences("USER_FILE", MODE_PRIVATE);
         String email = pref.getString("EMAIL", "");
-        progressDialog = new ProgressDialog(SettingActivity.this);
         btnChangePass = findViewById(R.id.setting_Edit_Pass);
         setting_Edit_Profile = findViewById(R.id.setting_Edit_Profile);
         setting_Edit_Profile.setOnClickListener(new View.OnClickListener() {
@@ -59,6 +57,13 @@ public class SettingActivity extends AppCompatActivity {
 
                 Dialog dialog = new Dialog(v.getContext());
                 dialog.setContentView(R.layout.profile_detail);
+                WindowManager.LayoutParams lp = new WindowManager.LayoutParams();
+                lp.copyFrom(dialog.getWindow().getAttributes());
+                lp.width = WindowManager.LayoutParams.MATCH_PARENT;
+                lp.height = WindowManager.LayoutParams.WRAP_CONTENT;
+
+                dialog.getWindow().setAttributes(lp);
+                dialog.show();
 
                 imgPhoto = dialog.findViewById(R.id.imgProfileEdit);
                 edFullName = dialog.findViewById(R.id.edEditName);
@@ -110,11 +115,10 @@ public class SettingActivity extends AppCompatActivity {
                             item.name = fullName;
                             item.phoneNumber = phoneNumber;
                             item.address = address;
-                            progressDialog.show();
                             if (usersDAO.updateProfile(item) > 0) {
-
                                 Toast.makeText(getApplicationContext(), "Update Success !", Toast.LENGTH_SHORT).show();
                                 dialog.dismiss();
+                                onBackPressed();
                             }
                         }
 
@@ -122,13 +126,7 @@ public class SettingActivity extends AppCompatActivity {
                     }
                 });
 
-                WindowManager.LayoutParams lp = new WindowManager.LayoutParams();
-                lp.copyFrom(dialog.getWindow().getAttributes());
-                lp.width = WindowManager.LayoutParams.MATCH_PARENT;
-                lp.height = WindowManager.LayoutParams.WRAP_CONTENT;
 
-                dialog.getWindow().setAttributes(lp);
-                dialog.show();
             }
         });
 

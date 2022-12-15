@@ -1,6 +1,6 @@
 package com.fpoly.foodapp.modules;
 
-public class CartItemModule {
+public class CartSystemModule {
     public int id;
     public int idRecommend;
     public String img;
@@ -10,7 +10,7 @@ public class CartItemModule {
     public int idUser;
     public int quantities;
 
-    public CartItemModule(int id, int idRecommend, String img, int idUser, int check, String name, Double cost, int quantities) {
+    public CartSystemModule(int id, int idRecommend, String img, int idUser, int check, String name, Double cost, int quantities) {
         this.id = id;
         this.idRecommend = idRecommend;
         this.img = img;
@@ -22,6 +22,6 @@ public class CartItemModule {
     }
 
 
-    public CartItemModule() {
+    public CartSystemModule() {
     }
 }

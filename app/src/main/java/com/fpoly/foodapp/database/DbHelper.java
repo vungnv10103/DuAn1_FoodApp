@@ -24,8 +24,31 @@ public class DbHelper extends SQLiteOpenHelper {
                 "cost REAL not null," +
                 "idUser INTEGER REFERENCES User(id)," +
                 "idRecommend INTEGER REFERENCES Recommend(id)," +
+                "img TEXT REFERENCES Recommend(img)," +
                 "quantities INTEGER not null)";
         db.execSQL(createTableItemCart);
+
+        String createTableSystemCart = "create table SystemCart(" +
+                "id INTEGER PRIMARY KEY AUTOINCREMENT," +
+                "mCheck INTEGER not null," +
+                "name TEXT not null," +
+                "cost REAL not null," +
+                "idUser INTEGER REFERENCES User(id)," +
+                "idRecommend INTEGER REFERENCES Recommend(id)," +
+                "img TEXT REFERENCES Recommend(img)," +
+                "quantities INTEGER not null)";
+        db.execSQL(createTableSystemCart);
+
+        String createTableCartTemp = "create table CartTemp(" +
+                "id INTEGER PRIMARY KEY AUTOINCREMENT," +
+                "mCheck INTEGER not null," +
+                "name TEXT not null," +
+                "cost REAL not null," +
+                "idUser INTEGER REFERENCES User(id)," +
+                "idRecommend INTEGER REFERENCES Recommend(id)," +
+                "img TEXT REFERENCES Recommend(img)," +
+                "quantities INTEGER not null)";
+        db.execSQL(createTableCartTemp);
 
         String createTableUser = "create table User(" +
                 "id INTEGER PRIMARY KEY AUTOINCREMENT," +
@@ -72,6 +95,7 @@ public class DbHelper extends SQLiteOpenHelper {
                 "id INTEGER PRIMARY KEY AUTOINCREMENT," +
                 "img TEXT not null," +
                 "favourite INTEGER not null," +
+                "mCheck INTEGER not null," +
                 "name TEXT not null," +
                 "idUser INTEGER REFERENCES User(id)," +
                 "location TEXT not null," +
@@ -105,6 +129,10 @@ public class DbHelper extends SQLiteOpenHelper {
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
         String dropTableItemCart = "drop table if exists ItemCart";
         db.execSQL(dropTableItemCart);
+        String dropTableSystemCart = "drop table if exists SystemCart";
+        db.execSQL(dropTableSystemCart);
+        String dropTableCartTemp = "drop table if exists CartTemp";
+        db.execSQL(dropTableCartTemp);
         String dropTableUser = "drop table if exists User";
         db.execSQL(dropTableUser);
         String dropTableVoucher = "drop table if exists Voucher";

@@ -119,7 +119,7 @@
                         android:layout_height="43dp"
                         android:layout_marginLeft="10dp"
                         android:layout_marginRight="20dp"
-                        android:src="@drawable/ic_baseline_assignment_24" />
+                        android:src="@drawable/ic_baseline_assignment_orange_24" />
 
                     <TextView
                         android:layout_width="wrap_content"
