@@ -246,7 +246,6 @@ public class AccountManagerFragment extends Fragment {
     }
 
     public void getSetOtherData(String email) {
-
         usersDAO = new UsersDAO(getActivity());
         list = (ArrayList<UsersModule>) usersDAO.getALL();
         if (list.size() == 0) {
@@ -272,15 +271,14 @@ public class AccountManagerFragment extends Fragment {
         editor.putString("name", usersDAO.getNameUser(email));
         // lưu lại
         editor.commit();
-
-
     }
-//    public void rememberImg(Uri uri) {
-//        SharedPreferences pref = getActivity().getSharedPreferences("USER_FILE", MODE_PRIVATE);
-//        SharedPreferences.Editor editor = pref.edit();
-//        // lưu dữ liệu
-//        editor.putString("IMG", uri.toString());
-//        // lưu lại
-//        editor.commit();
-//    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        SharedPreferences pref = getActivity().getSharedPreferences("USER_FILE", MODE_PRIVATE);
+        String email = pref.getString("EMAIL", "");
+        getSetOtherData(email);
+    }
 }
+

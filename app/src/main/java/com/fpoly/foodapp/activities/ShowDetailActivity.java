@@ -125,8 +125,11 @@ public class ShowDetailActivity extends AppCompatActivity {
                 item.idRecommend = idProduct;
                 item.img = recommendDAO.getUriImg(title);
                 item.check = 0;
+                item.checkSelected = 0;
                 item.name = title;
                 item.cost = cost_total;
+                item.costNew = 0.0;
+                item.quantitiesNew = 0;
                 item.quantities = quanti;
 
                 // insert to system cart
@@ -134,8 +137,11 @@ public class ShowDetailActivity extends AppCompatActivity {
                 itemCartSystem.idRecommend = idProduct;
                 itemCartSystem.img = recommendDAO.getUriImg(title);
                 itemCartSystem.check = 0;
+                itemCartSystem.checkSelected = 0;
                 itemCartSystem.name = title;
                 itemCartSystem.cost = cost_total;
+                itemCartSystem.costNew = 0.0;
+                itemCartSystem.quantitiesNew = 0;
                 itemCartSystem.quantities = quanti;
                 if (CartItemDAO.insert(item) > 0) {
                     Toast.makeText(getApplicationContext(), "Đã thêm vào giỏ hàng.", Toast.LENGTH_SHORT).show();

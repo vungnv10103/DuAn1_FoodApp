@@ -20,33 +20,42 @@ public class DbHelper extends SQLiteOpenHelper {
         String createTableItemCart = "create table ItemCart(" +
                 "id INTEGER PRIMARY KEY AUTOINCREMENT," +
                 "mCheck INTEGER not null," +
+                "checkSelected INTEGER not null," +
                 "name TEXT not null," +
                 "cost REAL not null," +
+                "newCost REAL not null," +
                 "idUser INTEGER REFERENCES User(id)," +
                 "idRecommend INTEGER REFERENCES Recommend(id)," +
                 "img TEXT REFERENCES Recommend(img)," +
+                "quantitiesNew INTEGER not null," +
                 "quantities INTEGER not null)";
         db.execSQL(createTableItemCart);
 
         String createTableSystemCart = "create table SystemCart(" +
                 "id INTEGER PRIMARY KEY AUTOINCREMENT," +
                 "mCheck INTEGER not null," +
+                "checkSelected INTEGER not null," +
                 "name TEXT not null," +
                 "cost REAL not null," +
+                "newCost REAL not null," +
                 "idUser INTEGER REFERENCES User(id)," +
                 "idRecommend INTEGER REFERENCES Recommend(id)," +
                 "img TEXT REFERENCES Recommend(img)," +
+                "quantitiesNew INTEGER not null," +
                 "quantities INTEGER not null)";
         db.execSQL(createTableSystemCart);
 
         String createTableCartTemp = "create table CartTemp(" +
                 "id INTEGER PRIMARY KEY AUTOINCREMENT," +
                 "mCheck INTEGER not null," +
+                "checkSelected INTEGER not null," +
                 "name TEXT not null," +
                 "cost REAL not null," +
+                "newCost REAL not null," +
                 "idUser INTEGER REFERENCES User(id)," +
                 "idRecommend INTEGER REFERENCES Recommend(id)," +
                 "img TEXT REFERENCES Recommend(img)," +
+                "quantitiesNew INTEGER not null," +
                 "quantities INTEGER not null)";
         db.execSQL(createTableCartTemp);
 
@@ -121,6 +130,14 @@ public class DbHelper extends SQLiteOpenHelper {
                 "totalOder REAL not null)";
         db.execSQL(createTableOder);
 
+        String createTableLocation = "create table Location(" +
+                "id INTEGER PRIMARY KEY AUTOINCREMENT," +
+                "name TEXT not null," +
+                "email TEXT REFERENCES User(email)," +
+                "phone TEXT not null," +
+                "location TEXT not null)";
+        db.execSQL(createTableLocation);
+
 
 
     }
@@ -147,6 +164,8 @@ public class DbHelper extends SQLiteOpenHelper {
         db.execSQL(dropTableRecommend);
         String dropTableOder = "drop table if exists Oder";
         db.execSQL(dropTableOder);
+        String dropTableOLocation = "drop table if exists Location";
+        db.execSQL(dropTableOLocation);
 
         onCreate(db);
 

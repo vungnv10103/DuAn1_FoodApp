@@ -5,7 +5,6 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.annotation.SuppressLint;
-import android.app.ProgressDialog;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.SharedPreferences;
@@ -19,7 +18,6 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Toast;
 
-import com.fpoly.foodapp.Admin.AdminActivity;
 import com.fpoly.foodapp.DAO.UsersDAO;
 import com.fpoly.foodapp.R;
 import com.fpoly.foodapp.Utility.NetworkChangeListener;
@@ -28,8 +26,6 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.auth.UserInfo;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -44,7 +40,6 @@ public class RegisterActivity extends AppCompatActivity {
     public FirebaseAuth auth = FirebaseAuth.getInstance();
     public int dem = auth.getCurrentUser().getProviderData().size();
      int count = 24;
-    private ProgressDialog progressDialog;
     UsersModule item;
     static UsersDAO usersDAO;
 
@@ -64,7 +59,6 @@ public class RegisterActivity extends AppCompatActivity {
         edConfirmPass = findViewById(R.id.edConfirmPass);
         imgShowHidePwd = findViewById(R.id.img_show_hide_pwd);
         imgShowConfirmPass = findViewById(R.id.img_show_hide_confirm_pwd);
-        progressDialog = new ProgressDialog(this);
         usersDAO = new UsersDAO(getApplicationContext());
 
 

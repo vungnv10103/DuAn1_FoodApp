@@ -7,15 +7,27 @@
     android:orientation="vertical"
     android:background="@drawable/background_intro"
     tools:context=".activities.OrderHistoryActivity">
-    <TextView
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:textAlignment="center"
-        android:textSize="26sp"
-        android:fontFamily="@font/amita"
-        android:textStyle="bold"
-        android:textColor="@color/white"
-        android:text="Lịch sử Đơn hàng"/>
+        android:orientation="horizontal">
+        <ImageView
+            android:id="@+id/imgBackPay"
+            android:layout_marginStart="5dp"
+            android:layout_marginTop="15dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/back"/>
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textAlignment="center"
+            android:textSize="26sp"
+            android:fontFamily="@font/amita"
+            android:textStyle="bold"
+            android:textColor="@color/white"
+            android:text="Lịch sử Đơn hàng"/>
+    </LinearLayout>
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rcvOderHistory"

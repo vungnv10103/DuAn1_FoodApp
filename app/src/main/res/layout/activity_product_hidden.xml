@@ -18,6 +18,11 @@
         android:textColor="@color/white"
         android:textSize="26sp"
         android:textStyle="bold" />
+<!--    <GridView-->
+<!--        android:id="@+id/rcvProductHidden"-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:numColumns="2"-->
+<!--        android:layout_height="match_parent"/>-->
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rcvProductHidden"

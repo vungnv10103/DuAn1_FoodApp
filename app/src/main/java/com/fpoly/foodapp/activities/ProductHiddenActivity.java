@@ -23,6 +23,10 @@ public class ProductHiddenActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_product_hidden);
+
+//        gridView = view.findViewById(R.id.grView);
+//        gridAdapter = new GridAdapter(getActivity(), R.layout.layout_item, logoObjects);
+//        gridView.setAdapter(gridAdapter);
         rcvProductHidden = findViewById(R.id.rcvProductHidden);
         recommendDAO = new RecommendDAO(getApplicationContext());
         listProduct = recommendDAO.getALL(1);

@@ -25,9 +25,12 @@ public class CartItemDAO {
         values.put("idUser", obj.idUser);
         values.put("img", obj.img);
         values.put("mCheck", obj.check);
+        values.put("checkSelected", obj.checkSelected);
         values.put("name", obj.name);
         values.put("cost", obj.cost);
+        values.put("newCost", obj.costNew);
         values.put("idRecommend", obj.idRecommend);
+        values.put("quantitiesNew", obj.quantitiesNew);
         values.put("quantities", obj.quantities);
 
         return db.insert("ItemCart", null, values);
@@ -35,6 +38,9 @@ public class CartItemDAO {
 
     public int delete(int id) {
         return db.delete("ItemCart", "id=?", new String[]{String.valueOf(id)});
+    }
+    public int deleteSelected(int checkSelected) {
+        return db.delete("ItemCart", "checkSelected=?", new String[]{String.valueOf(checkSelected)});
     }
 
     public int deleteAllByName(String name) {
@@ -46,10 +52,12 @@ public class CartItemDAO {
         values.put("mCheck", obj.check);
         return db.update("ItemCart", values, "name=?", new String[]{obj.name});
     }
+    public int updateSelected(CartItemModule obj) {
+        ContentValues values = new ContentValues();
+        values.put("checkSelected", obj.checkSelected);
+        return db.update("ItemCart", values, "name=?", new String[]{obj.name});
+    }
 
-    //    public int quant(){
-//
-//    }
     public ArrayList<CartItemModule> deleteCurrentCart() {
         String sql = "delete from ItemCart";
         db.execSQL(sql);
@@ -62,12 +70,13 @@ public class CartItemDAO {
     }
 
     public List<CartItemModule> getALLPro(int idUser) {
-        String sql = "SELECT id,mCheck,idUser, idRecommend, name,img, sum(quantities) AS TotalQuantity, sum(cost) as TotalPrice FROM ItemCart WHERE idUser=? GROUP BY idRecommend ORDER By id DESC";
+        String sql = "SELECT id,mCheck,checkSelected,idUser, idRecommend, name,img,newCost,quantitiesNew, sum(quantities) AS TotalQuantity, sum(cost) as TotalPrice FROM ItemCart WHERE idUser=? GROUP BY idRecommend ORDER By id DESC";
         return getDataPro(sql, String.valueOf(idUser));
     }
 
+    // sp remove
     public List<CartItemModule> getALLSelected(int check) {
-        String sql = "SELECT id,mCheck,idUser, idRecommend, name,img, sum(quantities) AS TotalQuantity, sum(cost) as TotalPrice FROM ItemCart WHERE mCheck=? GROUP BY idRecommend ORDER By id DESC ";
+        String sql = "SELECT id,mCheck,checkSelected,idUser, idRecommend, name,img,newCost,quantitiesNew, sum(quantities) AS TotalQuantity, sum(cost) as TotalPrice FROM ItemCart WHERE mCheck=? GROUP BY idRecommend ORDER By id DESC ";
         return getDataPro(sql, String.valueOf(check));
     }
 
@@ -82,8 +91,11 @@ public class CartItemDAO {
             obj.idRecommend = Integer.parseInt(cursor.getString(cursor.getColumnIndex("idRecommend")));
             obj.img = cursor.getString(cursor.getColumnIndex("img"));
             obj.check = Integer.parseInt(cursor.getString(cursor.getColumnIndex("mCheck")));
+            obj.checkSelected = Integer.parseInt(cursor.getString(cursor.getColumnIndex("checkSelected")));
             obj.name = cursor.getString(cursor.getColumnIndex("name"));
             obj.cost = Double.valueOf(cursor.getString(cursor.getColumnIndex("cost")));
+            obj.costNew = Double.valueOf(cursor.getString(cursor.getColumnIndex("newCost")));
+            obj.quantitiesNew = Integer.parseInt(cursor.getString(cursor.getColumnIndex("quantitiesNew")));
             obj.quantities = Integer.parseInt(cursor.getString(cursor.getColumnIndex("quantities")));
             list.add(obj);
         }
@@ -101,8 +113,11 @@ public class CartItemDAO {
             obj.idRecommend = Integer.parseInt(cursor.getString(cursor.getColumnIndex("idRecommend")));
             obj.img = cursor.getString(cursor.getColumnIndex("img"));
             obj.check = Integer.parseInt(cursor.getString(cursor.getColumnIndex("mCheck")));
+            obj.checkSelected = Integer.parseInt(cursor.getString(cursor.getColumnIndex("checkSelected")));
             obj.name = cursor.getString(cursor.getColumnIndex("name"));
             obj.cost = Double.valueOf(cursor.getString(cursor.getColumnIndex("TotalPrice")));
+            obj.costNew = Double.valueOf(cursor.getString(cursor.getColumnIndex("newCost")));
+            obj.quantitiesNew = Integer.parseInt(cursor.getString(cursor.getColumnIndex("quantitiesNew")));
             obj.quantities = Integer.parseInt(cursor.getString(cursor.getColumnIndex("TotalQuantity")));
             list.add(obj);
         }

@@ -4,6 +4,8 @@ import static android.content.Context.MODE_PRIVATE;
 
 import android.annotation.SuppressLint;
 import android.app.Dialog;
+import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Color;
@@ -12,6 +14,7 @@ import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AlertDialog;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.ItemTouchHelper;
@@ -32,7 +35,10 @@ import com.fpoly.foodapp.DAO.UsersDAO;
 import com.fpoly.foodapp.DAO.CartItemDAO;
 import com.fpoly.foodapp.R;
 import com.fpoly.foodapp.activities.DealsActivity;
+import com.fpoly.foodapp.activities.MainActivity;
 import com.fpoly.foodapp.activities.PaymentActivity;
+import com.fpoly.foodapp.activities.UpdateItemRecommendActivity;
+import com.fpoly.foodapp.activities.UserUpdateInfoActivity;
 import com.fpoly.foodapp.adapters.Billdetails_adapter;
 import com.fpoly.foodapp.adapters.CartItemAdapter;
 import com.fpoly.foodapp.modules.CartItemModule;
@@ -65,8 +71,6 @@ public class CartFragment extends Fragment {
     static UsersDAO usersDAO;
     UsersModule itemUser;
     ArrayList<UsersModule> listUser;
-    int temp = 0;
-    int temp2 = 0;
     public String date;
     private String chuoi = "";
     Billdetails_adapter adapter;
@@ -264,52 +268,6 @@ public class CartFragment extends Fragment {
                         Toast.makeText(getContext(), "Chưa có sản phẩm", Toast.LENGTH_SHORT).show();
                     } else {
                         if (checkInfo() > 0) {
-                            listOder = new ArrayList<>();
-                            itemOder = new OderHistoryModel();
-                            Random random = new Random();
-                            int id_randum = random.nextInt();
-                            if (id_randum < 0) {
-                                id_randum *= -1;
-                            }
-                            double tongtiensanpham = total();
-                            double tax = tongtiensanpham * 0.1;
-                            double delivery = tongtiensanpham * 0.05;
-                            double total = tongtiensanpham + tongtiensanpham * 0.1 + tongtiensanpham * 0.05 - coupon;
-
-                            FirebaseDatabase database = FirebaseDatabase.getInstance();
-                            DatabaseReference reference = database.getReference("objec_bill");
-                            moduleArrayList.add(new billdetailmodel(id_randum, chuoi, "Chưa thanh toán", date, tongtiensanpham, tax, delivery, total));
-                            reference.setValue(moduleArrayList, new DatabaseReference.CompletionListener() {
-                                @Override
-                                public void onComplete(@Nullable DatabaseError error, @NonNull DatabaseReference ref) {
-                                    Log.d(TAG, "onComplete: " + "push success to firebase");
-                                }
-                            });
-
-                            itemOder.setMadonhang(id_randum);
-                            itemOder.setSoluongsanphan(chuoi);
-                            itemOder.setCheckStatus(0);
-                            itemOder.setTrangthai("Chưa thanh toán");
-                            itemOder.setIdUser(usersDAO.getIDUser(email));
-                            itemOder.setNgaymua(date);
-                            itemOder.setTongtien(total);
-                            itemOder.setTongtiensanpham(tongtiensanpham);
-                            itemOder.setTax(tax);
-                            itemOder.setDalivery(delivery);
-                            if (oderDAO.insert(itemOder) > 0) {
-                                Log.d(TAG, "onClick: " + "save data success");
-                            }
-                            if (oderDAO.getALL().size() > 0) {
-                                FirebaseDatabase database1 = FirebaseDatabase.getInstance();
-                                DatabaseReference reference1 = database1.getReference("objec_bill");
-                                listOder = (ArrayList<OderHistoryModel>) oderDAO.getALL();
-                                reference1.setValue(listOder, new DatabaseReference.CompletionListener() {
-                                    @Override
-                                    public void onComplete(@Nullable DatabaseError error, @NonNull DatabaseReference ref) {
-                                        Toast.makeText(getContext(), "Đặt hàng thành công !", Toast.LENGTH_SHORT).show();
-                                    }
-                                });
-                            }
                             startActivity(new Intent(getContext(), PaymentActivity.class));
                         }
                     }
@@ -329,8 +287,18 @@ public class CartFragment extends Fragment {
         String address = itemUser.address;
 
         if (name.equals("null") || phoneNumber.equals("null") || address.equals("null")) {
-            Toast.makeText(getContext(), "Vui đòng nhập đủ thông tin trước khi mua hàng !", Toast.LENGTH_SHORT).show();
-            check = -1;
+            new AlertDialog.Builder(getContext())
+                    .setTitle("Warning")
+                    .setMessage("Để mua hàng bạn cần cập nhật đầy đủ thông tin tài khoản ?")
+                    .setIcon(R.drawable.ic_baseline_warning_24)
+                    .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int whichButton) {
+                            startActivity(new Intent(getContext(), UserUpdateInfoActivity.class));
+                        }
+                    })
+                    .setNegativeButton(android.R.string.no, null)
+                    .setCancelable(false)
+                    .show();
         } else {
             check = 1;
         }
@@ -339,9 +307,15 @@ public class CartFragment extends Fragment {
 
     }
 
+
+
+
     @Override
     public void onStart() {
         super.onStart();
+//        SharedPreferences pref = getContext().getSharedPreferences("CheckSelected", MODE_PRIVATE);
+//        String name = pref.getString("name", "");
+//        Toast.makeText(getContext(), "name: " + name, Toast.LENGTH_SHORT).show();
 
 //        getdata();
         for (int i = 0; i < listCartItem.size(); i++) {

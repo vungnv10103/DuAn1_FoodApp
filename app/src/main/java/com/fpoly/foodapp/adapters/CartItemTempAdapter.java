@@ -35,7 +35,7 @@ public class CartItemTempAdapter extends RecyclerView.Adapter<CartItemTempAdapte
     private List<CartTempModule> list;
     private Context context;
     static CartItemTempDAO cartItemTempDAO;
-
+    CartTempModule itemCartTemp;
     static UsersDAO usersDAO;
     static RecommendDAO recommendDAO;
     private static final String TAG = "test";
@@ -58,33 +58,50 @@ public class CartItemTempAdapter extends RecyclerView.Adapter<CartItemTempAdapte
         recommendDAO = new RecommendDAO(context);
         usersDAO = new UsersDAO(context);
         String uri = list.get(position).img;
-        if (!(uri.isEmpty() || uri.equals("null"))){
+        if (!(uri.isEmpty() || uri.equals("null"))) {
             holder.imgAvatar.setImageBitmap(convert(uri));
         }
 
         holder.tvName.setText(list.get(position).name);
-        holder.tvCost.setText("Giá: " + list.get(position).cost/list.get(position).quantities);
+        holder.tvCost.setText("Giá: " + String.format("%.2f", list.get(position).cost / list.get(position).quantities));
         holder.tvQuantity.setText("x" + list.get(position).quantities);
         holder.tvNumberProduct.setText("" + list.get(position).quantities);
 
         holder.imgDecrement.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                itemCartTemp = new CartTempModule();
                 int quantities = Integer.parseInt(holder.tvNumberProduct.getText().toString());
                 quantities--;
                 if (quantities != 0) {
                     holder.tvNumberProduct.setText("" + quantities);
                     holder.tvQuantity.setText("x" + quantities);
+
+                    itemCartTemp.name = list.get(position).name;
+                    itemCartTemp.costNew = quantities * (list.get(position).cost / list.get(position).quantities);
+                    itemCartTemp.quantitiesNew = quantities;
+                    if (cartItemTempDAO.updatePrice(itemCartTemp) > 0) {
+                        Log.d(TAG, "onClick: " + "update new cost success");
+                    }
                 }
             }
         });
         holder.imgIncrement.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                itemCartTemp = new CartTempModule();
                 int quantities = Integer.parseInt(holder.tvNumberProduct.getText().toString());
                 quantities++;
                 holder.tvNumberProduct.setText("" + quantities);
                 holder.tvQuantity.setText("x" + quantities);
+                itemCartTemp = new CartTempModule();
+
+                itemCartTemp.name = list.get(position).name;
+                itemCartTemp.costNew = quantities * (list.get(position).cost / list.get(position).quantities);
+                itemCartTemp.quantitiesNew = quantities;
+                if (cartItemTempDAO.updatePrice(itemCartTemp) > 0) {
+                    Log.d(TAG, "onClick: " + "update new cost success");
+                }
 
             }
         });

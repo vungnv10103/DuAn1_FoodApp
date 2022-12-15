@@ -3,15 +3,12 @@ package com.fpoly.foodapp.adapters.category;
 import static android.content.Context.MODE_PRIVATE;
 
 import android.annotation.SuppressLint;
-import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.net.Uri;
-import android.os.Handler;
 import android.provider.MediaStore;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -43,7 +40,6 @@ public class ItemCategoryAdapter extends RecyclerView.Adapter<ItemCategoryAdapte
     List<ItemCategory> list;
     List<ItemRecommend> list1;
     CategoryDAO categoryDAO;
-    ProgressDialog progressDialog;
 
     boolean check = true;
     boolean selected = true;
@@ -64,7 +60,6 @@ public class ItemCategoryAdapter extends RecyclerView.Adapter<ItemCategoryAdapte
 
     @Override
     public void onBindViewHolder(@NonNull viewHolder holder, @SuppressLint("RecyclerView") int position) {
-        progressDialog = new ProgressDialog(context);
         ItemCategory item = list.get(position);
         categoryDAO = new CategoryDAO(context);
         if (item == null) {
