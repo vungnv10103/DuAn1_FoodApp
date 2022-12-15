@@ -142,6 +142,7 @@ public class UsersDAO {
             obj.pass = cursor.getString(cursor.getColumnIndex("pass"));
             obj.phoneNumber = cursor.getString(cursor.getColumnIndex("phoneNumber"));
             obj.address = cursor.getString(cursor.getColumnIndex("address"));
+            obj.feedback = cursor.getString(cursor.getColumnIndex("feedback"));
 
             list.add(obj);
 

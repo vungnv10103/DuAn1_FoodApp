@@ -11,16 +11,20 @@ import android.net.ConnectivityManager;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
+import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.fpoly.foodapp.DAO.CartSystemDAO;
+import com.fpoly.foodapp.DAO.RecommendDAO;
 import com.fpoly.foodapp.DAO.UsersDAO;
 import com.fpoly.foodapp.DAO.CartItemDAO;
 import com.fpoly.foodapp.R;
 import com.fpoly.foodapp.Utility.NetworkChangeListener;
 import com.fpoly.foodapp.modules.CartItemModule;
+import com.fpoly.foodapp.modules.CartSystemModule;
 
 import java.io.IOException;
 
@@ -39,6 +43,11 @@ public class ShowDetailActivity extends AppCompatActivity {
     static CartItemDAO CartItemDAO;
     CartItemModule item;
     static UsersDAO usersDAO;
+    static RecommendDAO recommendDAO;
+
+    static CartSystemDAO cartSystemDAO;
+    CartSystemModule itemCartSystem;
+    private static final String TAG = "test";
 
 
 
@@ -53,6 +62,8 @@ public class ShowDetailActivity extends AppCompatActivity {
 
         checkImg();
         CartItemDAO = new CartItemDAO(getApplicationContext());
+        recommendDAO = new RecommendDAO(getApplicationContext());
+        cartSystemDAO = new CartSystemDAO(getApplicationContext());
         usersDAO = new UsersDAO(getApplicationContext());
 
         tvQuantity.setText(String.valueOf(quantity));
@@ -105,17 +116,32 @@ public class ShowDetailActivity extends AppCompatActivity {
                 SharedPreferences pref = getSharedPreferences("USER_FILE", MODE_PRIVATE);
                 String email = pref.getString("EMAIL", "");
                 item = new CartItemModule();
+                itemCartSystem = new CartSystemModule();
                 int quanti = Integer.parseInt(tvQuantity.getText().toString());
                 double cost_total = price * quanti;
 
+                // insert to current cart
                 item.idUser = usersDAO.getIDUser(email);
                 item.idRecommend = idProduct;
+                item.img = recommendDAO.getUriImg(title);
                 item.check = 0;
                 item.name = title;
                 item.cost = cost_total;
                 item.quantities = quanti;
+
+                // insert to system cart
+                itemCartSystem.idUser = usersDAO.getIDUser(email);
+                itemCartSystem.idRecommend = idProduct;
+                itemCartSystem.img = recommendDAO.getUriImg(title);
+                itemCartSystem.check = 0;
+                itemCartSystem.name = title;
+                itemCartSystem.cost = cost_total;
+                itemCartSystem.quantities = quanti;
                 if (CartItemDAO.insert(item) > 0) {
                     Toast.makeText(getApplicationContext(), "Đã thêm vào giỏ hàng.", Toast.LENGTH_SHORT).show();
+                    if (cartSystemDAO.insert(itemCartSystem) > 0){
+                        Log.d(TAG, "onClick: " + "add success to system cart");
+                    }
                 } else {
                     Toast.makeText(getApplicationContext(), "Failed.", Toast.LENGTH_SHORT).show();
                 }

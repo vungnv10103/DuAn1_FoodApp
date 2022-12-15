@@ -8,19 +8,20 @@ import android.database.sqlite.SQLiteDatabase;
 
 import com.fpoly.foodapp.database.DbHelper;
 import com.fpoly.foodapp.modules.CartItemModule;
+import com.fpoly.foodapp.modules.CartTempModule;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class CartItemDAO {
+public class CartItemTempDAO {
     private SQLiteDatabase db;
 
-    public CartItemDAO(Context context) {
+    public CartItemTempDAO(Context context) {
         DbHelper dbHelper = new DbHelper(context);
         db = dbHelper.getWritableDatabase();
     }
 
-    public long insert(CartItemModule obj) {
+    public long insert(CartTempModule obj) {
         ContentValues values = new ContentValues();
         values.put("idUser", obj.idUser);
         values.put("img", obj.img);
@@ -30,53 +31,34 @@ public class CartItemDAO {
         values.put("idRecommend", obj.idRecommend);
         values.put("quantities", obj.quantities);
 
-        return db.insert("ItemCart", null, values);
+        return db.insert("CartTemp", null, values);
     }
 
-    public int delete(int id) {
-        return db.delete("ItemCart", "id=?", new String[]{String.valueOf(id)});
+    public int delete(String name) {
+        return db.delete("CartTemp", "name=?", new String[]{name});
     }
 
-    public int deleteAllByName(String name) {
-        return db.delete("ItemCart", "name=?", new String[]{name});
-    }
-
-    public int updateStatus(CartItemModule obj) {
-        ContentValues values = new ContentValues();
-        values.put("mCheck", obj.check);
-        return db.update("ItemCart", values, "name=?", new String[]{obj.name});
-    }
-
-    //    public int quant(){
-//
-//    }
-    public ArrayList<CartItemModule> deleteCurrentCart() {
-        String sql = "delete from ItemCart";
+    public ArrayList<CartTempModule> deleteCurrentCart() {
+        String sql = "delete from CartTemp";
         db.execSQL(sql);
         return new ArrayList<>();
     }
 
-    public List<CartItemModule> getALL(int idUser) {
-        String sql = "SELECT * FROM ItemCart WHERE idUser=?";
+    public List<CartTempModule> getALL(int idUser) {
+        String sql = "SELECT * FROM CartTemp WHERE idUser=?";
         return getData(sql, String.valueOf(idUser));
     }
-
-    public List<CartItemModule> getALLPro(int idUser) {
-        String sql = "SELECT id,mCheck,idUser, idRecommend, name,img, sum(quantities) AS TotalQuantity, sum(cost) as TotalPrice FROM ItemCart WHERE idUser=? GROUP BY idRecommend ORDER By id DESC";
+    public List<CartTempModule> getALLPro(int idUser) {
+        String sql = "SELECT id,mCheck,name, idRecommend,idUser, sum(quantities) AS TotalQuantity, sum(cost) as TotalPrice FROM CartTemp WHERE idUser=? GROUP BY idRecommend ORDER By id DESC";
         return getDataPro(sql, String.valueOf(idUser));
     }
 
-    public List<CartItemModule> getALLSelected(int check) {
-        String sql = "SELECT id,mCheck,idUser, idRecommend, name,img, sum(quantities) AS TotalQuantity, sum(cost) as TotalPrice FROM ItemCart WHERE mCheck=? GROUP BY idRecommend ORDER By id DESC ";
-        return getDataPro(sql, String.valueOf(check));
-    }
-
     @SuppressLint("Range")
-    private List<CartItemModule> getData(String sql, String... selectionArgs) {
-        List<CartItemModule> list = new ArrayList<>();
+    private List<CartTempModule> getData(String sql, String... selectionArgs) {
+        List<CartTempModule> list = new ArrayList<>();
         Cursor cursor = db.rawQuery(sql, selectionArgs);
         while (cursor.moveToNext()) {
-            CartItemModule obj = new CartItemModule();
+            CartTempModule obj = new CartTempModule();
             obj.id = Integer.parseInt(cursor.getString(cursor.getColumnIndex("id")));
             obj.idUser = Integer.parseInt(cursor.getString(cursor.getColumnIndex("idUser")));
             obj.idRecommend = Integer.parseInt(cursor.getString(cursor.getColumnIndex("idRecommend")));
@@ -91,15 +73,14 @@ public class CartItemDAO {
     }
 
     @SuppressLint("Range")
-    private List<CartItemModule> getDataPro(String sql, String... selectionArgs) {
-        List<CartItemModule> list = new ArrayList<>();
+    private List<CartTempModule> getDataPro(String sql, String... selectionArgs) {
+        List<CartTempModule> list = new ArrayList<>();
         Cursor cursor = db.rawQuery(sql, selectionArgs);
         while (cursor.moveToNext()) {
-            CartItemModule obj = new CartItemModule();
+            CartTempModule obj = new CartTempModule();
             obj.id = Integer.parseInt(cursor.getString(cursor.getColumnIndex("id")));
             obj.idUser = Integer.parseInt(cursor.getString(cursor.getColumnIndex("idUser")));
             obj.idRecommend = Integer.parseInt(cursor.getString(cursor.getColumnIndex("idRecommend")));
-            obj.img = cursor.getString(cursor.getColumnIndex("img"));
             obj.check = Integer.parseInt(cursor.getString(cursor.getColumnIndex("mCheck")));
             obj.name = cursor.getString(cursor.getColumnIndex("name"));
             obj.cost = Double.valueOf(cursor.getString(cursor.getColumnIndex("TotalPrice")));

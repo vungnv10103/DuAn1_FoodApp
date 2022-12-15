@@ -5,9 +5,9 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 
-import com.fpoly.foodapp.adapters.recommend.ItemRecommend;
 import com.fpoly.foodapp.adapters.recommend.ItemStatisticalRecommend;
 import com.fpoly.foodapp.database.DbHelper;
+import com.fpoly.foodapp.modules.CartTempModule;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -23,11 +23,12 @@ public class StatisticalDAO {
     }
 
 
-    //
+
+    // get best seller
     @SuppressLint("Range")
     public List<ItemStatisticalRecommend> getTop(){
         //String sql = "SELECT idRecommend, COUNT(idUser) AS Solanmua FROM ItemCart GROUP BY idRecommend";
-        String sql = "SELECT idRecommend, sum(quantities) AS Soluongmua FROM ItemCart GROUP BY idRecommend ORDER BY  Soluongmua DESC";
+        String sql = "SELECT idRecommend, sum(quantities) AS Soluongmua FROM SystemCart GROUP BY idRecommend ORDER BY  Soluongmua DESC";
         List<ItemStatisticalRecommend> list = new ArrayList<>();
         Cursor cursor = db.rawQuery(sql, null);
         while (cursor.moveToNext()){
@@ -36,6 +37,11 @@ public class StatisticalDAO {
             item.quantities = Integer.parseInt(cursor.getString(cursor.getColumnIndex("Soluongmua")));
             list.add(item);
         }
-        return list;
+        if (list != null){
+            return list;
+        }
+        return null;
+
     }
+
 }

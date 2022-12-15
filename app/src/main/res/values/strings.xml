@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">FoodApp</string>
+    <string name="app_name">Food Yum</string>
     <string name="title_home">Home</string>
     <string name="title_daily_meal">Daily Meal</string>
     <string name="title_favourite">Favourite</string>
@@ -24,4 +24,6 @@
     <string name="_10_weekend_delicious_n_dinner_recipes">10 Weekend Delicious \n Dinner Recipes</string>
     <string name="view_more">View more</string>
     <string name="your_favorite_and_testy_food_is_here">Your favorite and testy food is here</string>
+    <string name="sign_in">Đăng nhập</string>
+    <string name="order_pay">Hoá Đơn</string>
 </resources>

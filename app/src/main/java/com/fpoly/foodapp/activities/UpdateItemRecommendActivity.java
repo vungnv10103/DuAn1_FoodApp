@@ -27,6 +27,7 @@ import android.os.Bundle;
 import android.provider.MediaStore;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -49,16 +50,17 @@ import java.util.Locale;
 public class UpdateItemRecommendActivity extends AppCompatActivity {
     EditText edNameDetail, edCostDetail, edDescription, edTimeDelay, edCalo;
     ImageView imgAvatar, imgDeleteNameRecommend, imgDeleteCost;
-    Button btnOpenGallery, btnSave, btnCancel, btnDelete;
+    Button btnOpenGallery, btnSave, btnCancel, btnDelete, btnHideAndShow;
     public static final int PICK_IMAGE = 1;
     String realPath = "";
     String mLocation = "";
+    private static final String TAG = "test";
 
     FusedLocationProviderClient fusedLocationProviderClient;
     private final static int REQUEST_CODE = 100;
 
     static RecommendDAO recommendDAO;
-    ItemRecommend item;
+    ItemRecommend item, item1;
 
     static UsersDAO usersDAO;
 
@@ -72,6 +74,12 @@ public class UpdateItemRecommendActivity extends AppCompatActivity {
         init();
         SharedPreferences pref = getSharedPreferences("INFO_ITEM", MODE_PRIVATE);
         int id = pref.getInt("ID", 0);
+        int check = pref.getInt("CHECK", 0);
+        if (check == 0){
+            btnHideAndShow.setText("Ẩn khỏi gian hàng");
+        }else {
+            btnHideAndShow.setText("Hiện lại gian hàng");
+        }
         String name = pref.getString("NAME", "");
         edNameDetail.setText(name);
         edCostDetail.setText(pref.getString("PRICE", ""));
@@ -162,6 +170,7 @@ public class UpdateItemRecommendActivity extends AppCompatActivity {
                     item.id = id;
                     item.idUser = idUser;
                     item.img_resource = uri;
+                   // item.check = 0;
                     item.title = edNameDetail.getText().toString().trim();
                     item.price = Double.parseDouble(edCostDetail.getText().toString().trim());
                     item.favourite = 0;
@@ -219,6 +228,32 @@ public class UpdateItemRecommendActivity extends AppCompatActivity {
 
             }
         });
+        btnHideAndShow.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (check == 0){
+                    item1 = new ItemRecommend();
+                    item1.check = 1;
+                    item1.id = id;
+                    if (recommendDAO.updateStatus(item1) >0){
+                        Log.d(TAG, "onClick: " + "update check success");
+                        startActivity(new Intent(UpdateItemRecommendActivity.this, MainActivity.class));
+                        finishAffinity();
+                    }
+                }
+                else {
+                    item1 = new ItemRecommend();
+                    item1.check = 0;
+                    item1.id = id;
+                    if (recommendDAO.updateStatus(item1) >0){
+                        Log.d(TAG, "onClick: " + "rollback check success");
+                        onBackPressed();
+                    }
+                }
+
+
+            }
+        });
     }
 
     public void init() {
@@ -232,6 +267,7 @@ public class UpdateItemRecommendActivity extends AppCompatActivity {
         btnSave = findViewById(R.id.btnSaveItemDetail);
         btnCancel = findViewById(R.id.btnCancelDetail);
         btnDelete = findViewById(R.id.btnDeleteItemRecommend);
+        btnHideAndShow = findViewById(R.id.btnHide);
         recommendDAO = new RecommendDAO(getApplication());
         imgDeleteNameRecommend = findViewById(R.id.imgDeleteNameRecommendDetail);
         imgDeleteCost = findViewById(R.id.imgDeleteCostDetail);

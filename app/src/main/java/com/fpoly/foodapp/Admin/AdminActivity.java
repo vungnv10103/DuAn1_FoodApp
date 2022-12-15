@@ -19,6 +19,7 @@ import com.fpoly.foodapp.activities.Billdetail_activity;
 import com.fpoly.foodapp.activities.FavouriteActivity;
 import com.fpoly.foodapp.activities.ListUserActivity;
 import com.fpoly.foodapp.activities.LoginActivity;
+import com.fpoly.foodapp.activities.ProductHiddenActivity;
 import com.fpoly.foodapp.adapters.Billdetail_paid_Adapter;
 import com.fpoly.foodapp.modules.billdetail_paid_model;
 import com.github.mikephil.charting.animation.Easing;
@@ -135,8 +136,7 @@ public class AdminActivity extends AppCompatActivity {
         constraintLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(getApplicationContext(), FavouriteActivity.class));
-                finishAffinity();
+                startActivity(new Intent(getApplicationContext(), ProductHiddenActivity.class));
             }
         });
         constraintLayout1.setOnClickListener(new View.OnClickListener() {
@@ -149,7 +149,6 @@ public class AdminActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 startActivity(new Intent(AdminActivity.this , Billdetail_activity.class));
-                finishAffinity();
             }
         });
         constraintLayout3.setOnClickListener(new View.OnClickListener() {

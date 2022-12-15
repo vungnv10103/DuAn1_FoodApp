@@ -1,64 +1,43 @@
-package com.fpoly.foodapp.adapters.recommend;
+package com.fpoly.foodapp.adapters;
 
 
-import static android.app.Activity.RESULT_OK;
 import static android.content.Context.MODE_PRIVATE;
 
-import android.Manifest;
 import android.annotation.SuppressLint;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.content.pm.PackageManager;
-import android.database.Cursor;
 import android.graphics.Bitmap;
-import android.location.Address;
-import android.location.Geocoder;
-import android.location.Location;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
-import android.text.Editable;
-import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
-import android.widget.Button;
-import android.widget.EditText;
 import android.widget.Filter;
 import android.widget.Filterable;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import androidx.activity.result.ActivityResult;
-import androidx.activity.result.ActivityResultCallback;
-import androidx.activity.result.ActivityResultLauncher;
-import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
-import androidx.core.app.ActivityCompat;
-import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.fpoly.foodapp.DAO.RecommendDAO;
-import com.fpoly.foodapp.DAO.UsersDAO;
 import com.fpoly.foodapp.R;
-import com.fpoly.foodapp.activities.AddItemRecommendActivity;
-import com.fpoly.foodapp.activities.MainActivity;
 import com.fpoly.foodapp.activities.ShowDetailActivity;
 import com.fpoly.foodapp.activities.UpdateItemRecommendActivity;
+import com.fpoly.foodapp.adapters.recommend.ItemRecommend;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;
-import com.google.android.gms.tasks.OnSuccessListener;
 
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Locale;
 
-public class RecommendAdapterNew extends RecyclerView.Adapter<RecommendAdapterNew.viewHolder> implements Filterable {
+public class ProductHiddenAdapter extends RecyclerView.Adapter<ProductHiddenAdapter.viewHolder> implements Filterable {
     ImageView imgZoomIn;
     private Context context;
     static RecommendDAO recommendDAO;
@@ -72,7 +51,7 @@ public class RecommendAdapterNew extends RecyclerView.Adapter<RecommendAdapterNe
     private final static int REQUEST_CODE = 100;
 
 
-    public RecommendAdapterNew(Context context, List<ItemRecommend> list) {
+    public ProductHiddenAdapter(Context context, List<ItemRecommend> list) {
         this.context = context;
         this.list = list;
         this.listOld = list;
@@ -132,6 +111,7 @@ public class RecommendAdapterNew extends RecyclerView.Adapter<RecommendAdapterNe
 
         holder.tvTitle.setText(list.get(position).title);
         holder.tvPrice.setText(String.valueOf(list.get(position).price));
+        holder.imgFavourite.setVisibility(View.INVISIBLE);
         holder.imgFavourite.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -154,6 +134,7 @@ public class RecommendAdapterNew extends RecyclerView.Adapter<RecommendAdapterNe
                 }
             }
         });
+        holder.imgAdd.setVisibility(View.INVISIBLE);
         holder.imgAdd.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -204,7 +185,7 @@ public class RecommendAdapterNew extends RecyclerView.Adapter<RecommendAdapterNe
             int begin_index = email.indexOf("@");
             int end_index = email.indexOf(".");
             String domain_name = email.substring(begin_index + 1, end_index);
-            if (domain_name.equals("merchant")){
+            if (domain_name.equals("merchant") || email.equals("admin@gmail.com")) {
                 itemView.setOnLongClickListener(new View.OnLongClickListener() {
                     @Override
                     public boolean onLongClick(View v) {
@@ -227,12 +208,9 @@ public class RecommendAdapterNew extends RecyclerView.Adapter<RecommendAdapterNe
 
                     }
                 });
-            }
-            else {
+            } else {
                 itemView.setOnLongClickListener(null);
             }
-
-
 
 
         }

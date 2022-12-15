@@ -64,4 +64,9 @@ public class DealsActivity extends AppCompatActivity {
         unregisterReceiver(networkChangeListener);
         super.onStop();
     }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+    }
 }
