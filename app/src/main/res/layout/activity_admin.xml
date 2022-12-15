@@ -32,13 +32,15 @@
         <TextView
             android:id="@+id/textView8"
             android:layout_width="wrap_content"
+            android:fontFamily="@font/amita"
             android:layout_height="wrap_content"
             android:layout_marginTop="20dp"
-            android:text="-------FOOD YUM--------"
+            android:text="-------FOOD YUM-------"
             android:textColor="@color/white"
             android:textSize="20sp"
             android:textStyle="bold"
             app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.497"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/imgLogout" />
 
@@ -305,7 +307,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
-                android:text="Sản phẩm đã ẩn"
+                android:text="Sản Phẩm Đã Ẩn"
                 android:textColor="@color/white"
                 android:textSize="15sp"
                 android:textStyle="bold"

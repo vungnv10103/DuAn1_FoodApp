@@ -4,7 +4,6 @@ import static android.content.Context.MODE_PRIVATE;
 
 import android.Manifest;
 import android.annotation.SuppressLint;
-import android.app.ProgressDialog;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
@@ -37,12 +36,10 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.fpoly.foodapp.DAO.CategoryDAO;
-//import com.fpoly.foodapp.DAO.ProductDAO;
 import com.fpoly.foodapp.DAO.RecommendDAO;
 import com.fpoly.foodapp.DAO.StatisticalDAO;
 import com.fpoly.foodapp.DAO.UsersDAO;
 import com.fpoly.foodapp.R;
-import com.fpoly.foodapp.activities.AddItemCategoryActivity;
 import com.fpoly.foodapp.activities.AddItemProductActivity;
 import com.fpoly.foodapp.activities.FilterActivity;
 import com.fpoly.foodapp.adapters.SlideShowAdapter;
@@ -67,7 +64,6 @@ import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 import java.util.Locale;
 
@@ -76,7 +72,6 @@ import me.relex.circleindicator.CircleIndicator3;
 
 public class HomeFragmentNew extends Fragment {
 
-    ProgressDialog progressDialog;
     RecyclerView recyclerCategory, recyclerViewRecommend, recyclerViewProduct, recyclerViewRecommendMain;
     ListProductsAdapter listProductsAdapter;
 
@@ -142,9 +137,6 @@ public class HomeFragmentNew extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_home_new, container, false);
-        if (progressDialog.isShowing()) {
-            progressDialog.dismiss();
-        }
         categoryDAO = new CategoryDAO(getContext());
         edSearch = view.findViewById(R.id.edSearchHome);
         imgDeleteSearch = view.findViewById(R.id.imgDeleteSearch);
@@ -352,7 +344,11 @@ public class HomeFragmentNew extends Fragment {
             item.price = 15.7;
             item.favourite = 0;
             item.check = 0;
+            item.calo = 65.8;
+            item.rate = 4.7;
+            item.timeDelay = "15";
             item.description = "Pizza abc";
+            item.quantity_sold = 0;
             item.location = mLocation;
 
             recommendDAO.insert(item);
@@ -448,8 +444,5 @@ public class HomeFragmentNew extends Fragment {
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        progressDialog = new ProgressDialog(getContext());
-        progressDialog.show();
-        progressDialog.setCancelable(false);
     }
 }

@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        tools:context=".activities.SelectLocationActivity">
+
+        <com.google.android.material.appbar.AppBarLayout
+            android:id="@+id/appBarLayoutCart"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <androidx.appcompat.widget.Toolbar
+                android:id="@+id/toolBarCart"
+                android:layout_width="match_parent"
+                android:layout_height="?attr/actionBarSize"
+                android:background="#FF5722" />
+        </com.google.android.material.appbar.AppBarLayout>
+        <View
+            android:layout_marginTop="7dp"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="#EFEBEB"/>
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rcvListLocation"
+            android:layout_width="match_parent"
+            tools:listitem="@layout/item_location_selected"
+            android:layout_height="wrap_content"/>
+        <LinearLayout
+            android:id="@+id/addLocation"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:gravity="center"
+            android:orientation="horizontal">
+            <ImageView
+                android:layout_marginStart="100dp"
+                android:layout_marginTop="5dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/ic_baseline_add_circle_outline_24"/>
+            <TextView
+                android:layout_marginStart="10dp"
+                android:layout_width="match_parent"
+                android:textSize="16sp"
+                android:layout_marginTop="5dp"
+                android:layout_height="wrap_content"
+                android:textColor="#FF0000"
+                android:text="Thêm Địa Chỉ Mới"/>
+        </LinearLayout>
+        <View
+            android:layout_marginTop="7dp"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="#EFEBEB"/>
+
+        </LinearLayout>
+</FrameLayout>
+

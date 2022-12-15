@@ -25,9 +25,12 @@ public class CartSystemDAO {
         values.put("idUser", obj.idUser);
         values.put("img", obj.img);
         values.put("mCheck", obj.check);
+        values.put("checkSelected", obj.checkSelected);
         values.put("name", obj.name);
         values.put("cost", obj.cost);
+        values.put("newCost", obj.costNew);
         values.put("idRecommend", obj.idRecommend);
+        values.put("quantitiesNew", obj.quantitiesNew);
         values.put("quantities", obj.quantities);
 
         return db.insert("SystemCart", null, values);
@@ -59,8 +62,11 @@ public class CartSystemDAO {
             obj.idRecommend = Integer.parseInt(cursor.getString(cursor.getColumnIndex("idRecommend")));
             obj.img = cursor.getString(cursor.getColumnIndex("img"));
             obj.check = Integer.parseInt(cursor.getString(cursor.getColumnIndex("mCheck")));
+            obj.checkSelected = Integer.parseInt(cursor.getString(cursor.getColumnIndex("checkSelected")));
             obj.name = cursor.getString(cursor.getColumnIndex("name"));
             obj.cost = Double.valueOf(cursor.getString(cursor.getColumnIndex("cost")));
+            obj.costNew = Double.valueOf(cursor.getString(cursor.getColumnIndex("newCost")));
+            obj.quantitiesNew = Integer.parseInt(cursor.getString(cursor.getColumnIndex("quantitiesNew")));
             obj.quantities = Integer.parseInt(cursor.getString(cursor.getColumnIndex("quantities")));
             list.add(obj);
 

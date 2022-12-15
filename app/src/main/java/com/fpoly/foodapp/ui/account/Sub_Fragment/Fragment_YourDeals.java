@@ -32,7 +32,10 @@ import com.fpoly.foodapp.modules.VoucherModule;
 import com.fpoly.foodapp.modules.VoucherSystemModule;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 
@@ -118,22 +121,34 @@ public class Fragment_YourDeals extends Fragment {
                         if (edDiscount.getText().toString().trim().isEmpty() || edDeadline.getText().toString().trim().isEmpty()) {
                             Toast.makeText(getContext(), "Nhập đủ thông tin !", Toast.LENGTH_SHORT).show();
                         } else {
-                            int discount = 0;
+                            Date dateCurrent = new Date();
                             try {
-                                discount = Integer.valueOf(edDiscount.getText().toString().trim());
-                                if (discount < 1 || discount > 100) {
-                                    Toast.makeText(getContext(), "Voucher từ 1 - 100%", Toast.LENGTH_SHORT).show();
-                                    return;
+                                Date date = new SimpleDateFormat("yyyy-MM-dd").parse(edDeadline.getText().toString().trim());
+                                if (date.after(dateCurrent)) {
+                                    int discount = 0;
+                                    try {
+                                        discount = Integer.valueOf(edDiscount.getText().toString().trim());
+                                        if (discount < 1 || discount > 100) {
+                                            Toast.makeText(getContext(), "Voucher từ 1 - 100%", Toast.LENGTH_SHORT).show();
+                                            return;
+                                        }
+                                    } catch (Exception e) {
+                                        Toast.makeText(getContext(), "Nhập số", Toast.LENGTH_SHORT).show();
+                                        return;
+                                    }
+
+                                    String time = edDeadline.getText().toString().trim();
+                                    addData(R.drawable.coupon, discount, time);
+                                    listData();
+                                    dialog.dismiss();
                                 }
-                            } catch (Exception e) {
-                                Toast.makeText(getContext(), "Nhập số", Toast.LENGTH_SHORT).show();
-                                return;
+                                else {
+                                    Toast.makeText(getContext(), "Chọn ngày mới", Toast.LENGTH_SHORT).show();
+                                }
+                            } catch (ParseException e) {
+                                e.printStackTrace();
                             }
 
-                            String time = edDeadline.getText().toString().trim();
-                            addData(R.drawable.coupon, discount, time);
-                            listData();
-                            dialog.dismiss();
                         }
 
                     }
