@@ -16,6 +16,7 @@ import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.fpoly.foodapp.DAO.OderDAO;
 import com.fpoly.foodapp.DAO.UsersDAO;
 
 import com.fpoly.foodapp.R;
@@ -40,6 +41,8 @@ public class Billdetails_adapter extends RecyclerView.Adapter<Billdetails_adapte
     private ArrayList<OderHistoryModelNew> list;
     private Context context;
     private ArrayList<billdetail_paid_model> arrayList = new ArrayList<>();
+    static OderDAO oderDAO;
+    OderHistoryModelNew item;
 
 
     public Billdetails_adapter(ArrayList<OderHistoryModelNew> list, Context context) {
@@ -56,6 +59,7 @@ public class Billdetails_adapter extends RecyclerView.Adapter<Billdetails_adapte
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, @SuppressLint("RecyclerView") int position) {
+        oderDAO = new OderDAO(context);
         holder.txtmadonhang.setText("" + list.get(position).getCode());
         holder.txttrangthai.setText(list.get(position).getStatus());
         holder.ngaymua.setText(list.get(position).getDateTime());
@@ -73,6 +77,15 @@ public class Billdetails_adapter extends RecyclerView.Adapter<Billdetails_adapte
                     @Override
                     public void onComplete(@Nullable DatabaseError error, @NonNull DatabaseReference ref) {
                         Toast.makeText(context, "update thành công", Toast.LENGTH_SHORT).show();
+                        item = new OderHistoryModelNew();
+
+                        item.id = list.get(position).id;
+                        item.checkStatus = 2;
+                        item.status = "Đã thanh toán";
+                        if (oderDAO.updateStatus(item)>0){
+                            Toast.makeText(context, "Thanh Toán Thành công !" , Toast.LENGTH_SHORT).show();
+                            notifyDataSetChanged();
+                        }
                     }
                 });
                 FirebaseDatabase database = FirebaseDatabase.getInstance();
@@ -96,12 +109,9 @@ public class Billdetails_adapter extends RecyclerView.Adapter<Billdetails_adapte
                 });
                 FirebaseDatabase database2 = FirebaseDatabase.getInstance();
                 DatabaseReference reference2 = database2.getReference("object_bill_paid");
-//                arrayList.add(new billdetail_paid_model(list.get(position).getMadonhang(), list.get(position).getSoluongsanphan(), "Đã thanh toán",
-//                        list.get(position).getNgaymua(), list.get(position).getTongtiensanpham(), list.get(position).getTax(), list.get(position).getDalivery(),
-//                        list.get(position).getTongtien()));
                 arrayList.add(new billdetail_paid_model(list.get(position).getCode(), list.get(position).getListProduct(), "Đã thanh toán",
                         list.get(position).
-            getDateTime(), list.get(position).getTotalItem(),list.get(position).getFeeTransport(),
+                                getDateTime(), list.get(position).getTotalItem(), list.get(position).getFeeTransport(),
                         list.get(position).getTotalFinal()));
                 reference2.setValue(arrayList, new DatabaseReference.CompletionListener() {
                     @Override
@@ -109,46 +119,6 @@ public class Billdetails_adapter extends RecyclerView.Adapter<Billdetails_adapte
                         Toast.makeText(context, "thành công", Toast.LENGTH_SHORT).show();
                     }
                 });
-
-
-//                    FirebaseDatabase database3 = FirebaseDatabase.getInstance();
-//                    DatabaseReference reference3 = database3.getReference("objec_bill");
-//                    reference3.addValueEventListener(new ValueEventListener() {
-//                        @Override
-//                        public void onDataChange(@NonNull DataSnapshot snapshot) {
-//                            if(arrayList!=null){
-//                                arrayList.clear();
-//                            }
-//                            for(DataSnapshot snapshot1 : snapshot.getChildren()){
-//                                billdetail_paid_model billdetailmodel1 = snapshot1.getValue(billdetail_paid_model.class);
-//                                arrayList.add(billdetailmodel1);
-//                            }
-//                        }
-//                        @Override
-//                        public void onCancelled(@NonNull DatabaseError error) {
-//
-//                        }
-//                    });
-
-
-//
-//                FirebaseDatabase database2 = FirebaseDatabase.getInstance();
-//                DatabaseReference reference2 = database2.getReference("object_bill_paid");
-//                reference2.addValueEventListener(new ValueEventListener() {
-//                    @Override
-//                    public void onDataChange(@NonNull DataSnapshot snapshot) {
-//                        for(DataSnapshot snapshot1 :snapshot.getChildren()){
-//                            billdetail_paid_model model  = snapshot1.getValue(billdetail_paid_model.class);
-//                            arrayList.add(model);
-//                        }
-//                    }
-//
-//                    @Override
-//                    public void onCancelled(@NonNull DatabaseError error) {
-//
-//                    }
-//                });
-
             }
         });
         FirebaseDatabase database2 = FirebaseDatabase.getInstance();
@@ -179,12 +149,15 @@ public class Billdetails_adapter extends RecyclerView.Adapter<Billdetails_adapte
             databaseReference.setValue(arrayList.size(), new DatabaseReference.CompletionListener() {
                 @Override
                 public void onComplete(@Nullable DatabaseError error, @NonNull DatabaseReference ref) {
-                    Toast.makeText(context, "arraylist.size", Toast.LENGTH_SHORT).show();
                 }
             });
-        } else {
+        }
+        else {
             holder.txttrangthai.setTextColor(Color.RED);
             holder.btnthnahtoan.setVisibility(View.VISIBLE);
+        }
+        if (list.get(position).getStatus().equals("Đã huỷ")){
+            holder.btnthnahtoan.setVisibility(View.GONE);
         }
 
 

@@ -26,7 +26,7 @@ public class LoadingActivity extends AppCompatActivity {
                 startActivity(new Intent(getApplicationContext(),WelcomeActivity.class));
                 finish();
             }
-        }, 1000);
+        }, 2000);
     }
     public void prog(){
         pb= findViewById(R.id.progess);
@@ -34,7 +34,7 @@ public class LoadingActivity extends AppCompatActivity {
         TimerTask tt = new TimerTask() {
             @Override
             public void run() {
-                counter=counter+2;
+                counter=counter+5;
                 pb.setProgress(counter);
                 if (counter == 100){
                     t.cancel();
