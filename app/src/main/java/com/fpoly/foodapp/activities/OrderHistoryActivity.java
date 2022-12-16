@@ -21,6 +21,7 @@ import com.fpoly.foodapp.Utility.NetworkChangeListener;
 import com.fpoly.foodapp.adapters.ListUserAdapter;
 import com.fpoly.foodapp.adapters.OderHistoryAdapter;
 import com.fpoly.foodapp.modules.OderHistoryModel;
+import com.fpoly.foodapp.modules.OderHistoryModelNew;
 import com.fpoly.foodapp.modules.UsersModule;
 
 import java.util.ArrayList;
@@ -30,7 +31,7 @@ public class OrderHistoryActivity extends AppCompatActivity {
     static OderDAO oderDAO;
     static UsersDAO usersDAO;
     OderHistoryAdapter oderHistoryAdapter;
-    ArrayList<OderHistoryModel> listOder;
+    ArrayList<OderHistoryModelNew> listOder;
     NetworkChangeListener networkChangeListener = new NetworkChangeListener();
 
     private ImageView imgBackPay;
@@ -54,7 +55,7 @@ public class OrderHistoryActivity extends AppCompatActivity {
          String email = pref.getString("EMAIL", "");
          int id = usersDAO.getIDUser(email);
 
-        listOder = (ArrayList<OderHistoryModel>) oderDAO.getAllByIdUser(id);
+        listOder = (ArrayList<OderHistoryModelNew>) oderDAO.getAllByIdUser(id);
         oderHistoryAdapter = new OderHistoryAdapter(listOder, getApplicationContext());
         rcvOder.setAdapter(oderHistoryAdapter);
 

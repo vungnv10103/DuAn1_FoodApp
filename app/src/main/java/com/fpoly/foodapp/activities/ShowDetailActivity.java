@@ -178,6 +178,7 @@ public class ShowDetailActivity extends AppCompatActivity {
         Bundle bundle = intent.getBundleExtra("data");
         int img = bundle.getInt("image");
         String uri = bundle.getString("image_resource");
+
         if (uri != null){
             Bitmap bitmap  = null;
             try {

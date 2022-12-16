@@ -19,6 +19,7 @@ import com.fpoly.foodapp.DAO.UsersDAO;
 import com.fpoly.foodapp.R;
 import com.fpoly.foodapp.adapters.OderHistoryAdapter;
 import com.fpoly.foodapp.modules.OderHistoryModel;
+import com.fpoly.foodapp.modules.OderHistoryModelNew;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -28,7 +29,7 @@ public class WaitingFragment extends Fragment {
     static OderDAO oderDAO;
     static UsersDAO usersDAO;
     OderHistoryAdapter oderHistoryAdapter;
-    ArrayList<OderHistoryModel> listOder;
+    ArrayList<OderHistoryModelNew> listOder;
 
 
     public WaitingFragment() {
@@ -58,7 +59,7 @@ public class WaitingFragment extends Fragment {
         String email = pref.getString("EMAIL", "");
         int id = usersDAO.getIDUser(email);
 
-        listOder = (ArrayList<OderHistoryModel>) oderDAO.getAllByStatus(id,0);
+        listOder = (ArrayList<OderHistoryModelNew>) oderDAO.getAllByStatus(id,0);
         // Đảo thứ tự
         Collections.reverse(listOder);
         oderHistoryAdapter = new OderHistoryAdapter(listOder, getContext());
@@ -69,5 +70,37 @@ public class WaitingFragment extends Fragment {
         rcvOder.setNestedScrollingEnabled(false);
 
         return view;
+    }
+    @Override
+    public void onStart() {
+        super.onStart();
+        SharedPreferences pref = getContext().getSharedPreferences("USER_FILE", MODE_PRIVATE);
+        String email = pref.getString("EMAIL", "");
+        int id = usersDAO.getIDUser(email);
+        listOder = (ArrayList<OderHistoryModelNew>) oderDAO.getAllByStatus(id,0);
+        Collections.reverse(listOder);
+        oderHistoryAdapter = new OderHistoryAdapter(listOder, getContext());
+        rcvOder.setAdapter(oderHistoryAdapter);
+
+        rcvOder.setLayoutManager(new LinearLayoutManager(getContext(), RecyclerView.VERTICAL, false));
+        rcvOder.setHasFixedSize(true);
+        rcvOder.setNestedScrollingEnabled(false);
+
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        SharedPreferences pref = getContext().getSharedPreferences("USER_FILE", MODE_PRIVATE);
+        String email = pref.getString("EMAIL", "");
+        int id = usersDAO.getIDUser(email);
+        listOder = (ArrayList<OderHistoryModelNew>) oderDAO.getAllByStatus(id,0);
+        Collections.reverse(listOder);
+        oderHistoryAdapter = new OderHistoryAdapter(listOder, getContext());
+        rcvOder.setAdapter(oderHistoryAdapter);
+
+        rcvOder.setLayoutManager(new LinearLayoutManager(getContext(), RecyclerView.VERTICAL, false));
+        rcvOder.setHasFixedSize(true);
+        rcvOder.setNestedScrollingEnabled(false);
     }
 }

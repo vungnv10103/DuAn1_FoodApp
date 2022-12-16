@@ -41,8 +41,6 @@ public class Billdetails_adapter extends RecyclerView.Adapter<Billdetails_adapte
     private ArrayList<billdetail_paid_model> arrayList = new ArrayList<>();
 
 
-
-
     public Billdetails_adapter(ArrayList<billdetailmodel> list, Context context) {
         this.list = list;
         this.context = context;
@@ -62,8 +60,8 @@ public class Billdetails_adapter extends RecyclerView.Adapter<Billdetails_adapte
         holder.ngaymua.setText(list.get(position).getNgaymua());
         holder.txttongtien.setText(String.format("%.2f", list.get(position).getTongtien()) + " $");
         holder.txttiensanpham.setText(String.format("%.2f", list.get(position).getTongtiensanpham()) + " $");
-        holder.txtdeliverybill.setText(String.format("%.2f", list.get(position).getDalivery()) + " $");
-        holder.txttaxbill.setText(String.format("%.2f", list.get(position).getTax()) + " $");
+//        holder.txtdeliverybill.setText(String.format("%.2f", list.get(position).getDalivery()) + " $");
+//        holder.txttaxbill.setText(String.format("%.2f", list.get(position).getTax()) + " $");
         holder.txttensanphamdamua.setText(list.get(position).getSoluongsanphan());
         holder.btnthnahtoan.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -72,7 +70,7 @@ public class Billdetails_adapter extends RecyclerView.Adapter<Billdetails_adapte
 
                 FirebaseDatabase database1 = FirebaseDatabase.getInstance();
                 DatabaseReference reference1 = database1.getReference("objec_bill");
-                reference1.child(""+position).child("trangthai").setValue("Đã thanh toán", new DatabaseReference.CompletionListener() {
+                reference1.child("" + position).child("trangthai").setValue("Đã thanh toán", new DatabaseReference.CompletionListener() {
                     @Override
                     public void onComplete(@Nullable DatabaseError error, @NonNull DatabaseReference ref) {
                         Toast.makeText(context, "update thành công", Toast.LENGTH_SHORT).show();
@@ -83,12 +81,12 @@ public class Billdetails_adapter extends RecyclerView.Adapter<Billdetails_adapte
                 reference.addValueEventListener(new ValueEventListener() {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot snapshot) {
-                        if(arrayList!=null){
+                        if (arrayList != null) {
                             arrayList.clear();
                         }
-                        for(DataSnapshot snapshot1 :snapshot.getChildren()){
+                        for (DataSnapshot snapshot1 : snapshot.getChildren()) {
                             billdetail_paid_model billdetailmodel1 = snapshot1.getValue(billdetail_paid_model.class);
-                            arrayList.add(billdetailmodel1 );
+                            arrayList.add(billdetailmodel1);
                         }
                     }
 
@@ -99,13 +97,16 @@ public class Billdetails_adapter extends RecyclerView.Adapter<Billdetails_adapte
                 });
                 FirebaseDatabase database2 = FirebaseDatabase.getInstance();
                 DatabaseReference reference2 = database2.getReference("object_bill_paid");
-                arrayList.add(new billdetail_paid_model(list.get(position).getMadonhang(),list.get(position).getSoluongsanphan(),"Đã thanh toán",
-                        list.get(position).getNgaymua(),list.get(position).getTongtiensanpham(),list.get(position).getTax(),list.get(position).getDalivery(),
+//                arrayList.add(new billdetail_paid_model(list.get(position).getMadonhang(), list.get(position).getSoluongsanphan(), "Đã thanh toán",
+//                        list.get(position).getNgaymua(), list.get(position).getTongtiensanpham(), list.get(position).getTax(), list.get(position).getDalivery(),
+//                        list.get(position).getTongtien()));
+                arrayList.add(new billdetail_paid_model(list.get(position).getMadonhang(), list.get(position).getSoluongsanphan(), "Đã thanh toán",
+                        list.get(position).getNgaymua(), list.get(position).getTongtiensanpham(),
                         list.get(position).getTongtien()));
                 reference2.setValue(arrayList, new DatabaseReference.CompletionListener() {
                     @Override
                     public void onComplete(@Nullable DatabaseError error, @NonNull DatabaseReference ref) {
-                        Toast.makeText(context , "thành công", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(context, "thành công", Toast.LENGTH_SHORT).show();
                     }
                 });
 
@@ -128,8 +129,6 @@ public class Billdetails_adapter extends RecyclerView.Adapter<Billdetails_adapte
 //
 //                        }
 //                    });
-
-
 
 
 //
@@ -157,10 +156,10 @@ public class Billdetails_adapter extends RecyclerView.Adapter<Billdetails_adapte
         reference2.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
-                if(arrayList!=null){
+                if (arrayList != null) {
                     arrayList.clear();
                 }
-                for(DataSnapshot snapshot1 :snapshot.getChildren()){
+                for (DataSnapshot snapshot1 : snapshot.getChildren()) {
                     billdetail_paid_model model = snapshot1.getValue(billdetail_paid_model.class);
                     arrayList.add(model);
                 }
@@ -171,7 +170,7 @@ public class Billdetails_adapter extends RecyclerView.Adapter<Billdetails_adapte
 
             }
         });
-        if(list.get(position).getTrangthai().equals("Đã thanh toán")){
+        if (list.get(position).getTrangthai().equals("Đã thanh toán")) {
             holder.btnthnahtoan.setVisibility(View.GONE);
             holder.txttrangthai.setTextColor(Color.GREEN);
 
@@ -183,7 +182,7 @@ public class Billdetails_adapter extends RecyclerView.Adapter<Billdetails_adapte
                     Toast.makeText(context, "arraylist.size", Toast.LENGTH_SHORT).show();
                 }
             });
-        }else {
+        } else {
             holder.txttrangthai.setTextColor(Color.RED);
             holder.btnthnahtoan.setVisibility(View.VISIBLE);
         }
