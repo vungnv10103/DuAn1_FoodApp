@@ -22,6 +22,7 @@ import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
+import java.util.Collections;
 
 public class Bill_detail_paid extends AppCompatActivity {
 
@@ -54,7 +55,7 @@ public class Bill_detail_paid extends AppCompatActivity {
                 }
                 for(DataSnapshot snapshot1 :snapshot.getChildren()){
                     billdetail_paid_model billdetailmodel1 = snapshot1.getValue(billdetail_paid_model.class);
-                    list.add(billdetailmodel1 );
+                    list.add( billdetailmodel1 );
                 }
                 adapter.notifyDataSetChanged();
             }

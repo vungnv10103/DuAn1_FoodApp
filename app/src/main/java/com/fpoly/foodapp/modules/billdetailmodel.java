@@ -8,7 +8,7 @@ public class billdetailmodel {
     private String trangthai;
     private String ngaymua;
     private double tongtiensanpham;
-//    private double tax;
+
     private double feeTransport;
     private double tongtien;
 
@@ -19,6 +19,14 @@ public class billdetailmodel {
     public billdetailmodel() {
     }
 
+    public int getId() {
+        return id;
+    }
+
+    public double getFeeTransport() {
+        return feeTransport;
+    }
+
     public billdetailmodel(int id, int madonhang, String soluongsanphan, String trangthai, String ngaymua, double tongtiensanpham, double feeTransport, double tongtien) {
         this.id = id;
         this.madonhang = madonhang;
@@ -26,7 +34,6 @@ public class billdetailmodel {
         this.trangthai = trangthai;
         this.ngaymua = ngaymua;
         this.tongtiensanpham = tongtiensanpham;
-//        this.tax = tax;
         this.feeTransport = feeTransport;
         this.tongtien = tongtien;
     }
@@ -82,7 +89,6 @@ public class billdetailmodel {
         this.trangthai = trangthai;
         this.ngaymua = ngaymua;
         this.tongtiensanpham = tongtiensanpham;
-//        this.tax = tax;
         this.feeTransport = feeTransport;
         this.tongtien = tongtien;
     }

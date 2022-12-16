@@ -8,7 +8,6 @@ public class billdetail_paid_model {
     private String trangthai;
     private String ngaymua;
     private double tongtiensanpham;
-    private double tax;
     private double dalivery;
     private double tongtien;
 
@@ -19,14 +18,13 @@ public class billdetail_paid_model {
     public billdetail_paid_model() {
     }
 
-    public billdetail_paid_model(int id, int madonhang, String soluongsanphan, String trangthai, String ngaymua, double tongtiensanpham, double tax, double dalivery, double tongtien) {
+    public billdetail_paid_model(int id, int madonhang, String soluongsanphan, String trangthai, String ngaymua, double tongtiensanpham,  double dalivery, double tongtien) {
         this.id = id;
         this.madonhang = madonhang;
         this.soluongsanphan = soluongsanphan;
         this.trangthai = trangthai;
         this.ngaymua = ngaymua;
         this.tongtiensanpham = tongtiensanpham;
-        this.tax = tax;
         this.dalivery = dalivery;
         this.tongtien = tongtien;
     }
@@ -67,13 +65,7 @@ public class billdetail_paid_model {
         this.tongtiensanpham = tongtiensanpham;
     }
 
-    public double getTax() {
-        return tax;
-    }
 
-    public void setTax(double tax) {
-        this.tax = tax;
-    }
 
     public double getDalivery() {
         return dalivery;
@@ -91,23 +83,24 @@ public class billdetail_paid_model {
         this.tongtien = tongtien;
     }
 
-    public billdetail_paid_model(int madonhang, String soluongsanphan, String trangthai, String ngaymua, double tongtiensanpham, double tax, double dalivery, double tongtien) {
+    public billdetail_paid_model(int madonhang, String soluongsanphan, String trangthai, String ngaymua, double tongtiensanpham, double dalivery, double tongtien) {
         this.madonhang = madonhang;
         this.soluongsanphan = soluongsanphan;
         this.trangthai = trangthai;
         this.ngaymua = ngaymua;
         this.tongtiensanpham = tongtiensanpham;
-        this.tax = tax;
+
         this.dalivery = dalivery;
         this.tongtien = tongtien;
     }
+
     public billdetail_paid_model(int madonhang, String soluongsanphan, String trangthai, String ngaymua, double tongtiensanpham, double tongtien) {
         this.madonhang = madonhang;
         this.soluongsanphan = soluongsanphan;
         this.trangthai = trangthai;
         this.ngaymua = ngaymua;
         this.tongtiensanpham = tongtiensanpham;
-        this.tax = tax;
+
         this.dalivery = dalivery;
         this.tongtien = tongtien;
     }
