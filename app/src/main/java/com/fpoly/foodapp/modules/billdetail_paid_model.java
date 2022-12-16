@@ -101,4 +101,14 @@ public class billdetail_paid_model {
         this.dalivery = dalivery;
         this.tongtien = tongtien;
     }
+    public billdetail_paid_model(int madonhang, String soluongsanphan, String trangthai, String ngaymua, double tongtiensanpham, double tongtien) {
+        this.madonhang = madonhang;
+        this.soluongsanphan = soluongsanphan;
+        this.trangthai = trangthai;
+        this.ngaymua = ngaymua;
+        this.tongtiensanpham = tongtiensanpham;
+        this.tax = tax;
+        this.dalivery = dalivery;
+        this.tongtien = tongtien;
+    }
 }

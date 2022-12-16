@@ -1,4 +1,4 @@
-package com.fpoly.foodapp;
+package com.fpoly.foodapp.Utility;
 
 import android.content.Context;
 import android.view.GestureDetector;
@@ -6,6 +6,8 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
+
+import com.fpoly.foodapp.R;
 
 public class TranslateAnimation implements View.OnTouchListener{
 

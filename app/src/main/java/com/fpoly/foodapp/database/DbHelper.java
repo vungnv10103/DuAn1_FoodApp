@@ -125,8 +125,7 @@ public class DbHelper extends SQLiteOpenHelper {
                 "idUser INTEGER REFERENCES User(id)," +
                 "checkStatus INTEGER not null," +
                 "totalPrice REAL not null," +
-                "tax REAL not null," +
-                "delivery REAL not null," +
+                "feeTransport REAL not null," +
                 "totalOder REAL not null)";
         db.execSQL(createTableOder);
 

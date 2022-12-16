@@ -3,43 +3,32 @@ package com.fpoly.foodapp.ui.cart;
 import static android.content.Context.MODE_PRIVATE;
 
 import android.annotation.SuppressLint;
-import android.app.Dialog;
-import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.graphics.Color;
-import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
+import android.util.Log;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
-import androidx.appcompat.widget.Toolbar;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import android.util.Log;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-import android.view.WindowManager;
-import android.widget.TextView;
-import android.widget.Toast;
-
+import com.fpoly.foodapp.DAO.CartItemDAO;
 import com.fpoly.foodapp.DAO.CartSystemDAO;
 import com.fpoly.foodapp.DAO.OderDAO;
 import com.fpoly.foodapp.DAO.UsersDAO;
-import com.fpoly.foodapp.DAO.CartItemDAO;
 import com.fpoly.foodapp.R;
-import com.fpoly.foodapp.Utility.IOnBackPressed;
-import com.fpoly.foodapp.activities.DealsActivity;
-import com.fpoly.foodapp.activities.MainActivity;
 import com.fpoly.foodapp.activities.PaymentActivity;
-import com.fpoly.foodapp.activities.UpdateItemRecommendActivity;
 import com.fpoly.foodapp.activities.UserUpdateInfoActivity;
 import com.fpoly.foodapp.adapters.Billdetails_adapter;
 import com.fpoly.foodapp.adapters.CartItemAdapter;
@@ -49,19 +38,16 @@ import com.fpoly.foodapp.modules.OderHistoryModel;
 import com.fpoly.foodapp.modules.UsersModule;
 import com.fpoly.foodapp.modules.billdetailmodel;
 import com.google.android.material.snackbar.Snackbar;
-import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ValueEventListener;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Random;
 
-public class CartFragment extends Fragment implements IOnBackPressed {
-    private Toolbar toolbar;
+public class CartFragmentOld extends Fragment {
+
     private ConstraintLayout checkOut, titleCart;
     RecyclerView recyclerView, RCL;
     private ArrayList<CartItemModule> listCartItem, listCartItem1;
@@ -75,20 +61,29 @@ public class CartFragment extends Fragment implements IOnBackPressed {
     ArrayList<UsersModule> listUser;
     public String date;
     private String chuoi = "";
+    Billdetails_adapter adapter;
     public ArrayList<billdetailmodel> moduleArrayList;
     static OderDAO oderDAO;
+    ArrayList<OderHistoryModel> listOder;
+    OderHistoryModel itemOder;
 
 
+    TextView tvToTal, tvDelivery, tvTax, tvCouponCost, tvCoupon;
+    TextView tvToTalPriceFinal;
+    SharedPreferences sharedPreferences;
+    SharedPreferences.Editor editor;
+    public static final String TOTAL_KEY = "doanhthu";
+    public static final String TOTAL_FINAL_KEY = "tongdoanhthu";
 
     private static final String TAG = "test";
 
-    public CartFragment() {
+    public CartFragmentOld() {
         // Required empty public constructor
     }
 
     @NonNull
-    public static CartFragment newInstance() {
-        CartFragment fragment = new CartFragment();
+    public static CartFragmentOld newInstance() {
+        CartFragmentOld fragment = new CartFragmentOld();
         return fragment;
     }
 
@@ -104,19 +99,7 @@ public class CartFragment extends Fragment implements IOnBackPressed {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_cart, container, false);
-        toolbar = view.findViewById(R.id.toolBarCart);
-//        setSupportActionBar(toolbar);
-//        getSupportActionBar().setDisplayShowTitleEnabled(false);
 
-        toolbar.setTitle("Giỏ hàng của tôi");
-        toolbar.setTitleTextColor(Color.WHITE);
-        toolbar.setNavigationIcon(R.drawable.ic_baseline_arrow_back_24);
-        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                onBackPressed();
-            }
-        });
 
         oderDAO = new OderDAO(getContext());
         CartItemDAO = new CartItemDAO(getContext());
@@ -125,24 +108,36 @@ public class CartFragment extends Fragment implements IOnBackPressed {
 
         titleCart = view.findViewById(R.id.title_cart);
         checkOut = view.findViewById(R.id.checkOut);
+        tvToTal = view.findViewById(R.id.total_price_item);
+        tvDelivery = view.findViewById(R.id.delivery_price);
+        tvTax = view.findViewById(R.id.tax_price);
+        tvToTalPriceFinal = view.findViewById(R.id.total_price_cart);
         recyclerView = view.findViewById(R.id.rec_cart);
-        checkOut.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if (listCartItem.size() == 0) {
-                    Toast.makeText(getContext(), "Chưa có sản phẩm", Toast.LENGTH_SHORT).show();
-                } else {
-                    if (checkInfo() > 0) {
-                        startActivity(new Intent(getContext(), PaymentActivity.class));
-                    }
-                }
-            }
-        });
+        tvCouponCost = view.findViewById(R.id.tvCouponCost);
+        tvCouponCost.setText("Chọn voucher");
+        tvCoupon = view.findViewById(R.id.tvCoupon);
+        tvCoupon.setText("Voucher: ");
+        Calendar calendar = Calendar.getInstance();
+
+        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss ");
+        date = format.format(calendar.getTime());
 
         moduleArrayList = new ArrayList<>();
 
 
+//        tvCouponCost.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                temp2++;
+//                startActivity(new Intent(getContext(), DealsActivity.class));
+//                getFragmentManager().beginTransaction().detach(CartFragment.this).attach(CartFragment.this).commit();
+//
+//
+//            }
+//        });
+
         listData();
+        checkItemSelected(1, 0);
         return view;
     }
 
@@ -171,6 +166,18 @@ public class CartFragment extends Fragment implements IOnBackPressed {
 
     }
 
+
+    public Double total() {
+        double price = 0;
+        SharedPreferences pref = getContext().getSharedPreferences("USER_FILE", MODE_PRIVATE);
+        String email = pref.getString("EMAIL", "");
+        int idUser = usersDAO.getIDUser(email);
+        listCartItem = (ArrayList<CartItemModule>) CartItemDAO.getALLPro(idUser);
+        for (int i = 0; i < listCartItem.size(); i++) {
+            price += listCartItem.get(i).cost;
+        }
+        return price;
+    }
 
     // vuốt để xoá
     public void swipeToDelete() {
@@ -223,7 +230,39 @@ public class CartFragment extends Fragment implements IOnBackPressed {
 
     }
 
+    public void checkItemSelected(int mCheck, int discount) {
 
+        SharedPreferences pref = getContext().getSharedPreferences("USER_FILE", MODE_PRIVATE);
+        String email = pref.getString("EMAIL", "");
+
+        if (mCheck != 0) {
+//            Double total = Double.valueOf(pref.getString("COST", ""));
+            CartItemDAO = new CartItemDAO(getContext());
+            double totalPriceItem = total();
+            tvToTal.setText(String.format("%.2f", totalPriceItem) + " $");
+            tvTax.setText(String.format("%.2f", totalPriceItem * 0.1) + " $");
+            Double coupon = discount * totalPriceItem / 100;
+            tvCouponCost.setText(coupon + " $");
+            tvCoupon.setText("Voucher: " + discount + "%");
+            tvDelivery.setText(String.format("%.2f", totalPriceItem * 0.05) + " $");
+            double totalFinal = totalPriceItem + totalPriceItem * 0.1 + totalPriceItem * 0.05 - coupon;
+            tvToTalPriceFinal.setText(String.format("%.2f", totalFinal) + " $");
+            int idUser = usersDAO.getIDUser(email);
+            listCartItem = (ArrayList<CartItemModule>) CartItemDAO.getALLPro(idUser);
+            checkOut.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    if (listCartItem.size() == 0) {
+                        Toast.makeText(getContext(), "Chưa có sản phẩm", Toast.LENGTH_SHORT).show();
+                    } else {
+                        if (checkInfo() > 0) {
+                            startActivity(new Intent(getContext(), PaymentActivity.class));
+                        }
+                    }
+                }
+            });
+        }
+    }
 
     private int checkInfo() {
         int check = -1;
@@ -262,16 +301,34 @@ public class CartFragment extends Fragment implements IOnBackPressed {
     @Override
     public void onStart() {
         super.onStart();
+//        SharedPreferences pref = getContext().getSharedPreferences("CheckSelected", MODE_PRIVATE);
+//        String name = pref.getString("name", "");
+//        Toast.makeText(getContext(), "name: " + name, Toast.LENGTH_SHORT).show();
+
+//        getdata();
         for (int i = 0; i < listCartItem.size(); i++) {
             chuoi += "● " + listCartItem.get(i).name + "   --   SL: " + listCartItem.get(i).quantities + "\n";
         }
-
+//        FirebaseDatabase database = FirebaseDatabase.getInstance();
+//        DatabaseReference reference = database.getReference("objec_bill");
+//        reference.addValueEventListener(new ValueEventListener() {
+//            @Override
+//            public void onDataChange(@NonNull DataSnapshot snapshot) {
+//                if (moduleArrayList != null) {
+//                    moduleArrayList.clear();
+//                }
+//                for (DataSnapshot snapshot1 : snapshot.getChildren()) {
+//                    billdetailmodel billdetailmodel1 = snapshot1.getValue(billdetailmodel.class);
+//                    moduleArrayList.add(billdetailmodel1);
+//                }
+//            }
+//
+//            @Override
+//            public void onCancelled(@NonNull DatabaseError error) {
+//
+//            }
+//        });
     }
 
 
-    @Override
-    public boolean onBackPressed() {
-        startActivity(new Intent(getContext(), MainActivity.class));
-        return true;
-    }
 }

@@ -76,6 +76,10 @@ public class CartItemTempDAO {
         String sql = "SELECT * FROM CartTemp WHERE idUser=? AND checkSelected=?";
         return getData(sql, new String[]{String.valueOf(idUser), String.valueOf(checkSelected)});
     }
+    public List<CartTempModule> getALL(int idUser) {
+        String sql = "SELECT * FROM CartTemp WHERE idUser=?";
+        return getData(sql, String.valueOf(idUser));
+    }
     public List<CartTempModule> getALLPro(int idUser) {
         String sql = "SELECT id,mCheck,checkSelected,name, idRecommend,idUser,newCost,quantitiesNew, sum(quantities) AS TotalQuantity, sum(cost) as TotalPrice FROM CartTemp WHERE idUser=? GROUP BY idRecommend ORDER By id DESC";
         return getDataPro(sql, String.valueOf(idUser));

@@ -14,12 +14,14 @@ import android.widget.Toast;
 
 import com.fpoly.foodapp.R;
 
+import com.fpoly.foodapp.Utility.IOnBackPressed;
 import com.fpoly.foodapp.Utility.NetworkChangeListener;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.Fragment;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import androidx.navigation.ui.AppBarConfiguration;
@@ -81,6 +83,10 @@ public class MainActivity extends AppCompatActivity {
     @Override
     public void onBackPressed() {
         if (doubleBackToExitPressedOnce) {
+            Fragment fragment = getSupportFragmentManager().findFragmentById(R.id.nav_host_fragment_activity_main);
+            if (!(fragment instanceof IOnBackPressed) || !((IOnBackPressed) fragment).onBackPressed()) {
+                super.onBackPressed();
+            }
             super.onBackPressed();
             return;
         }

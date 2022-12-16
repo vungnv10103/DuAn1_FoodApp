@@ -8,8 +8,8 @@ public class billdetailmodel {
     private String trangthai;
     private String ngaymua;
     private double tongtiensanpham;
-    private double tax;
-    private double dalivery;
+//    private double tax;
+    private double feeTransport;
     private double tongtien;
 
     public int getMadonhang() {
@@ -19,15 +19,15 @@ public class billdetailmodel {
     public billdetailmodel() {
     }
 
-    public billdetailmodel(int id, int madonhang, String soluongsanphan, String trangthai, String ngaymua, double tongtiensanpham, double tax, double dalivery, double tongtien) {
+    public billdetailmodel(int id, int madonhang, String soluongsanphan, String trangthai, String ngaymua, double tongtiensanpham, double feeTransport, double tongtien) {
         this.id = id;
         this.madonhang = madonhang;
         this.soluongsanphan = soluongsanphan;
         this.trangthai = trangthai;
         this.ngaymua = ngaymua;
         this.tongtiensanpham = tongtiensanpham;
-        this.tax = tax;
-        this.dalivery = dalivery;
+//        this.tax = tax;
+        this.feeTransport = feeTransport;
         this.tongtien = tongtien;
     }
 
@@ -66,21 +66,7 @@ public class billdetailmodel {
     public void setTongtiensanpham(double tongtiensanpham) {
         this.tongtiensanpham = tongtiensanpham;
     }
-    public double getTax() {
-        return tax;
-    }
 
-    public void setTax(double tax) {
-        this.tax = tax;
-    }
-
-    public double getDalivery() {
-        return dalivery;
-    }
-
-    public void setDalivery(double dalivery) {
-        this.dalivery = dalivery;
-    }
 
     public double getTongtien() {
         return tongtien;
@@ -90,14 +76,14 @@ public class billdetailmodel {
         this.tongtien = tongtien;
     }
 
-    public billdetailmodel(int madonhang, String soluongsanphan, String trangthai, String ngaymua, double tongtiensanpham, double tax, double dalivery, double tongtien) {
+    public billdetailmodel(int madonhang, String soluongsanphan, String trangthai, String ngaymua, double tongtiensanpham, double feeTransport, double tongtien) {
         this.madonhang = madonhang;
         this.soluongsanphan = soluongsanphan;
         this.trangthai = trangthai;
         this.ngaymua = ngaymua;
         this.tongtiensanpham = tongtiensanpham;
-        this.tax = tax;
-        this.dalivery = dalivery;
+//        this.tax = tax;
+        this.feeTransport = feeTransport;
         this.tongtien = tongtien;
     }
 }

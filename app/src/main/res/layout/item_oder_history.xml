@@ -2,253 +2,258 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:orientation="vertical"
-    android:background="#ecebe6">
+    android:background="#ecebe6"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical">
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
-                android:orientation="horizontal">
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="20dp"
-                    android:text="Mã đơn hàng:"
-                    android:textSize="18sp"
-                    android:textStyle="bold" />
-
-                <TextView
-                    android:id="@+id/tvCodeOder"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="30dp"
-                    android:text="1234567"
-                    android:textSize="18sp"
-                    android:textStyle="bold" />
-            </LinearLayout>
-
+            android:layout_marginTop="10dp"
+            android:orientation="horizontal">
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="20dp"
-                android:text="Sản phẩm đặt:"
+                android:text="Mã đơn hàng:"
                 android:textSize="18sp"
                 android:textStyle="bold" />
 
-
             <TextView
-                android:id="@+id/tvListItemProduct"
-                android:layout_width="match_parent"
+                android:id="@+id/tvCodeOder"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="30dp"
-                android:text="Sản phẩm 1 \nSản Phẩm 2"
-                android:textSize="20dp"
+                android:text="1234567"
+                android:textSize="18sp"
                 android:textStyle="bold" />
+        </LinearLayout>
+
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="20dp"
+            android:text="Sản phẩm đặt:"
+            android:textSize="18sp"
+            android:textStyle="bold" />
+
+
+        <TextView
+            android:id="@+id/tvListItemProduct"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="30dp"
+            android:text="Sản phẩm 1 \nSản Phẩm 2"
+            android:textSize="20dp"
+            android:textStyle="bold" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginStart="16dp"
+            android:layout_marginEnd="16dp"
+            android:layout_marginBottom="5dp"
+            android:background="@drawable/card_background"
+            android:elevation="3dp"
+            android:orientation="vertical">
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_margin="16dp"
-                android:background="@drawable/card_background"
-                android:elevation="3dp"
-                android:orientation="vertical">
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_marginStart="16dp"
-                    android:layout_marginTop="16dp"
-                    android:layout_marginEnd="16dp"
-                    android:layout_marginBottom="4dp"
-                    android:orientation="horizontal"
-                    android:weightSum="6">
-
-                    <TextView
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="4"
-                        android:text="Items Total:"
-                        android:textColor="#373b54"
-                        android:textSize="18dp"
-                        android:textStyle="bold" />
-
-                    <TextView
-                        android:id="@+id/price_bill"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="2"
-                        android:text="$ 0"
-                        android:textColor="#373b54"
-                        android:textSize="18dp"
-                        android:textStyle="bold" />
-                </LinearLayout>
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_marginStart="16dp"
-                    android:layout_marginTop="4dp"
-                    android:layout_marginEnd="16dp"
-                    android:layout_marginBottom="4dp"
-                    android:layout_weight="6"
-                    android:orientation="horizontal">
-
-                    <TextView
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="4"
-                        android:text="Delivery Services (5%):"
-                        android:textColor="#373b54"
-                        android:textSize="18dp"
-                        android:textStyle="bold" />
-
-                    <TextView
-                        android:id="@+id/delivery_bill"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="2"
-                        android:text="$ 0"
-                        android:textColor="#373b54"
-                        android:textSize="18dp"
-                        android:textStyle="bold" />
-                </LinearLayout>
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_marginStart="16dp"
-                    android:layout_marginTop="4dp"
-                    android:layout_marginEnd="16dp"
-                    android:layout_marginBottom="4dp"
-                    android:layout_weight="6"
-                    android:orientation="horizontal">
-
-                    <TextView
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="4"
-                        android:text="Tax (10%):"
-                        android:textColor="#373b54"
-                        android:textSize="18dp"
-                        android:textStyle="bold" />
-
-                    <TextView
-                        android:id="@+id/tax_bill"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="2"
-                        android:text="$ 0"
-                        android:textColor="#373b54"
-                        android:textSize="18dp"
-                        android:textStyle="bold" />
-                </LinearLayout>
-
-
-                <View
-                    android:id="@+id/view2"
-                    android:layout_width="match_parent"
-                    android:layout_height="1dp"
-                    android:layout_marginStart="16dp"
-                    android:layout_marginTop="4dp"
-                    android:layout_marginEnd="16dp"
-                    android:layout_marginBottom="4dp"
-                    android:background="#707070" />
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_marginStart="16dp"
-                    android:layout_marginTop="4dp"
-                    android:layout_marginEnd="16dp"
-                    android:layout_marginBottom="16dp"
-                    android:orientation="horizontal"
-                    android:weightSum="3">
-
-                    <TextView
-                        android:id="@+id/Total"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="2"
-                        android:text="Total:"
-                        android:textColor="#373b54"
-                        android:textSize="32dp"
-                        android:textStyle="bold" />
-
-                    <TextView
-                        android:id="@+id/total_price_bill"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:text="$ 0"
-                        android:textColor="#373b54"
-                        android:textSize="32dp"
-                        android:textStyle="bold" />
-                </LinearLayout>
-
-
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal">
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="20dp"
-                    android:text="Trạng Thái:"
-                    android:textSize="20sp"
-                    android:textStyle="bold" />
-
-                <TextView
-                    android:id="@+id/tvStatus"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="30dp"
-                    android:text="Chưa thanh toán"
-                    android:textColor="#FF0900"
-                    android:textSize="20sp"
-                    android:textStyle="bold" />
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal">
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="20dp"
-                    android:text="Ngày Mua:"
-                    android:textSize="20sp"
-                    android:textStyle="bold" />
-
-                <TextView
-                    android:id="@+id/tvDateTime"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="30dp"
-
-                    android:text="04/12/2022"
-                    android:textSize="20sp"
-                    android:textStyle="bold" />
-            </LinearLayout>
-            <View
-                android:id="@+id/view9"
-                android:layout_width="match_parent"
-                android:layout_height="2dp"
-                android:layout_marginTop="4dp"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="16dp"
+                android:layout_marginEnd="16dp"
                 android:layout_marginBottom="4dp"
-                android:background="#FF0000" />
+                android:orientation="horizontal"
+                android:weightSum="6">
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="4"
+                    android:text="Tổng tiền hàng:"
+                    android:textColor="#373b54"
+                    android:textSize="18dp"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/price_bill"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="2"
+                    android:text="$ 0"
+                    android:textColor="#373b54"
+                    android:textSize="18dp"
+                    android:textStyle="bold" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="16dp"
+                android:layout_marginEnd="16dp"
+                android:layout_marginBottom="4dp"
+                android:orientation="horizontal"
+                android:weightSum="6">
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="4"
+                    android:text="Phí vận chuyển:"
+                    android:textColor="#373b54"
+                    android:textSize="18dp"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/tvFeeTransport"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="2"
+                    android:text="$ 0"
+                    android:textColor="#373b54"
+                    android:textSize="18dp"
+                    android:textStyle="bold" />
+            </LinearLayout>
+
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="4dp"
+                android:layout_marginEnd="16dp"
+                android:layout_marginBottom="4dp"
+                android:layout_weight="6"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="4"
+                    android:text="Voucher :"
+                    android:textColor="#373b54"
+                    android:textSize="18dp"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/tvVoucher"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="2"
+                    android:text="$ 0"
+                    android:textColor="#373b54"
+                    android:textSize="18dp"
+                    android:textStyle="bold" />
+            </LinearLayout>
+
+
+            <View
+                android:id="@+id/view2"
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="4dp"
+                android:layout_marginEnd="16dp"
+                android:layout_marginBottom="4dp"
+                android:background="#707070" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="4dp"
+                android:layout_marginEnd="16dp"
+                android:layout_marginBottom="16dp"
+                android:orientation="horizontal"
+                android:weightSum="4">
+
+                <TextView
+                    android:id="@+id/Total"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="2.5"
+                    android:text="Tổng thanh toán:"
+                    android:textColor="#373b54"
+                    android:textSize="22dp"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/total_price_bill"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1.5"
+                    android:text="$ 0"
+                    android:textColor="#373b54"
+                    android:textSize="26dp"
+                    android:textStyle="bold" />
+            </LinearLayout>
+
+
         </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="20dp"
+                android:text="Trạng Thái:"
+                android:textSize="20sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/tvStatus"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="30dp"
+                android:text="Chưa thanh toán"
+                android:textColor="#FF0900"
+                android:textSize="20sp"
+                android:textStyle="bold" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="20dp"
+                android:text="Ngày Mua:"
+                android:textSize="20sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/tvDateTime"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="30dp"
+
+                android:text="04/12/2022"
+                android:textSize="20sp"
+                android:textStyle="bold" />
+        </LinearLayout>
+
+        <View
+            android:id="@+id/view9"
+            android:layout_width="match_parent"
+            android:layout_height="2dp"
+            android:layout_marginTop="4dp"
+            android:layout_marginBottom="4dp"
+            android:background="#FF0000" />
+    </LinearLayout>
 
 </LinearLayout>

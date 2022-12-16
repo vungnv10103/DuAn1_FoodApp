@@ -11,7 +11,7 @@ public class OderHistoryModel {
     private String ngaymua;
     private double tongtiensanpham;
     private double tax;
-    private double dalivery;
+    private double tvFeeTransport;
     private double tongtien;
 
 
@@ -20,7 +20,7 @@ public class OderHistoryModel {
     public OderHistoryModel() {
     }
 
-    public OderHistoryModel(int id,int checkStatus, int idUser,int madonhang, String soluongsanphan, String trangthai, String ngaymua, double tongtiensanpham, double tax, double dalivery, double tongtien) {
+    public OderHistoryModel(int id,int checkStatus, int idUser,int madonhang, String soluongsanphan, String trangthai, String ngaymua, double tongtiensanpham, double tax, double tvFeeTransport, double tongtien) {
         this.id = id;
         this.checkStatus = checkStatus;
         this.idUser = idUser;
@@ -30,7 +30,7 @@ public class OderHistoryModel {
         this.ngaymua = ngaymua;
         this.tongtiensanpham = tongtiensanpham;
         this.tax = tax;
-        this.dalivery = dalivery;
+        this.tvFeeTransport = tvFeeTransport;
         this.tongtien = tongtien;
     }
 
@@ -97,12 +97,12 @@ public class OderHistoryModel {
         this.tax = tax;
     }
 
-    public double getDalivery() {
-        return dalivery;
+    public double getTvFeeTransport() {
+        return tvFeeTransport;
     }
 
-    public void setDalivery(double dalivery) {
-        this.dalivery = dalivery;
+    public void setTvFeeTransport(double tvFeeTransport) {
+        this.tvFeeTransport = tvFeeTransport;
     }
 
     public double getTongtien() {
@@ -113,7 +113,7 @@ public class OderHistoryModel {
         this.tongtien = tongtien;
     }
 
-    public OderHistoryModel(int madonhang,int checkStatus,int idUser, String soluongsanphan, String trangthai, String ngaymua, double tongtiensanpham, double tax, double dalivery, double tongtien) {
+    public OderHistoryModel(int madonhang,int checkStatus,int idUser, String soluongsanphan, String trangthai, String ngaymua, double tongtiensanpham, double tax, double tvFeeTransport, double tongtien) {
         this.madonhang = madonhang;
         this.checkStatus = checkStatus;
         this.idUser = idUser;
@@ -122,7 +122,7 @@ public class OderHistoryModel {
         this.ngaymua = ngaymua;
         this.tongtiensanpham = tongtiensanpham;
         this.tax = tax;
-        this.dalivery = dalivery;
+        this.tvFeeTransport = tvFeeTransport;
         this.tongtien = tongtien;
     }
 }
