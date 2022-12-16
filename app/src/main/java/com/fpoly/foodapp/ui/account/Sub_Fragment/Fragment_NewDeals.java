@@ -64,9 +64,9 @@ public class Fragment_NewDeals extends Fragment {
         int begin_index = email.indexOf("@");
         int end_index = email.indexOf(".");
         String domain_name = email.substring(begin_index + 1, end_index);
-        if (domain_name.toLowerCase(Locale.ROOT).equals("merchant")){
-            btnAddVoucher.setVisibility(View.VISIBLE);
-        }
+//        if (domain_name.toLowerCase(Locale.ROOT).equals("merchant")){
+//            btnAddVoucher.setVisibility(View.VISIBLE);
+//        }
 
         btnAddVoucher.setOnClickListener(new View.OnClickListener() {
             @Override
