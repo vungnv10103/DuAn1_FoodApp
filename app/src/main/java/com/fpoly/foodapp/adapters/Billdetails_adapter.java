@@ -21,6 +21,7 @@ import com.fpoly.foodapp.DAO.UsersDAO;
 import com.fpoly.foodapp.R;
 import com.fpoly.foodapp.activities.Billdetail_activity;
 import com.fpoly.foodapp.modules.BilldetailModule;
+import com.fpoly.foodapp.modules.OderHistoryModelNew;
 import com.fpoly.foodapp.modules.billdetail_paid_model;
 import com.fpoly.foodapp.modules.billdetailmodel;
 
@@ -36,12 +37,12 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Billdetails_adapter extends RecyclerView.Adapter<Billdetails_adapter.ViewHolder> {
-    private List<billdetailmodel> list;
+    private ArrayList<OderHistoryModelNew> list;
     private Context context;
     private ArrayList<billdetail_paid_model> arrayList = new ArrayList<>();
 
 
-    public Billdetails_adapter(ArrayList<billdetailmodel> list, Context context) {
+    public Billdetails_adapter(ArrayList<OderHistoryModelNew> list, Context context) {
         this.list = list;
         this.context = context;
     }
@@ -55,22 +56,20 @@ public class Billdetails_adapter extends RecyclerView.Adapter<Billdetails_adapte
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, @SuppressLint("RecyclerView") int position) {
-        holder.txtmadonhang.setText("" + list.get(position).getMadonhang());
-        holder.txttrangthai.setText(list.get(position).getTrangthai());
-        holder.ngaymua.setText(list.get(position).getNgaymua());
-        holder.txttongtien.setText(String.format("%.2f", list.get(position).getTongtien()) + " $");
-        holder.txttiensanpham.setText(String.format("%.2f", list.get(position).getTongtiensanpham()) + " $");
-//        holder.txtdeliverybill.setText(String.format("%.2f", list.get(position).getDalivery()) + " $");
+        holder.txtmadonhang.setText("" + list.get(position).getCode());
+        holder.txttrangthai.setText(list.get(position).getStatus());
+        holder.ngaymua.setText(list.get(position).getDateTime());
+        holder.txttongtien.setText(String.format("%.2f", list.get(position).getTotalFinal()) + " $");
+        holder.txttiensanpham.setText(String.format("%.2f", list.get(position).getTotalItem()) + " $");
+        holder.txtdeliverybill.setText(String.format("%.2f", list.get(position).getFeeTransport()) + " $");
 //        holder.txttaxbill.setText(String.format("%.2f", list.get(position).getTax()) + " $");
-        holder.txttensanphamdamua.setText(list.get(position).getSoluongsanphan());
+        holder.txttensanphamdamua.setText(list.get(position).getListProduct());
         holder.btnthnahtoan.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
-
                 FirebaseDatabase database1 = FirebaseDatabase.getInstance();
                 DatabaseReference reference1 = database1.getReference("objec_bill");
-                reference1.child("" + position).child("trangthai").setValue("Đã thanh toán", new DatabaseReference.CompletionListener() {
+                reference1.child("" + position).child("status").setValue("Đã thanh toán", new DatabaseReference.CompletionListener() {
                     @Override
                     public void onComplete(@Nullable DatabaseError error, @NonNull DatabaseReference ref) {
                         Toast.makeText(context, "update thành công", Toast.LENGTH_SHORT).show();
@@ -100,9 +99,10 @@ public class Billdetails_adapter extends RecyclerView.Adapter<Billdetails_adapte
 //                arrayList.add(new billdetail_paid_model(list.get(position).getMadonhang(), list.get(position).getSoluongsanphan(), "Đã thanh toán",
 //                        list.get(position).getNgaymua(), list.get(position).getTongtiensanpham(), list.get(position).getTax(), list.get(position).getDalivery(),
 //                        list.get(position).getTongtien()));
-                arrayList.add(new billdetail_paid_model(list.get(position).getMadonhang(), list.get(position).getSoluongsanphan(), "Đã thanh toán",
-                        list.get(position).getNgaymua(), list.get(position).getTongtiensanpham(),
-                        list.get(position).getTongtien()));
+                arrayList.add(new billdetail_paid_model(list.get(position).getCode(), list.get(position).getListProduct(), "Đã thanh toán",
+                        list.get(position).
+            getDateTime(), list.get(position).getTotalItem(),list.get(position).getFeeTransport(),
+                        list.get(position).getTotalFinal()));
                 reference2.setValue(arrayList, new DatabaseReference.CompletionListener() {
                     @Override
                     public void onComplete(@Nullable DatabaseError error, @NonNull DatabaseReference ref) {
@@ -170,7 +170,7 @@ public class Billdetails_adapter extends RecyclerView.Adapter<Billdetails_adapte
 
             }
         });
-        if (list.get(position).getTrangthai().equals("Đã thanh toán")) {
+        if (list.get(position).getStatus().equals("Đã thanh toán")) {
             holder.btnthnahtoan.setVisibility(View.GONE);
             holder.txttrangthai.setTextColor(Color.GREEN);
 
@@ -196,7 +196,7 @@ public class Billdetails_adapter extends RecyclerView.Adapter<Billdetails_adapte
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {
-        TextView txtmadonhang, ngaymua, txttongtien, txttiensanpham, txtdeliverybill, txttaxbill, txttensanphamdamua, txttrangthai;
+        TextView txtmadonhang, ngaymua, txttongtien, txttiensanpham, txtdeliverybill, txttensanphamdamua, txttrangthai;
         ConstraintLayout btnthnahtoan;
 
         public ViewHolder(@NonNull View itemView) {
@@ -206,7 +206,6 @@ public class Billdetails_adapter extends RecyclerView.Adapter<Billdetails_adapte
             txttongtien = itemView.findViewById(R.id.total_price_bill);
             txttiensanpham = itemView.findViewById(R.id.price_bill);
             txtdeliverybill = itemView.findViewById(R.id.delivery_bill);
-            txttaxbill = itemView.findViewById(R.id.tax_bill);
             txttensanphamdamua = itemView.findViewById(R.id.txtcacsanphamdadat);
             txttrangthai = itemView.findViewById(R.id.txttrangthai);
             btnthnahtoan = itemView.findViewById(R.id.thanhtoan);

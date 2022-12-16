@@ -51,7 +51,7 @@ public class AdminActivity extends AppCompatActivity {
     Billdetail_paid_Adapter adapter = new Billdetail_paid_Adapter(list1 , this);
     int value;
     SharedPreferences sharedPreferences  , sharedPreferences1;
- double doanhthu ;
+    double doanhthu ;
     int i = 0 ;
 
     @Override

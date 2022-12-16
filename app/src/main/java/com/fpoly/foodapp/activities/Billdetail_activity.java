@@ -20,6 +20,7 @@ import com.fpoly.foodapp.R;
 import com.fpoly.foodapp.Utility.NetworkChangeListener;
 import com.fpoly.foodapp.adapters.Billdetails_adapter;
 
+import com.fpoly.foodapp.modules.OderHistoryModelNew;
 import com.fpoly.foodapp.modules.billdetail_paid_model;
 import com.fpoly.foodapp.modules.billdetailmodel;
 import com.google.firebase.database.ChildEventListener;
@@ -31,13 +32,14 @@ import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
+import java.util.Collections;
 
 public class Billdetail_activity extends AppCompatActivity {
     NetworkChangeListener networkChangeListener = new NetworkChangeListener();
 
 
     private RecyclerView RCL;
-    ArrayList<billdetailmodel> moduleArrayList = new ArrayList<>();
+    ArrayList<OderHistoryModelNew> moduleArrayList = new ArrayList<>();
     ArrayList<billdetail_paid_model> arrayList = new ArrayList<>();
 
     Billdetails_adapter adapter;
@@ -94,7 +96,7 @@ public class Billdetail_activity extends AppCompatActivity {
 
         FirebaseDatabase database = FirebaseDatabase.getInstance();
         DatabaseReference reference = database.getReference("objec_bill");
-        Query query = reference.orderByChild("ngaymua");
+        Query query = reference.orderByChild("dateTime");
         query.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
@@ -102,8 +104,9 @@ public class Billdetail_activity extends AppCompatActivity {
                     moduleArrayList.clear();
                 }
                 for (DataSnapshot snapshot1 : snapshot.getChildren()) {
-                    billdetailmodel item = snapshot1.getValue(billdetailmodel.class);
-                    moduleArrayList.add(item);
+                    OderHistoryModelNew item = snapshot1.getValue(OderHistoryModelNew.class);
+                    moduleArrayList.add( item);
+
                 }
 
 

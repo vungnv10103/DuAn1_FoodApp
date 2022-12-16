@@ -40,7 +40,6 @@ public class Billdetail_paid_Adapter extends  RecyclerView.Adapter<Billdetail_pa
         holder.txttongtien.setText(String.format("%.2f", list.get(position).getTongtien()) + " $");
         holder.txttiensanpham.setText(String.format("%.2f", list.get(position).getTongtiensanpham()) + " $");
         holder.txtdeliverybill.setText(String.format("%.2f", list.get(position).getDalivery()) + " $");
-        holder.txttaxbill.setText(String.format("%.2f", list.get(position).getTax()) + " $");
         holder.txttensanphamdamua.setText(list.get(position).getSoluongsanphan());
         holder.txttrangthai.setTextColor(Color.GREEN);
 
@@ -52,7 +51,7 @@ public class Billdetail_paid_Adapter extends  RecyclerView.Adapter<Billdetail_pa
     }
 
     public class  ViewHolder extends RecyclerView.ViewHolder {
-        TextView txtmadonhang, ngaymua, txttongtien, txttiensanpham, txtdeliverybill, txttaxbill, txttensanphamdamua, txttrangthai;
+        TextView txtmadonhang, ngaymua, txttongtien, txttiensanpham, txtdeliverybill, txttensanphamdamua, txttrangthai;
 
 
         public ViewHolder(@NonNull View itemView) {
@@ -62,7 +61,7 @@ public class Billdetail_paid_Adapter extends  RecyclerView.Adapter<Billdetail_pa
             txttongtien = itemView.findViewById(R.id.total_price_billpaid);
             txttiensanpham = itemView.findViewById(R.id.price_billpaid);
             txtdeliverybill = itemView.findViewById(R.id.delivery_billpaid);
-            txttaxbill = itemView.findViewById(R.id.tax_billpaid);
+
             txttensanphamdamua = itemView.findViewById(R.id.txtcacsanphamdadatpaid);
             txttrangthai = itemView.findViewById(R.id.txttrangthaipaid);
         }
